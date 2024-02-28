@@ -13,16 +13,16 @@ export function RegistrationPage() {
         confirmPassword: ""
     })
 
-    const handleInputChange = (key: keyof IUserRegistration, value: string) => {
+    const handleInputChange = (key : keyof IUserRegistration, value : string) => {
         setRegisterData((prevState) => ({
-                ...prevState,
-                [key]: value
-            })
-        )
+            ...prevState,
+            [key] : value
+        }))
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        console.log(registerData)
         //TODO сделать тут логику отправки данных
     }
 
@@ -35,25 +35,30 @@ export function RegistrationPage() {
                     </Card.Title>
                 </Card.Header>
                 <Card.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <RegisterInput label={'ФИО'}
                                        type={'name'}
                                        isRequired={true}
+                                       onChange={(value) => handleInputChange('fullName', value)}
                                        value={registerData.fullName}/>
                         <RegisterInput label={'День рождения'}
                                        type={'date'}
                                        isRequired={true}
+                                       onChange={(value) => handleInputChange('birthDate', value)}
                                        value={registerData.birthDate}/>
                         <RegisterInput label={'Email'}
                                        type={'email'}
                                        isRequired={true}
+                                       onChange={(value) => handleInputChange('email', value)}
                                        value={registerData.email}/>
                         <Form.Text className={'d-block'}>Email будет использоваться для входа в систему</Form.Text>
                         <RegisterInput label={'Пароль'}
                                        type={'password'}
                                        isRequired={true}
+                                       onChange={(value) => handleInputChange('password', value)}
                                        value={registerData.password}/>
                         <RegisterInput label={'Повторите пароль'}
+                                       onChange={(value) => handleInputChange('confirmPassword', value)}
                                        type={'password'}
                                        isRequired={true}
                                        value={registerData.confirmPassword}/>
