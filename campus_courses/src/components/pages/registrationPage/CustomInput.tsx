@@ -1,6 +1,5 @@
 import {InputType} from "node:zlib";
 import {Form} from "react-bootstrap";
-import {IUserRegistration} from "../../../interfaces/Interfaces";
 import React from "react";
 
 interface IRegisterProps {
@@ -12,7 +11,7 @@ interface IRegisterProps {
     onChange?: (value: string) => void
 }
 
-export function RegisterInput(props: IRegisterProps) {
+export function CustomInput(props: IRegisterProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         props.onChange && props.onChange(e.target.value)

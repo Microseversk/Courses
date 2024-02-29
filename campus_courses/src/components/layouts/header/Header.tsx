@@ -1,6 +1,5 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {MouseEventHandler, useEffect, useRef, useState} from "react";
 
 export function Header() {
 

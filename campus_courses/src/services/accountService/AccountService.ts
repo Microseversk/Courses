@@ -1,15 +1,15 @@
-import {IToken, IUserEditProfile, IUserGetProfile, IUserLogin, IUserRegistration} from "../interfaces/Interfaces";
-import axios, {AxiosPromise} from "axios";
-import {LOGIN, LOGOUT, PROFILE, REGISTRATION} from "../constansts/API";
-import {$api} from "../http/api";
+import axios, {AxiosError, AxiosPromise} from "axios";
+import {LOGIN, LOGOUT, PROFILE, REGISTRATION} from "../../constansts/API";
+import {$api} from "../../http/api";
+import {IUserEditProfile, IUserGetProfile, IUserLogin, IUserRegistration} from "./AccountServiceTypes";
 class AccountService{
 
     async registration(data : IUserRegistration){
-        return $api.post<IToken>(REGISTRATION, {data})
+        return $api.post(REGISTRATION, data)
     }
 
     async login(data: IUserLogin){
-        return $api.post<IToken>(LOGIN, {email : data.email, password : data.password})
+        return $api.post(LOGIN, data)
     }
 
     async logout(){
