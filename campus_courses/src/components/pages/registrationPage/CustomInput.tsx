@@ -1,25 +1,25 @@
 import {InputType} from "node:zlib";
 import {Form} from "react-bootstrap";
-import React from "react";
+import React, {ChangeEvent} from "react";
 
-interface IRegisterProps {
-    label: string,
+interface ICustomInputProps {
+    label?: string,
     placeholder?: string,
     isRequired?: boolean,
     type: string,
-    value: string | number,
+    value?: string | number,
     onChange?: (value: string) => void
 }
 
-export function CustomInput(props: IRegisterProps) {
+export function CustomInput(props: ICustomInputProps) {
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         props.onChange && props.onChange(e.target.value)
     }
 
     return (
         <>
-            <Form.Label className={'mt-3'}>{props.label}</Form.Label>
+            {props.label && <Form.Label className={'mt-3'}>{props.label}</Form.Label>}
 
             <Form.Control type={props.type}
                           placeholder={props.placeholder}

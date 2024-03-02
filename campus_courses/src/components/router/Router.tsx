@@ -1,49 +1,19 @@
-import {createBrowserRouter} from "react-router-dom";
-import {MainLayout} from "../layouts/MainLayout";
+import {Route, Routes} from "react-router-dom";
+import {PrivateLayout} from "../layouts/PrivateLayout";
+import {PublicLayout} from "../layouts/PublicLayout";
+import {GroupsPage} from "../pages/groupsPage/GroupsPage";
 import {LoginPage} from "../pages/loginPage/LoginPage";
 import {RegistrationPage} from "../pages/registrationPage/RegistrationPage";
 import {ProfilePage} from "../pages/profilePage/ProfilePage";
-import {GroupsPage} from "../pages/groupsPage/GroupsPage";
 
-
-export const Router = createBrowserRouter(
-    [
-        {
-            path: '/',
-            element: <MainLayout children={<>Main page</>}/>
-        },
-
-        {
-            path: '/registration',
-            element: <MainLayout children={<RegistrationPage/>}/>
-        },
-        {
-            path: '/login',
-            element: <MainLayout children={<LoginPage/>}/>
-        },
-        {
-            path: '/profile',
-            element: <MainLayout children={<ProfilePage/>}/>
-        },
-        {
-            path: '/groups',
-            element: <MainLayout children={<GroupsPage/>}/>
-        },
-        {
-            path: '/groups/:id',
-            element: <>groups item</>
-        },
-        {
-            path: '/courses/:id',
-            element: <>course item</>
-        },
-        {
-            path: '/courses/my',
-            element: <>my courses</>
-        },
-        {
-            path: '/courses/teaching',
-            element: <>my courses teaching</>
-        },
-    ]
-)
+export function Router() {
+    return (
+        <Routes>
+            <Route path='/groups' element={<PrivateLayout children={<GroupsPage/>}/>}/>
+            <Route path='/profile' element={<PrivateLayout children={<ProfilePage/>}/>}/>
+            <Route path='/login' element={<PublicLayout children={<LoginPage/>}/>}/>
+            <Route path='/registration' element={<PublicLayout children={<RegistrationPage/>}/>}/>
+            <Route path='*' element={<PublicLayout children={<>Not found</>}/>}/>
+        </Routes>
+    )
+}

@@ -1,11 +1,16 @@
 import {Button, Card, Container, Form} from "react-bootstrap";
 import {CustomInput} from "./CustomInput";
 import {useInput} from "../../../hooks/useInput";
-import {IUserRegistration} from "../../../services/accountService/AccountServiceTypes";
-import {useMutation} from "react-query";
-import AccountService from "../../../services/accountService/AccountService";
-import {AxiosError} from "axios";
+import {FormEvent} from "react";
 
+
+export interface IUserRegistration{
+    fullName: string,
+    birthDate: string,
+    email: string,
+    password: string
+    confirmPassword: string
+}
 export function RegistrationPage() {
 
     const {data, handleOnChange} = useInput<IUserRegistration>({
@@ -16,23 +21,12 @@ export function RegistrationPage() {
         'birthDate' : ""
     })
 
-    const registerMutation = useMutation(['register'], (data: IUserRegistration) => AccountService.registration(data),
-        {
-            onSuccess(data){
-                console.log(data.data)
-            },
-            onError({response} : AxiosError){
-                console.log(response?.data)
-            }
-        })
-
-    const handleSubmit = (e : React.FormEvent) => {
+    const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        registerMutation.mutate(data)
     }
 
     return (
-        <Container fluid className={'d-flex justify-content-center'}>
+        <Container className={'d-flex justify-content-center'}>
             <Card className={'w-75'}>
                 <Card.Header>
                     <Card.Title>
