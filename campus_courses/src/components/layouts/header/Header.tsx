@@ -4,7 +4,8 @@ import {useTypedSelector} from "../../../hooks/useTypedSelector";
 import {useLogoutUserMutation} from "../../../store/api/accountApi";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store/store";
-import {setAuth} from "../../../store/auth.slice";
+import {setAuth, setUser} from "../../../store/auth.slice";
+import {IEditProfile} from "../../pages/profilePage/ProfilePage";
 
 export function Header() {
 
@@ -15,6 +16,7 @@ export function Header() {
 
     const handleLogout = () => {
         dispatch(setAuth(false))
+        dispatch(setUser({} as IEditProfile))
         logoutUser('')
         localStorage.removeItem('token')
         navigate('/login')
@@ -23,7 +25,7 @@ export function Header() {
     return (
         <Navbar expand={"lg"} className={'bg-body-tertiary mb-4'}>
             <Container fluid className={"ms-4 me-4"}>
-                <Navbar.Brand>Кампусные курсы</Navbar.Brand>
+                <Link to={'/'} className={'navbar-brand'}>Кампусные курсы</Link>
                 <Navbar.Toggle/>
                 <Navbar.Collapse className={'text-end justify-content-end'}>
                     <Nav>

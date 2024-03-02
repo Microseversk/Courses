@@ -23,7 +23,7 @@ export function LoginPage() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isLoading && response){
+        if (response){
             dispatch(setAuth(true))
             localStorage.setItem('token',response.token)
             navigate('/groups')

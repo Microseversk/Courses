@@ -19,20 +19,25 @@ export function PrivateLayout({children} : ILayoutProps) {
     const {data : profile, isLoading, error} = useGetUserProfileQuery('')
 
 
-    // if (isLoading){
-    //     return(
-    //         <Loader/>
-    //     )
-    // }
+    useEffect(() => {
+        if (!isLoading && profile){
+            dispatch(setAuth(true))
+            dispatch(setUser(profile))
+        }
+    }, [profile]);
+
+    if (isLoading){
+        return(
+            <></>
+        )
+    }
 
     if (error){
         navigation('/login')
     }
 
-    if (!isLoading && profile){
-        dispatch(setAuth(true))
-        dispatch(setUser(profile))
-    }
+
+
 
 
     return(

@@ -3,7 +3,6 @@ import {FormEvent, useEffect, useState} from "react";
 import {useInput} from "../../../hooks/useInput";
 import {CustomInput} from "../registrationPage/CustomInput";
 import {DateHelper, IDate} from "../../../helpers/DateHelper";
-import {useGetUserProfileQuery} from "../../../store/api/accountApi";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
 
 export interface IEditProfile {
@@ -24,7 +23,7 @@ export function ProfilePage() {
         handleOnChange('fullName', profile.fullName)
         handleOnChange('birthDate', DateHelper.to_DD_MM_YYYY(profile.birthDate).yyyy_mm_dd)
         handleOnChange('email', profile.email)
-    }, []);
+    }, [profile]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
