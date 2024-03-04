@@ -20,9 +20,11 @@ export function ProfilePage() {
     })
 
     useEffect(() => {
-        handleOnChange('fullName', profile.fullName)
-        handleOnChange('birthDate', DateHelper.to_DD_MM_YYYY(profile.birthDate).yyyy_mm_dd)
-        handleOnChange('email', profile.email)
+        if (profile){
+            handleOnChange('fullName', profile.fullName)
+            handleOnChange('birthDate', DateHelper.to_DD_MM_YYYY(profile.birthDate).yyyy_mm_dd)
+            handleOnChange('email', profile.email)
+        }
     }, [profile]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

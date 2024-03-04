@@ -12,6 +12,12 @@ export interface IProfileResponse {
     birthDate: string
 }
 
+export interface IRolesResponse {
+    isTeacher: boolean,
+    isStudent: boolean,
+    isAdmin: boolean,
+}
+
 
 export const accountApi = createApi({
     reducerPath: 'accountApi',
@@ -39,6 +45,13 @@ export const accountApi = createApi({
                 method: 'GET',
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
             })
+        }),
+        getUserRoles : builder.query<IRolesResponse, any>({
+            query: () => ({
+                url: '/roles',
+                method: 'GET',
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+            })
         })
     })
 })
@@ -47,6 +60,7 @@ export const {
     useLoginUserMutation,
     useLogoutUserMutation,
     useGetUserProfileQuery,
+    useGetUserRolesQuery,
 } = accountApi
 
 

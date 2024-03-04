@@ -10,13 +10,14 @@ import {IEditProfile} from "../../pages/profilePage/ProfilePage";
 export function Header() {
 
     const [logoutUser] = useLogoutUserMutation()
-    const isAuth = useTypedSelector(state => state.auth.isAuth)
+    const isAuth = useTypedSelector(state => state.auth?.isAuth)
+    const user = useTypedSelector(state => state.auth?.user)
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
 
     const handleLogout = () => {
         dispatch(setAuth(false))
-        dispatch(setUser({} as IEditProfile))
+        dispatch(setUser(null))
         logoutUser('')
         localStorage.removeItem('token')
         navigate('/login')
@@ -27,8 +28,13 @@ export function Header() {
             <Container fluid className={"ms-4 me-4"}>
                 <Link to={'/'} className={'navbar-brand'}>Кампусные курсы</Link>
                 <Navbar.Toggle/>
-                <Navbar.Collapse className={'text-end justify-content-end'}>
-                    <Nav>
+                <Navbar.Collapse className={''}>
+                    <div className={'ms-4 d-flex gap-3'}>
+                        {isAuth && <Link to={'/groups'} className={'nav-link'}>Группы курсов</Link>}
+                        {isAuth && user?.roles.isStudent  && <Link to={'/courses/my'} className={'nav-link'}>Мои курсы</Link>}
+                        {isAuth && user?.roles.isTeacher  && <Link to={'/courses/teaching'} className={'nav-link'}>Преподаваемые курсы</Link>}
+                    </div>
+                    <Nav className={'ms-auto'}>
                         {isAuth
                             ?
                             <>

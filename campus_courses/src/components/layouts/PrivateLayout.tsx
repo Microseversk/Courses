@@ -1,7 +1,7 @@
 import {Children, ReactNode, useEffect} from "react";
 import {Header} from "./header/Header";
 import {useNavigate} from "react-router-dom";
-import {useGetUserProfileQuery} from "../../store/api/accountApi";
+import {useGetUserProfileQuery, useGetUserRolesQuery} from "../../store/api/accountApi";
 import {Loader} from "./loader/Loader";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store/store";
@@ -16,25 +16,33 @@ export function PrivateLayout({children} : ILayoutProps) {
 
     const navigation = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const {data : profile, isLoading, error} = useGetUserProfileQuery('')
+    const {data : profile, isLoading : isLoadingProfile, error : profileError} = useGetUserProfileQuery('')
+    const {data : roles, isLoading : isLoadingRoles, error : rolesError} = useGetUserRolesQuery('')
 
 
     useEffect(() => {
-        if (!isLoading && profile){
+        if (!isLoadingProfile && !isLoadingRoles && profile && roles){
             dispatch(setAuth(true))
-            dispatch(setUser(profile))
+            dispatch(setUser({
+                ...profile,
+                roles
+            }))
         }
-    }, [profile]);
 
-    if (isLoading){
+        if (profileError){
+            navigation('/login')
+        }
+    }, [profile, isLoadingProfile, isLoadingRoles]);
+
+    if (isLoadingProfile || isLoadingRoles){
         return(
             <></>
         )
     }
 
-    if (error){
-        navigation('/login')
-    }
+    // if (profileError){
+    //     navigation('/login')
+    // }
 
 
 

@@ -1,23 +1,21 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IRolesResponse} from "./api/accountApi";
 
 interface IAuthState{
     isAuth: boolean,
-    user: IUser
+    user: IUser | null
 }
 
 interface IUser{
     fullName: string,
     email: string,
     birthDate: string,
+    roles: IRolesResponse
 }
 
 const initialState : IAuthState = {
     isAuth: false,
-    user: {
-        fullName: "",
-        email: "",
-        birthDate: "",
-    }
+    user: null
 }
 
 export const authSlice = createSlice({
@@ -28,7 +26,7 @@ export const authSlice = createSlice({
         setAuth(state, {payload} : PayloadAction<boolean>){
             state.isAuth = payload
         },
-        setUser(state,{payload} : PayloadAction<IUser>){
+        setUser(state,{payload} : PayloadAction<IUser | null>){
             state.user = payload
         }
     }
