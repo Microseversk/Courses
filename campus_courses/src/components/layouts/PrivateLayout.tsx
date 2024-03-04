@@ -32,7 +32,7 @@ export function PrivateLayout({children} : ILayoutProps) {
         if (profileError){
             navigation('/login')
         }
-    }, [profile, isLoadingProfile, isLoadingRoles]);
+    }, [roles, profile, isLoadingProfile, isLoadingRoles]);
 
     if (isLoadingProfile || isLoadingRoles){
         return(

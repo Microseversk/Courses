@@ -18,8 +18,8 @@ export interface IUserLogin {
 export function LoginPage() {
 
     const {data: loginData, handleOnChange} = useInput<IUserLogin>({
-        'email': "gymboss@gachi.com",
-        'password': "B0yNextD00r"
+        'email': "",
+        'password': ""
     })
     const [loginUser, {isLoading, error, data: response}] = useLoginUserMutation()
     const navigate = useNavigate()
@@ -28,7 +28,7 @@ export function LoginPage() {
     useEffect(() => {
         if (response) {
             localStorage.setItem('token', response.token)
-            navigate('/groups')
+            navigate('/')
         }
     }, [response]);
 

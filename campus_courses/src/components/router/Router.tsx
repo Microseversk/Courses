@@ -5,10 +5,12 @@ import {GroupsPage} from "../pages/groupsPage/GroupsPage";
 import {LoginPage} from "../pages/loginPage/LoginPage";
 import {RegistrationPage} from "../pages/registrationPage/RegistrationPage";
 import {ProfilePage} from "../pages/profilePage/ProfilePage";
+import {GreetingPage} from "../pages/greetingPage/GreetingPage";
 
 export function Router() {
     return (
         <Routes>
+            <Route path='/' element={<PrivateLayout children={<GreetingPage/>}/>}/>
             <Route path='/groups' element={<PrivateLayout children={<GroupsPage/>}/>}/>
             <Route path='/profile' element={<PrivateLayout children={<ProfilePage/>}/>}/>
             <Route path='/login' element={<PublicLayout children={<LoginPage/>}/>}/>
