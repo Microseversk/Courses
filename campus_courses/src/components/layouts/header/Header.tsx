@@ -19,7 +19,7 @@ export function Header() {
         dispatch(setAuth(false))
         dispatch(setUser(null))
         logoutUser(localStorage.getItem('token'))
-        localStorage.removeItem('token')
+        //localStorage.removeItem('token')
         navigate('/login')
     }
 
@@ -29,17 +29,17 @@ export function Header() {
                 <Link to={'/'} className={'navbar-brand'}>Кампусные курсы</Link>
                 <Navbar.Toggle/>
                 <Navbar.Collapse className={''}>
-                    <div className={'ms-4 d-flex gap-3'}>
+                    <div className={'ms-lg-4 d-flex flex-column flex-lg-row gap-lg-3'}>
                         {isAuth && <Link to={'/groups'} className={'nav-link'}>Группы курсов</Link>}
                         {isAuth && user?.roles.isStudent  && <Link to={'/courses/my'} className={'nav-link'}>Мои курсы</Link>}
                         {isAuth && user?.roles.isTeacher  && <Link to={'/courses/teaching'} className={'nav-link'}>Преподаваемые курсы</Link>}
                     </div>
-                    <Nav className={'ms-auto'}>
+                    <div className={'d-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'}>
                         {isAuth
                             ?
                             <>
                                 <Link className={'nav-link'} to={'/profile'}>Профиль</Link>
-                                <button className={'nav-link'} onClick={handleLogout}>Выйти</button>
+                                <button className={'nav-link text-start'} onClick={handleLogout}>Выйти</button>
                             </>
                             :
                             <>
@@ -47,7 +47,7 @@ export function Header() {
                                 <Link className={'nav-link'} to={'/login'}>Войти</Link>
                             </>
                         }
-                    </Nav>
+                    </div>
                 </Navbar.Collapse>
             </Container>
 

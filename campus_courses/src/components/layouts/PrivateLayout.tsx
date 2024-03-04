@@ -28,6 +28,7 @@ export function PrivateLayout({children} : ILayoutProps) {
         }
 
         if (profileError || rolesError){
+            localStorage.removeItem('token')
             navigation('/login')
         }
     });
