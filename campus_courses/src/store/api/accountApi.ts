@@ -1,5 +1,6 @@
 import {createApi, EndpointBuilder, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {IUserLogin} from "../../components/pages/loginPage/LoginPage";
+import {IUserRegistration} from "../../components/pages/registrationPage/RegistrationPage";
 
 
 interface ILoginResponse {
@@ -32,6 +33,13 @@ export const accountApi = createApi({
                 method: 'POST'
             })
         }),
+        registerUser: builder.mutation<ILoginResponse, IUserRegistration>({
+            query: (registerTerm: IUserRegistration) => ({
+                url: '/registration',
+                body: registerTerm,
+                method: 'POST'
+            })
+        }),
         logoutUser: builder.mutation<any,any>({
             query: (token : string) => ({
                 url: '/logout',
@@ -44,20 +52,21 @@ export const accountApi = createApi({
                 url: '/profile',
                 method: 'GET',
                 headers: {Authorization: `Bearer ${token}`}
-            })
+            }),
         }),
         getUserRoles : builder.query<IRolesResponse, any>({
             query: (token : string) => ({
                 url: '/roles',
                 method: 'GET',
                 headers: {Authorization: `Bearer ${token}`}
-            })
+            }),
         })
     })
 })
 
 export const {
     useLoginUserMutation,
+    useRegisterUserMutation,
     useLogoutUserMutation,
     useGetUserProfileQuery,
     useGetUserRolesQuery,

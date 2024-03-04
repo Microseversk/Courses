@@ -1,7 +1,9 @@
 import {Button, Card, Container, Form} from "react-bootstrap";
 import {CustomInput} from "./CustomInput";
 import {useInput} from "../../../hooks/useInput";
-import {FormEvent} from "react";
+import {FormEvent, useEffect} from "react";
+import {useRegisterUserMutation} from "../../../store/api/accountApi";
+import {useNavigate} from "react-router-dom";
 
 
 export interface IUserRegistration{
@@ -20,9 +22,25 @@ export function RegistrationPage() {
         'confirmPassword' : "",
         'birthDate' : ""
     })
+    const navigate = useNavigate()
+    const [registerUser, {data: response, isLoading, error}] = useRegisterUserMutation()
+
+    useEffect(() => {
+        if (response) {
+            console.log(response.token)
+            localStorage.setItem('token', response.token)
+            navigate('/')
+        }
+    }, [response]);
 
     const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const birthDate = new Date(data.birthDate)
+        console.log(data)
+        registerUser({
+            ...data,
+            birthDate: birthDate.toISOString()
+        })
     }
 
     return (
