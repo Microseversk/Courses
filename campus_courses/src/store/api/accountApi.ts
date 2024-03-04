@@ -32,25 +32,25 @@ export const accountApi = createApi({
                 method: 'POST'
             })
         }),
-        logoutUser: builder.mutation({
-            query: () => ({
+        logoutUser: builder.mutation<any,any>({
+            query: (token : string) => ({
                 url: '/logout',
                 method: 'POST',
-                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+                headers: {Authorization: `Bearer ${token}`}
             })
         }),
         getUserProfile: builder.query<IProfileResponse, any>({
-            query: () => ({
+            query: (token : string) => ({
                 url: '/profile',
                 method: 'GET',
-                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+                headers: {Authorization: `Bearer ${token}`}
             })
         }),
         getUserRoles : builder.query<IRolesResponse, any>({
-            query: () => ({
+            query: (token : string) => ({
                 url: '/roles',
                 method: 'GET',
-                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+                headers: {Authorization: `Bearer ${token}`}
             })
         })
     })

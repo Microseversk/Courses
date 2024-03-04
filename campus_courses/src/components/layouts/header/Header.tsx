@@ -18,7 +18,7 @@ export function Header() {
     const handleLogout = () => {
         dispatch(setAuth(false))
         dispatch(setUser(null))
-        logoutUser('')
+        logoutUser(localStorage.getItem('token'))
         localStorage.removeItem('token')
         navigate('/login')
     }
