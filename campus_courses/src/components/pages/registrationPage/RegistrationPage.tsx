@@ -27,7 +27,6 @@ export function RegistrationPage() {
 
     useEffect(() => {
         if (response) {
-            console.log(response.token)
             localStorage.setItem('token', response.token)
             navigate('/')
         }

@@ -2,7 +2,7 @@ import {Button, CardText, Col, ListGroup, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {EditGroupItemModal} from "./EditGroupItemModal";
 import {useState} from "react";
-import {IGroupResponse} from "../../../store/api/groupsApi";
+import {IGroupResponse, useDeleteGroupMutation} from "../../../store/api/groupsApi";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
 
 export interface IGroupItemProps extends IGroupResponse {
@@ -14,9 +14,16 @@ export function GroupsItem(props: IGroupItemProps) {
     const [isRefactor, setIsRefactor] = useState(false)
     const user = useTypedSelector(state => state.auth.user)
 
+    const [deleteGroup, {isLoading}] = useDeleteGroupMutation()
+
+
+    const handleDelete = () => {
+        deleteGroup({id : props.id})
+    }
+
     return (
         <>
-            <EditGroupItemModal isShow={isRefactor} onHide={() => setIsRefactor(false)}/>
+            <EditGroupItemModal name={props.name} id={props.id} isShow={isRefactor} onHide={() => setIsRefactor(false)}/>
             <ListGroup.Item className={'d-flex pe-0'}>
                 <Row className={'w-100'}>
                     <Col sm={12} md={6}
@@ -30,7 +37,7 @@ export function GroupsItem(props: IGroupItemProps) {
                         <Col sm={12} md={6}
                              className={'d-flex gap-2 mt-3 mt-md-0 justify-content-center justify-content-md-end'}>
                             <Button className={'btn-warning'} onClick={() => setIsRefactor(true)}>РЕДАКТИРОВАТЬ</Button>
-                            <Button className={'btn-danger'}>УДАЛИТЬ</Button>
+                            <Button className={'btn-danger'} onClick={handleDelete}>УДАЛИТЬ</Button>
                         </Col>
                     }
                 </Row>

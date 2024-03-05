@@ -1,17 +1,29 @@
 import {Button, Form, Modal} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {groupsApi, useEditGroupMutation} from "../../../store/api/groupsApi";
 
 interface EditGroupItemModalProps {
     isShow: boolean,
     onHide: () => void,
+    name : string,
+    id : string
+
 }
 
-export function EditGroupItemModal({isShow, onHide}: EditGroupItemModalProps) {
+export function EditGroupItemModal(props : EditGroupItemModalProps) {
 
-    const [groupName, setGroupName] = useState('имя группы')
+    const [groupName, setGroupName] = useState(props.name)
+    const [editGroup, {isLoading}] = useEditGroupMutation()
 
+    useEffect(() => {
+        setGroupName(props.name)
+    }, [props.isShow]);
+    const handleEdit = () => {
+        editGroup({id: props.id, name: groupName})
+        props.onHide()
+    }
     return (
-        <Modal show={isShow} onHide={onHide} size={'lg'}>
+        <Modal show={props.isShow} onHide={props.onHide} size={'lg'}>
             <Modal.Header closeButton>
                 <Modal.Title>Редактирование группы</Modal.Title>
             </Modal.Header>
@@ -20,8 +32,8 @@ export function EditGroupItemModal({isShow, onHide}: EditGroupItemModalProps) {
                 <Form.Control type={'text'} value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
             </Modal.Body>
             <Modal.Footer>
-                <Button className={'btn-secondary'} onClick={onHide}>Отмена</Button>
-                <Button>Сохранить</Button>
+                <Button className={'btn-secondary'} onClick={props.onHide}>Отмена</Button>
+                <Button onClick={handleEdit}>Сохранить</Button>
             </Modal.Footer>
         </Modal>
     )
