@@ -5,6 +5,7 @@ import {useGetUserProfileQuery, useGetUserRolesQuery} from "../../store/api/acco
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store/store";
 import {setAuth, setUser} from "../../store/auth.slice";
+import {Loader} from "./loader/Loader";
 
 export interface ILayoutProps {
     children: ReactNode
@@ -18,27 +19,32 @@ export function PrivateLayout({children}: ILayoutProps) {
         data: profile,
         isLoading: isLoadingProfile,
         error: profileError,
-        refetch: refetchProfile
     } = useGetUserProfileQuery('')
     const {
         data: roles,
         isLoading: isLoadingRoles,
         error: rolesError,
-        refetch: refetchRoles
     } = useGetUserRolesQuery('')
 
 
     useEffect(() => {
-        refetchProfile()
-        refetchRoles()
 
+        if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
+            console.log('Вставка человека')
+            dispatch(setAuth(true))
+            dispatch(setUser({
+                ...profile,
+                roles
+            }))
+        }
 
         if (profileError || rolesError) {
+            console.log('Ошибка фетча')
             localStorage.removeItem('token')
             navigation('/login')
         }
 
-    }, [profileError,rolesError]);
+    }, [profile, roles, profileError, rolesError]);
 
     if (isLoadingProfile || isLoadingRoles) {
         return (
@@ -47,13 +53,7 @@ export function PrivateLayout({children}: ILayoutProps) {
     }
 
 
-    if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
-        dispatch(setAuth(true))
-        dispatch(setUser({
-            ...profile,
-            roles
-        }))
-    }
+
 
 
         return (
