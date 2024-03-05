@@ -1,9 +1,9 @@
 import {Col, ListGroupItem, Row} from "react-bootstrap";
 import React from "react";
 import {IGroupCoursesResponse} from "../../../types/response.types";
+import {useGetGroupsQuery} from "../../../store/api/groupsApi";
 
 export function GroupItem(props: IGroupCoursesResponse) {
-
 
     return (
         <ListGroupItem>
