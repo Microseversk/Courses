@@ -13,3 +13,20 @@ export interface IRolesResponse {
     isStudent: boolean,
     isAdmin: boolean,
 }
+
+
+export interface IGroupResponse {
+    id: string,
+    name: string
+}
+
+
+export interface IGroupCoursesResponse{
+    id: string,
+    name: string,
+    startYear: number,
+    maximumStudentsCount: number,
+    remainingSlotsCount: number,
+    status: "Started" | "OpenForAssigning" | "Created" | "Finished",
+    semester: "Spring" | "Autumn"
+}

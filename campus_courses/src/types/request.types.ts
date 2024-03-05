@@ -1,7 +1,3 @@
-export interface IGroupResponse {
-    id: string,
-    name: string
-}
 
 export interface IGroupEdit{
     id : string,

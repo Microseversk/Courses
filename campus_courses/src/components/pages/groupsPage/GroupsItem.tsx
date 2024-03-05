@@ -4,13 +4,9 @@ import {EditGroupItemModal} from "./EditGroupItemModal";
 import {useState} from "react";
 import {useDeleteGroupMutation} from "../../../store/api/groupsApi";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
-import {IGroupResponse} from "../../../types/request.types";
+import {IGroupResponse} from "../../../types/response.types";
 
-interface IGroupItemProps extends IGroupResponse {
-
-}
-
-export function GroupsItem(props: IGroupItemProps) {
+export function GroupsItem(props: IGroupResponse) {
 
     const [isRefactor, setIsRefactor] = useState(false)
     const user = useTypedSelector(state => state.auth.user)
@@ -29,7 +25,7 @@ export function GroupsItem(props: IGroupItemProps) {
                 <Row className={'w-100'}>
                     <Col sm={12} md={6}
                          className={'d-flex justify-content-center justify-content-md-start align-items-center '}>
-                        <Link to={'/groups'} className={'nav-link'}>
+                        <Link to={`/groups/${props.id}`} className={'nav-link'}>
                             {props.name}
                         </Link>
                     </Col>

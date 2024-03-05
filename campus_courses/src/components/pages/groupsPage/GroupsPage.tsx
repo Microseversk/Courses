@@ -15,7 +15,6 @@ export function GroupsPage() {
     if (isLoading) {
         return <Loader/>
     }
-
     return (
         <Container>
             <CreateGroupItemModal isShow={isCreating} onHide={() => setIsCreating(false)}/>
