@@ -15,6 +15,7 @@ export function CreateGroupItemModal(props : CreateGroupItemModalProps) {
     const handleCreate = () => {
         createGroup({name: groupName})
         props.onHide()
+        setGroupName("")
     }
     return (
         <Modal show={props.isShow} onHide={props.onHide} size={'lg'}>
