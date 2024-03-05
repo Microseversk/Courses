@@ -10,6 +10,10 @@ export interface IGroupEdit{
     name: string
 }
 
+export interface IGroupCreate{
+    name: string
+}
+
 export const groupsApi = createApi({
     reducerPath: 'groups',
     baseQuery: fetchBaseQuery({
@@ -23,6 +27,15 @@ export const groupsApi = createApi({
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
             }),
             providesTags: ['groups']
+        }),
+        createGroup: builder.mutation<any, IGroupCreate>({
+            query: (data : IGroupCreate) => ({
+                url: `/groups`,
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+                body: data,
+                method: 'POST'
+            }),
+            invalidatesTags: ['groups']
         }),
         editGroup: builder.mutation<any, IGroupEdit>({
             query: (data: IGroupEdit) => ({
@@ -48,4 +61,5 @@ export const {
     useGetGroupsQuery,
     useEditGroupMutation,
     useDeleteGroupMutation,
+    useCreateGroupMutation,
 } = groupsApi
