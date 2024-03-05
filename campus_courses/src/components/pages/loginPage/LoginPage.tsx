@@ -18,16 +18,14 @@ export interface IUserLogin {
 export function LoginPage() {
 
     const {data: loginData, handleOnChange} = useInput<IUserLogin>({
-        'email': "",
-        'password': ""
+        'email': "gymboss@gachi.com",
+        'password': "B0yNextD00r"
     })
     const [loginUser, {isLoading, error, data: response}] = useLoginUserMutation()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
     useEffect(() => {
         if (response) {
-            console.log(response.token)
             localStorage.setItem('token', response.token)
             navigate('/')
         }
@@ -35,7 +33,6 @@ export function LoginPage() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(loginData)
         loginUser(loginData)
     }
 
