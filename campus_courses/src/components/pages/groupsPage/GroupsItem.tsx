@@ -2,10 +2,11 @@ import {Button, CardText, Col, ListGroup, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {EditGroupItemModal} from "./EditGroupItemModal";
 import {useState} from "react";
-import {IGroupResponse, useDeleteGroupMutation} from "../../../store/api/groupsApi";
+import {useDeleteGroupMutation} from "../../../store/api/groupsApi";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
+import {IGroupResponse} from "../../../types/request.types";
 
-export interface IGroupItemProps extends IGroupResponse {
+interface IGroupItemProps extends IGroupResponse {
 
 }
 

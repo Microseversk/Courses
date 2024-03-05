@@ -5,7 +5,6 @@ import {useLogoutUserMutation} from "../../../store/api/accountApi";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store/store";
 import {setAuth, setUser} from "../../../store/auth.slice";
-import {IEditProfile} from "../../pages/profilePage/ProfilePage";
 
 export function Header() {
 

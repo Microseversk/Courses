@@ -1,18 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {IGroupCreate, IGroupEdit, IGroupResponse} from "../../types/request.types";
 
-export interface IGroupResponse {
-    id: string,
-    name: string
-}
-
-export interface IGroupEdit{
-    id : string,
-    name: string
-}
-
-export interface IGroupCreate{
-    name: string
-}
 
 export const groupsApi = createApi({
     reducerPath: 'groups',

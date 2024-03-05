@@ -4,23 +4,17 @@ import {useInput} from "../../../hooks/useInput";
 import {FormEvent, useEffect} from "react";
 import {useRegisterUserMutation} from "../../../store/api/accountApi";
 import {useNavigate} from "react-router-dom";
+import {IUserRegistration} from "../../../types/request.types";
+import {DateHelper} from "../../../helpers/DateHelper";
 
-
-export interface IUserRegistration{
-    fullName: string,
-    birthDate: string,
-    email: string,
-    password: string
-    confirmPassword: string
-}
 export function RegistrationPage() {
 
     const {data, handleOnChange} = useInput<IUserRegistration>({
         'fullName': "",
-        'email' : "",
-        'password' : "",
-        'confirmPassword' : "",
-        'birthDate' : ""
+        'email': "",
+        'password': "",
+        'confirmPassword': "",
+        'birthDate': ""
     })
     const navigate = useNavigate()
     const [registerUser, {data: response, isLoading, error}] = useRegisterUserMutation()
@@ -32,13 +26,11 @@ export function RegistrationPage() {
         }
     }, [response]);
 
-    const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const birthDate = new Date(data.birthDate)
-        console.log(data)
         registerUser({
             ...data,
-            birthDate: birthDate.toISOString()
+            birthDate: DateHelper.to_ISO_string(data.birthDate)
         })
     }
 

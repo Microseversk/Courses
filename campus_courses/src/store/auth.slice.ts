@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IRolesResponse} from "./api/accountApi";
+import {IRolesResponse} from "../types/response.types";
 
 interface IAuthState{
     isAuth: boolean,

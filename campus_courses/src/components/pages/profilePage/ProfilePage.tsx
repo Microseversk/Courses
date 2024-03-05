@@ -2,10 +2,11 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormEvent, useEffect, useState} from "react";
 import {useInput} from "../../../hooks/useInput";
 import {CustomInput} from "../registrationPage/CustomInput";
-import {DateHelper, IDate} from "../../../helpers/DateHelper";
+import {DateHelper} from "../../../helpers/DateHelper";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
+import {useEditUserProfileMutation} from "../../../store/api/accountApi";
 
-export interface IEditProfile {
+interface IEditProfile {
     fullName: string,
     birthDate: string,
     email: string,
@@ -13,6 +14,7 @@ export interface IEditProfile {
 
 export function ProfilePage() {
     const profile = useTypedSelector(state => state.auth.user)
+    const [editUserProfile] = useEditUserProfileMutation()
     const {data: editData, handleOnChange} = useInput<IEditProfile>({
         'fullName': "",
         'birthDate': "",
@@ -21,6 +23,7 @@ export function ProfilePage() {
 
     useEffect(() => {
         if (profile){
+            console.log('change profile')
             handleOnChange('fullName', profile.fullName)
             handleOnChange('birthDate', DateHelper.to_DD_MM_YYYY(profile.birthDate).yyyy_mm_dd)
             handleOnChange('email', profile.email)
@@ -29,7 +32,8 @@ export function ProfilePage() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(editData)
+        console.log(DateHelper.to_ISO_string(editData.birthDate))
+        editUserProfile({fullName: editData.fullName, birthDate: DateHelper.to_ISO_string(editData.birthDate)})
     }
 
     return (
@@ -39,8 +43,6 @@ export function ProfilePage() {
                     <Card.Title>Профиль</Card.Title>
                 </Card.Header>
                 <Card.Body>
-
-
                     <Form onSubmit={handleSubmit}>
                         <Row className={'d-flex align-items-center'}>
                             <Col md={2} xs={12}>ФИО:</Col>

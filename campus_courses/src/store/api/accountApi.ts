@@ -1,24 +1,7 @@
 import {createApi, EndpointBuilder, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {IUserLogin} from "../../components/pages/loginPage/LoginPage";
-import {IUserRegistration} from "../../components/pages/registrationPage/RegistrationPage";
-
-
-interface ILoginResponse {
-    token: string
-}
-
-export interface IProfileResponse {
-    fullName: string,
-    email: string,
-    birthDate: string
-}
-
-export interface IRolesResponse {
-    isTeacher: boolean,
-    isStudent: boolean,
-    isAdmin: boolean,
-}
-
+import {IProfileResponse, IRolesResponse, ITokenResponse} from "../../types/response.types";
+import {IEditUserProfile, IUserRegistration} from "../../types/request.types";
 
 export const accountApi = createApi({
     reducerPath: 'accountApi',
@@ -27,7 +10,7 @@ export const accountApi = createApi({
     }),
     tagTypes: ['userProfile','userRoles'],
     endpoints: builder => ({
-        loginUser: builder.mutation<ILoginResponse, IUserLogin>({
+        loginUser: builder.mutation<ITokenResponse, IUserLogin>({
             query: (loginTerm: IUserLogin) => ({
                 url: '/login',
                 body: loginTerm,
@@ -35,7 +18,7 @@ export const accountApi = createApi({
             }),
             invalidatesTags: ['userProfile','userRoles']
         }),
-        registerUser: builder.mutation<ILoginResponse, IUserRegistration>({
+        registerUser: builder.mutation<ITokenResponse, IUserRegistration>({
             query: (registerTerm: IUserRegistration) => ({
                 url: '/registration',
                 body: registerTerm,
@@ -49,6 +32,15 @@ export const accountApi = createApi({
                 method: 'POST',
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
             })
+        }),
+        editUserProfile: builder.mutation<any,IEditUserProfile>({
+            query: (data: IEditUserProfile) => ({
+                url: '/profile',
+                method: 'PUT',
+                body: data,
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+            }),
+            invalidatesTags: ['userProfile']
         }),
         getUserProfile: builder.query<IProfileResponse, any>({
             query: (token : string) => ({
@@ -75,6 +67,7 @@ export const {
     useLogoutUserMutation,
     useGetUserProfileQuery,
     useGetUserRolesQuery,
+    useEditUserProfileMutation,
 } = accountApi
 
 
