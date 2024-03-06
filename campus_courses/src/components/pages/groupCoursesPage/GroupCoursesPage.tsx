@@ -2,7 +2,7 @@ import {Button, CardText, CardTitle, Col, Container, ListGroup, ListGroupItem, R
 import React, {useState} from "react";
 import { useGetGroupsQuery} from "../../../store/api/groupsApi";
 import {useParams} from "react-router-dom";
-import {GroupItem} from "./GroupItem";
+import {CourseItem} from "./CourseItem";
 import {Loader} from "../../layouts/loader/Loader";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
 import {CreateCourseModal} from "./CreateCourseModal";
@@ -31,11 +31,11 @@ export function GroupCoursesPage() {
             <ListGroup className={'mt-3'}>
                 {!courses?.length && <span className={'fs-2 text-danger'}>Курсы пока что не созданы</span>}
                 {courses?.map((course) => (
-                    <GroupItem key={course.id} id={course.id} name={course.name} startYear={course.startYear}
-                               maximumStudentsCount={course.maximumStudentsCount}
-                               remainingSlotsCount={course.remainingSlotsCount}
-                               status={course.status}
-                               semester={course.semester}/>
+                    <CourseItem key={course.id} id={course.id} name={course.name} startYear={course.startYear}
+                                maximumStudentsCount={course.maximumStudentsCount}
+                                remainingSlotsCount={course.remainingSlotsCount}
+                                status={course.status}
+                                semester={course.semester}/>
                 ))}
             </ListGroup>
         </Container>

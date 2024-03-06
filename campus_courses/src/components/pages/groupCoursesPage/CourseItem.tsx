@@ -3,7 +3,7 @@ import React from "react";
 import {IGroupCoursesResponse} from "../../../types/response.types";
 import {useGetGroupsQuery} from "../../../store/api/groupsApi";
 
-export function GroupItem(props: IGroupCoursesResponse) {
+export function CourseItem(props: IGroupCoursesResponse) {
 
     return (
         <ListGroupItem>

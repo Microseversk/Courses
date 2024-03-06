@@ -18,7 +18,7 @@ export function Header() {
         dispatch(setAuth(false))
         dispatch(setUser(null))
         logoutUser(localStorage.getItem('token'))
-        //localStorage.removeItem('token')
+        localStorage.removeItem('token')
         navigate('/login')
     }
 
