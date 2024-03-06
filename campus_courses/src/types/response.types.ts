@@ -31,6 +31,36 @@ export interface IGroupCoursesResponse{
     semester: "Spring" | "Autumn"
 }
 
+export interface IStudent{
+    id:string,
+    name:string,
+    email:string,
+    status:"Accepted" | "Declined" | 'InQueue',
+    midtermResult: 'Failed' | 'NotDefined' | 'Passed',
+    finalResult: 'Failed' | 'NotDefined' | 'Passed',
+}
+
+export interface ITeacher{
+    email:string,
+    isMain: boolean
+    name:string,
+}
+
+export interface INotification{
+    isImportant: boolean,
+    text: string
+}
+
+export interface ICourseDetailsResponse extends Omit<IGroupCoursesResponse,'remainingSlotsCount'>{
+    studentsEnrolledCount: number,
+    studentsInQueueCount: number,
+    requirements: string,
+    annotations: string,
+    notifications: INotification[],
+    students: IStudent[],
+    teachers: ITeacher[],
+}
+
 export interface IUsersResponse{
     id: string,
     fullName: string

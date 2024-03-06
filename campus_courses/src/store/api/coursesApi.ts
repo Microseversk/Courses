@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {ICourseCreate} from "../../types/request.types";
-import {IGroupCoursesResponse} from "../../types/response.types";
+import {ICourseDetailsResponse, IGroupCoursesResponse} from "../../types/response.types";
 
 export const coursesApi = createApi({
     reducerPath: 'coursesApi',
@@ -12,6 +12,13 @@ export const coursesApi = createApi({
         getGroupCourses: builder.query<IGroupCoursesResponse[], { id : string | undefined }>({
             query: ({id}) => ({
                 url: `/groups/${id}`,
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+            }),
+            providesTags: ['groupCourses']
+        }),
+        getCourseDetails: builder.query<ICourseDetailsResponse, { id : string | undefined }>({
+            query: ({id}) => ({
+                url: `/courses/${id}/details`,
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
             }),
             providesTags: ['groupCourses']
@@ -48,4 +55,5 @@ export const {
     useGetGroupCoursesQuery,
     useGetCoursesMyQuery,
     useGetCoursesTeachingQuery,
+    useGetCourseDetailsQuery,
 } = coursesApi

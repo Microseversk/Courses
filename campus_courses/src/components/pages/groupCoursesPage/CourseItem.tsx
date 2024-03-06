@@ -2,13 +2,16 @@ import {Col, ListGroupItem, Row} from "react-bootstrap";
 import React from "react";
 import {IGroupCoursesResponse} from "../../../types/response.types";
 import {useGetGroupsQuery} from "../../../store/api/groupsApi";
+import {Link} from "react-router-dom";
 
 export function CourseItem(props: IGroupCoursesResponse) {
 
     return (
         <ListGroupItem>
             <Row>
-                <Col className={'fw-bolder fs-5'}>{props.name}</Col>
+                <Col>
+                    <Link to={`/courses/${props.id}`} className={'nav-link fw-bolder fs-5'}>{props.name}</Link>
+                </Col>
                 <Col className={'text-success fw-bold text-end'}>
                     {
                         props.status === "Started" ? <span className={'text-primary'}>В процессе обучения</span> :
