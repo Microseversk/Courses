@@ -30,3 +30,8 @@ export interface IGroupCoursesResponse{
     status: "Started" | "OpenForAssigning" | "Created" | "Finished",
     semester: "Spring" | "Autumn"
 }
+
+export interface IUsersResponse{
+    id: string,
+    fullName: string
+}

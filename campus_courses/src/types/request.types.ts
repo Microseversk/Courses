@@ -21,3 +21,13 @@ export interface IEditUserProfile{
     fullName: string,
     birthDate: string
 }
+
+export interface ICourseCreate{
+    name: string,
+    startYear: number,
+    maximumStudentsCount: number,
+    semester: "Spring" | "Autumn",
+    requirements: string,
+    annotations: string,
+    mainTeacherId: string
+}

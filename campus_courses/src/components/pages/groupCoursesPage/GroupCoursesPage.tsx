@@ -1,11 +1,12 @@
 import {Button, CardText, CardTitle, Col, Container, ListGroup, ListGroupItem, Row} from "react-bootstrap";
 import React, {useState} from "react";
-import {useGetGroupCoursesQuery, useGetGroupsQuery} from "../../../store/api/groupsApi";
+import { useGetGroupsQuery} from "../../../store/api/groupsApi";
 import {useParams} from "react-router-dom";
 import {GroupItem} from "./GroupItem";
 import {Loader} from "../../layouts/loader/Loader";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
 import {CreateCourseModal} from "./CreateCourseModal";
+import {useGetGroupCoursesQuery} from "../../../store/api/coursesApi";
 
 export function GroupCoursesPage() {
 

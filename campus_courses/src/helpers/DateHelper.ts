@@ -22,5 +22,9 @@ export const DateHelper = {
     to_ISO_string: (timestamp : string) : string => {
         const date = new Date(timestamp)
         return date.toISOString()
-    }
+    },
+    get_current_year: () : number =>{
+        const date = new Date()
+        return date.getFullYear()
+    },
 }

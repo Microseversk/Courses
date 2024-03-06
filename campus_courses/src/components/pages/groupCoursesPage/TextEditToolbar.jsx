@@ -12,14 +12,9 @@ TextEditToolbar.modules = {
     ]
 }
 
-export function TextEditToolbar() {
-    const [text, setText] = useState("")
-
-    const handleChange = (content) => {
-        setText(content);
-    };
+export function TextEditToolbar({handleChange,value}) {
 
     return (
-        <ReactQuill value={text} onChange={handleChange} modules={TextEditToolbar.modules}/>
+        <ReactQuill value={value} onChange={(text) => handleChange(text)} modules={TextEditToolbar.modules}/>
     )
 }
