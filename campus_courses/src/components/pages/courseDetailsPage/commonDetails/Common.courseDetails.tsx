@@ -1,5 +1,6 @@
 import {Button, Col, ListGroup, ListGroupItem, Row} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
+import {ChangeStatusModal} from "../modals/ChangeStatusModal";
 
 interface ICommonCourseDetailsProps {
     name: string,
@@ -13,8 +14,11 @@ interface ICommonCourseDetailsProps {
 
 export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
 
+    const [isChangingStatus, setIsChangingStatus] = useState(false)
+
     return (
         <>
+            <ChangeStatusModal status={props.status} onHide={() => setIsChangingStatus(false)} isShow={isChangingStatus}/>
             <div className={'fs-2 fw-bold'}>{props?.name}</div>
             <div className={'d-flex align-items-end justify-content-between'}>
                 <div className={'fw-bold'}>Основные данные курса</div>
@@ -39,7 +43,7 @@ export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
                             </div>
                         </Col>
                         <Col className={'text-end'}>
-                            <Button className={'btn-warning h-100'}>ИЗМЕНИТЬ</Button>
+                            <Button className={'btn-warning h-100'} onClick={() => setIsChangingStatus(true)}>ИЗМЕНИТЬ</Button>
                         </Col>
                     </Row>
                 </ListGroupItem>

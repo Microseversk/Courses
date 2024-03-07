@@ -31,7 +31,8 @@ export const accountApi = createApi({
                 url: '/logout',
                 method: 'POST',
                 headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
-            })
+            }),
+            invalidatesTags: ['userProfile','userRoles']
         }),
         editUserProfile: builder.mutation<any,IEditUserProfile>({
             query: (data: IEditUserProfile) => ({

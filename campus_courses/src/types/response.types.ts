@@ -51,6 +51,13 @@ export interface INotification{
     text: string
 }
 
+export enum CourseStatus{
+    Created = 'Created',
+    OpenForAssigning = 'OpenForAssigning',
+    Started = 'Started',
+    Finished = 'Finished',
+}
+
 export interface ICourseDetailsResponse extends Omit<IGroupCoursesResponse,'remainingSlotsCount'>{
     studentsEnrolledCount: number,
     studentsInQueueCount: number,

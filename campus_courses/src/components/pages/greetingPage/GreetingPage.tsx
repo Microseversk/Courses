@@ -1,5 +1,7 @@
 import {Container} from "react-bootstrap";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
+import {useGetUserProfileQuery, useGetUserRolesQuery} from "../../../store/api/accountApi";
+import {useEffect} from "react";
 
 export function GreetingPage(){
 
@@ -7,7 +9,11 @@ export function GreetingPage(){
 
     return(
         <Container className={'text-center fw-light fs-1'}>
-            <span>{user && user.fullName}, добро пожаловать в систему кампусных курсов</span>
+            {user ?
+                <span>{user.fullName}, добро пожаловать в систему кампусных курсов</span>
+                :
+                <span>Добро пожаловать в систему кампусных курсов</span>
+            }
         </Container>
     )
 }

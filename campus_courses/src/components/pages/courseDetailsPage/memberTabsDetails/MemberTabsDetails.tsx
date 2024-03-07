@@ -11,7 +11,6 @@ interface IMemberTabsDetailsProps {
 }
 
 export function MemberTabsDetails(props: IMemberTabsDetailsProps) {
-    console.log(props.teachers)
     return (
         <Tabs className={props.className} defaultActiveKey={'Students'}>
             <Tab className={'border mb-3'} title={'Студенты'} eventKey={'Students'}>
