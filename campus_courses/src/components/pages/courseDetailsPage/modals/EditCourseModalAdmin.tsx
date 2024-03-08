@@ -7,58 +7,41 @@ import {
 	FormLabel,
 	FormSelect,
 	Modal,
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-	ModalTitle,
 } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
-import { DateHelper } from '../../../helpers/DateHelper'
-import { useInput } from '../../../hooks/useInput'
-import { useCreateCourseMutation } from '../../../store/api/coursesApi'
-import { useGetUsersQuery } from '../../../store/api/usersApi'
-import { CourseCreateType } from '../../../types/request.types'
-import { TextEditToolbar } from './TextEditToolbar'
+import { DateHelper } from '../../../../helpers/DateHelper'
+import { useInput } from '../../../../hooks/useInput'
+import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { useGetUsersQuery } from '../../../../store/api/usersApi'
+import { CourseCreateType } from '../../../../types/request.types'
+import { TextEditToolbar } from '../../groupCoursesPage/TextEditToolbar'
 
-interface ICreateCourseModalProps {
+interface IEditCourseModalProps {
 	isShow: boolean
 	onHide: () => void
 }
 
-export function CreateCourseModal(props: ICreateCourseModalProps) {
-	const groupId = useParams()
-	const [createCourse] = useCreateCourseMutation()
+export function EditCourseModalAdmin(props: IEditCourseModalProps) {
+	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
 	const { data, handleOnChange } = useInput<CourseCreateType>({
-		name: '',
-		startYear: DateHelper.get_current_year(),
-		maximumStudentsCount: 1,
-		semester: 'Autumn',
-		annotations: '',
-		requirements: '',
+		name: course?.name!,
+		startYear: course?.startYear!,
+		semester: course?.semester!,
+		annotations: course?.annotations!,
+		requirements: course?.requirements!,
 		mainTeacherId: '',
+		maximumStudentsCount: course?.maximumStudentsCount!,
 	})
 
-	const handleCreateCourse = (e: FormEvent<HTMLFormElement>) => {
+	const handleEditCourse = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		createCourse({ body: data, groupId: groupId.id })
 		props.onHide()
-		handleOnChange('name', '')
-		handleOnChange('startYear', DateHelper.get_current_year().toString())
-		handleOnChange('maximumStudentsCount', '1')
-		handleOnChange('semester', 'Autumn')
-		handleOnChange('annotations', '')
-		handleOnChange('requirements', '')
-		handleOnChange('mainTeacherId', '')
 	}
-
 	return (
-		<Modal show={props.isShow} onHide={props.onHide} size={'lg'}>
-			<ModalHeader closeButton>
-				<ModalTitle>Создание курса</ModalTitle>
-			</ModalHeader>
-			<ModalBody>
-				<Form onSubmit={handleCreateCourse} id={'createCourseForm'}>
+		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
+			<Modal.Header closeButton>Редактировать курс</Modal.Header>
+			<Modal.Body>
+				<Form onSubmit={handleEditCourse} id='editCourseTeacherForm'>
 					<FormLabel>Название курса</FormLabel>
 					<FormControl
 						value={data.name}
@@ -132,15 +115,13 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 						))}
 					</FormSelect>
 				</Form>
-			</ModalBody>
-			<ModalFooter>
-				<Button className={'btn-secondary'} onClick={props.onHide}>
-					Отмена
-				</Button>
-				<Button form={'createCourseForm'} type={'submit'}>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button className='btn-secondary'>Отмена</Button>
+				<Button type='submit' form='editCourseTeacherForm'>
 					Сохранить
 				</Button>
-			</ModalFooter>
+			</Modal.Footer>
 		</Modal>
 	)
 }

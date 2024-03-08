@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
-	ICourseCreate,
+	CourseCreateType,
 	ICourseEditStatus,
 	ICourseNotificationCreate,
 } from '../../types/request.types'
@@ -14,6 +14,7 @@ export const coursesApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: 'https://camp-courses.api.kreosoft.space/',
 	}),
+
 	tagTypes: ['groupCourses', 'coursesMy', 'coursesTeaching'],
 	endpoints: builder => ({
 		getGroupCourses: builder.query<
@@ -52,7 +53,7 @@ export const coursesApi = createApi({
 		}),
 		createCourse: builder.mutation<
 			any,
-			{ body: ICourseCreate; groupId: string | undefined }
+			{ body: CourseCreateType; groupId: string | undefined }
 		>({
 			query: data => ({
 				url: `courses/${data.groupId}`,

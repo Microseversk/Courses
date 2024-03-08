@@ -20,7 +20,7 @@ export interface IEditUserProfile {
 	birthDate: string
 }
 
-export interface ICourseCreate {
+export type CourseCreateType = {
 	name: string
 	startYear: number
 	maximumStudentsCount: number
@@ -38,4 +38,9 @@ export interface ICourseEditStatus {
 export interface ICourseNotificationCreate {
 	text: string
 	isImportant: boolean
+}
+
+export type EditCourseTeacherType = {
+	requirements: string
+	annotations: string
 }

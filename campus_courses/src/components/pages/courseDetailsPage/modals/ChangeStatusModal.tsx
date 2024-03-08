@@ -8,24 +8,24 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from 'react-bootstrap'
+import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseStatusMutation } from '../../../../store/api/coursesApi'
 import { CourseStatus } from '../../../../types/response.types'
 
 interface IChangeStatusModalProps {
 	isShow: boolean
 	onHide: () => void
-	status: 'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
-	courseId: string
 }
 
 export function ChangeStatusModal(props: IChangeStatusModalProps) {
+	const { status, id } = useTypedSelector(state => state.openedCourse.course!)
 	const [editStatus] = useEditCourseStatusMutation()
 	const [newStatus, setNewStatus] = useState<
 		'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
-	>(props.status)
+	>(status)
 	const handleChangeStatus = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		editStatus({ courseId: props.courseId, status: newStatus })
+		editStatus({ courseId: id, status: newStatus })
 		props.onHide()
 	}
 
@@ -34,7 +34,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 			show={props.isShow}
 			onHide={() => {
 				props.onHide()
-				setNewStatus(props.status)
+				setNewStatus(status)
 			}}
 			size={'lg'}
 		>
@@ -51,7 +51,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Created'}
 						type={'radio'}
 						label={'Создан'}
-						disabled={props.status !== 'Created'}
+						disabled={status !== 'Created'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.OpenForAssigning)}
@@ -59,7 +59,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						name={'status'}
 						type={'radio'}
 						label={'Открыт для записи'}
-						disabled={props.status === 'Started' || props.status === 'Finished'}
+						disabled={status === 'Started' || status === 'Finished'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.Started)}
@@ -67,7 +67,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Started'}
 						type={'radio'}
 						label={'В процессе'}
-						disabled={props.status === 'Finished'}
+						disabled={status === 'Finished'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.Finished)}
@@ -75,7 +75,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Finished'}
 						type={'radio'}
 						label={'Завершен'}
-						disabled={props.status === 'Finished'}
+						disabled={status === 'Finished'}
 					/>
 				</Form>
 			</ModalBody>

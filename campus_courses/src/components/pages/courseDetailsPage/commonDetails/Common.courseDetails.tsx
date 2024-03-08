@@ -4,28 +4,44 @@ import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSignUpToCourseMutation } from '../../../../store/api/coursesApi'
 import { UserCourseRole } from '../../../../store/slices/course.slice'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
+import { EditCourseModalAdmin } from '../modals/EditCourseModalAdmin'
+import { EditCourseModalTeacher } from '../modals/EditCourseModalTeacher'
 
 export function CommonCourseDetails() {
 	const { course, userCourseRole } = useTypedSelector(
 		state => state?.openedCourse
 	)
 	const [signUp] = useSignUpToCourseMutation()
-	const { isShow, onHide, onShow } = useModal()
+	const {
+		isShow: isShowEditStatus,
+		onHide: onHideEditStatus,
+		onShow: onShowEditStatus,
+	} = useModal()
+	const {
+		isShow: isShowEditCourse,
+		onHide: onHideEditCourse,
+		onShow: onShowEditCourse,
+	} = useModal()
 
 	if (!course || !userCourseRole) {
 		return <>Ошибка данных курса</>
 	}
 
-	console.log(course, userCourseRole)
-
 	return (
 		<>
-			<ChangeStatusModal
-				status={course.status}
-				onHide={onHide}
-				isShow={isShow}
-				courseId={course.id}
-			/>
+			{userCourseRole === UserCourseRole.Admin ? (
+				<EditCourseModalAdmin
+					isShow={isShowEditCourse}
+					onHide={onHideEditCourse}
+				/>
+			) : (
+				<EditCourseModalTeacher
+					isShow={isShowEditCourse}
+					onHide={onHideEditCourse}
+				/>
+			)}
+
+			<ChangeStatusModal isShow={isShowEditStatus} onHide={onHideEditStatus} />
 			<div className={'fs-2 fw-bold'}>{course.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
 				<div className={'fw-bold mt-1'}>Основные данные курса</div>
@@ -34,7 +50,9 @@ export function CommonCourseDetails() {
 					UserCourseRole.MainTeacher,
 					UserCourseRole.Teacher,
 				].includes(userCourseRole) && (
-					<Button className={'btn-warning'}>РЕДАКТИРОВАТЬ</Button>
+					<Button className={'btn-warning'} onClick={onShowEditCourse}>
+						РЕДАКТИРОВАТЬ
+					</Button>
 				)}
 			</div>
 			<ListGroup className={'mt-2'}>
@@ -62,7 +80,10 @@ export function CommonCourseDetails() {
 								UserCourseRole.MainTeacher,
 								UserCourseRole.Teacher,
 							].includes(userCourseRole) && (
-								<Button className={'btn-warning h-100'} onClick={onShow}>
+								<Button
+									className={'btn-warning h-100'}
+									onClick={onShowEditStatus}
+								>
 									ИЗМЕНИТЬ
 								</Button>
 							)}
