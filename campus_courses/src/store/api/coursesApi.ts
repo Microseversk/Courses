@@ -123,6 +123,15 @@ export const coursesApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['courseDetails'],
 		}),
+		addTeacher: builder.mutation<any, { courseId: string; userId: string }>({
+			query: ({ courseId, userId }) => ({
+				url: `courses/${courseId}/teachers`,
+				body: { userId },
+				method: 'POST',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['courseDetails'],
+		}),
 	}),
 })
 
@@ -137,4 +146,5 @@ export const {
 	useSignUpToCourseMutation,
 	useEditCourseTeacherMutation,
 	useSetNewStudentStatusMutation,
+	useAddTeacherMutation,
 } = coursesApi
