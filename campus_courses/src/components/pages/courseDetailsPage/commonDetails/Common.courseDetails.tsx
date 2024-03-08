@@ -3,16 +3,6 @@ import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
 
-interface ICommonCourseDetailsProps {
-	name: string
-	startYear: number
-	semester: 'Autumn' | 'Spring'
-	status: 'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
-	maximumStudentsCount: number
-	studentsEnrolledCount: number
-	studentsInQueueCount: number
-}
-
 export function CommonCourseDetails() {
 	const courseDetails = useTypedSelector(state => state.openedCourse.course)
 	const [isChangingStatus, setIsChangingStatus] = useState(false)
@@ -27,8 +17,9 @@ export function CommonCourseDetails() {
 				status={courseDetails.status}
 				onHide={() => setIsChangingStatus(false)}
 				isShow={isChangingStatus}
+				courseId={courseDetails.id}
 			/>
-			<div className={'fs-2 fw-bold'}>{courseDetails?.name}</div>
+			<div className={'fs-2 fw-bold'}>{courseDetails.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
 				<div className={'fw-bold'}>Основные данные курса</div>
 				<Button className={'btn-warning'}>РЕДАКТИРОВАТЬ</Button>
@@ -39,13 +30,13 @@ export function CommonCourseDetails() {
 						<Col>
 							<div className={'fw-bold'}>Статус курса</div>
 							<div className={'text-success'}>
-								{courseDetails?.status === 'Started' ? (
+								{courseDetails.status === 'Started' ? (
 									<span className={'text-primary'}>в процессе обучения</span>
-								) : courseDetails?.status === 'OpenForAssigning' ? (
+								) : courseDetails.status === 'OpenForAssigning' ? (
 									<span className={'text-success'}>Открыт для записи</span>
-								) : courseDetails?.status === 'Created' ? (
+								) : courseDetails.status === 'Created' ? (
 									<span className={'text-secondary'}>Создан</span>
-								) : courseDetails?.status === 'Finished' ? (
+								) : courseDetails.status === 'Finished' ? (
 									<span className={'text-danger'}>Закрыт</span>
 								) : (
 									<></>

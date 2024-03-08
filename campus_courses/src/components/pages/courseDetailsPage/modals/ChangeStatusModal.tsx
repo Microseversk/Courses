@@ -8,21 +8,25 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from 'react-bootstrap'
+import { useEditCourseStatusMutation } from '../../../../store/api/coursesApi'
 import { CourseStatus } from '../../../../types/response.types'
 
 interface IChangeStatusModalProps {
 	isShow: boolean
 	onHide: () => void
 	status: 'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
+	courseId: string
 }
 
 export function ChangeStatusModal(props: IChangeStatusModalProps) {
+	const [editStatus] = useEditCourseStatusMutation()
 	const [newStatus, setNewStatus] = useState<
 		'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
 	>(props.status)
 	const handleChangeStatus = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		console.log(newStatus)
+		editStatus({ courseId: props.courseId, status: newStatus })
+		props.onHide()
 	}
 
 	return (
@@ -47,6 +51,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Created'}
 						type={'radio'}
 						label={'Создан'}
+						disabled={props.status !== 'Created'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.OpenForAssigning)}
@@ -54,6 +59,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						name={'status'}
 						type={'radio'}
 						label={'Открыт для записи'}
+						disabled={props.status === 'Started' || props.status === 'Finished'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.Started)}
@@ -61,6 +67,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Started'}
 						type={'radio'}
 						label={'В процессе'}
+						disabled={props.status === 'Finished'}
 					/>
 					<FormCheck
 						onChange={() => setNewStatus(CourseStatus.Finished)}
@@ -68,6 +75,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						checked={newStatus === 'Finished'}
 						type={'radio'}
 						label={'Завершен'}
+						disabled={props.status === 'Finished'}
 					/>
 				</Form>
 			</ModalBody>

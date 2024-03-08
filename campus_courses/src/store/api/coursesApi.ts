@@ -61,7 +61,7 @@ export const coursesApi = createApi({
 		editCourseStatus: builder.mutation<any, ICourseEditStatus>({
 			query: ({ courseId: courseId, status: status }) => ({
 				url: `/courses/${courseId}/status`,
-				body: status,
+				body: { status },
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
