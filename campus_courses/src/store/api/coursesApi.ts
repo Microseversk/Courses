@@ -111,6 +111,18 @@ export const coursesApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['courseDetails'],
 		}),
+		setNewStudentStatus: builder.mutation<
+			any,
+			{ status: 'Accepted' | 'Declined'; courseId: string; userId: string }
+		>({
+			query: ({ courseId, userId, status }) => ({
+				url: `/courses/${courseId}/student-status/${userId}`,
+				body: { status },
+				method: 'POST',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['courseDetails'],
+		}),
 	}),
 })
 
@@ -124,4 +136,5 @@ export const {
 	useCreateNotificationMutation,
 	useSignUpToCourseMutation,
 	useEditCourseTeacherMutation,
+	useSetNewStudentStatusMutation,
 } = coursesApi

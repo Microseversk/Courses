@@ -41,6 +41,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 
 	const handleCreateCourse = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		console.log(data)
 		createCourse({ body: data, groupId: groupId.id })
 		props.onHide()
 		handleOnChange('name', '')
@@ -125,7 +126,8 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 					<FormSelect
 						onChange={e => handleOnChange('mainTeacherId', e.target.value)}
 					>
-						{users?.map(user => (
+						<option value=''>Не выбрано</option>
+						{users?.map((user, index) => (
 							<option key={user.id} value={user.id}>
 								{user.fullName}
 							</option>

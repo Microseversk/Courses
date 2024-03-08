@@ -7,16 +7,25 @@ import {
 	Row,
 } from 'react-bootstrap'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { useSetNewStudentStatusMutation } from '../../../../store/api/coursesApi'
 import { IStudent } from '../../../../types/response.types'
 
 interface IStudentsListProps {
 	students: IStudent[]
 }
 export function StudentsList(props: IStudentsListProps) {
+	const [setUserStatus] = useSetNewStudentStatusMutation()
 	const { course, userCourseRole } = useTypedSelector(
 		state => state.openedCourse
 	)
-	console.log(course, userCourseRole)
+
+	const handleChangeStudentStatus = (
+		status: 'Accepted' | 'Declined',
+		userId: string
+	) => {
+		setUserStatus({ status, courseId: course?.id!, userId })
+	}
+
 	return (
 		<ListGroup>
 			{props.students.map(student => (
@@ -80,8 +89,21 @@ export function StudentsList(props: IStudentsListProps) {
 									'd-flex align-content-stretch justify-content-start justify-content-md-end'
 								}
 							>
-								<Button>Принять</Button>
-								<Button className={'ms-3 btn-danger'}>Отклонить заявку</Button>
+								<Button
+									onClick={() => {
+										handleChangeStudentStatus('Accepted', student.id)
+									}}
+								>
+									Принять
+								</Button>
+								<Button
+									className={'ms-3 btn-danger'}
+									onClick={() => {
+										handleChangeStudentStatus('Declined', student.id)
+									}}
+								>
+									Отклонить заявку
+								</Button>
 							</Col>
 						)}
 					</Row>
