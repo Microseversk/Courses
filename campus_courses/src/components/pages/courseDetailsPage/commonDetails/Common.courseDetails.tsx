@@ -1,28 +1,41 @@
-import { useState } from 'react'
 import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
+import { useModal } from '../../../../hooks/useModal'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { useSignUpToCourseMutation } from '../../../../store/api/coursesApi'
+import { UserCourseRole } from '../../../../store/slices/course.slice'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
 
 export function CommonCourseDetails() {
-	const courseDetails = useTypedSelector(state => state.openedCourse.course)
-	const [isChangingStatus, setIsChangingStatus] = useState(false)
+	const { course, userCourseRole } = useTypedSelector(
+		state => state?.openedCourse
+	)
+	const [signUp] = useSignUpToCourseMutation()
+	const { isShow, onHide, onShow } = useModal()
 
-	if (!courseDetails) {
+	if (!course || !userCourseRole) {
 		return <>Ошибка данных курса</>
 	}
+
+	console.log(course, userCourseRole)
 
 	return (
 		<>
 			<ChangeStatusModal
-				status={courseDetails.status}
-				onHide={() => setIsChangingStatus(false)}
-				isShow={isChangingStatus}
-				courseId={courseDetails.id}
+				status={course.status}
+				onHide={onHide}
+				isShow={isShow}
+				courseId={course.id}
 			/>
-			<div className={'fs-2 fw-bold'}>{courseDetails.name}</div>
+			<div className={'fs-2 fw-bold'}>{course.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
-				<div className={'fw-bold'}>Основные данные курса</div>
-				<Button className={'btn-warning'}>РЕДАКТИРОВАТЬ</Button>
+				<div className={'fw-bold mt-1'}>Основные данные курса</div>
+				{[
+					UserCourseRole.Admin,
+					UserCourseRole.MainTeacher,
+					UserCourseRole.Teacher,
+				].includes(userCourseRole) && (
+					<Button className={'btn-warning'}>РЕДАКТИРОВАТЬ</Button>
+				)}
 			</div>
 			<ListGroup className={'mt-2'}>
 				<ListGroupItem>
@@ -30,13 +43,13 @@ export function CommonCourseDetails() {
 						<Col>
 							<div className={'fw-bold'}>Статус курса</div>
 							<div className={'text-success'}>
-								{courseDetails.status === 'Started' ? (
+								{course.status === 'Started' ? (
 									<span className={'text-primary'}>в процессе обучения</span>
-								) : courseDetails.status === 'OpenForAssigning' ? (
+								) : course.status === 'OpenForAssigning' ? (
 									<span className={'text-success'}>Открыт для записи</span>
-								) : courseDetails.status === 'Created' ? (
+								) : course.status === 'Created' ? (
 									<span className={'text-secondary'}>Создан</span>
-								) : courseDetails.status === 'Finished' ? (
+								) : course.status === 'Finished' ? (
 									<span className={'text-danger'}>Закрыт</span>
 								) : (
 									<></>
@@ -44,12 +57,29 @@ export function CommonCourseDetails() {
 							</div>
 						</Col>
 						<Col className={'text-end'}>
-							<Button
-								className={'btn-warning h-100'}
-								onClick={() => setIsChangingStatus(true)}
-							>
-								ИЗМЕНИТЬ
-							</Button>
+							{[
+								UserCourseRole.Admin,
+								UserCourseRole.MainTeacher,
+								UserCourseRole.Teacher,
+							].includes(userCourseRole) && (
+								<Button className={'btn-warning h-100'} onClick={onShow}>
+									ИЗМЕНИТЬ
+								</Button>
+							)}
+							{course.status === 'OpenForAssigning' &&
+								userCourseRole === UserCourseRole.Student && (
+									<Button className='btn-success h-100'>
+										ЗАПИСАТЬСЯ НА КУРС
+									</Button>
+								)}
+							{course.status === 'OpenForAssigning' &&
+								userCourseRole === UserCourseRole.InQueue && (
+									<Button className='btn-primary h-100'>В ОЧЕРЕДИ</Button>
+								)}
+							{course.status === 'OpenForAssigning' &&
+								userCourseRole === UserCourseRole.Declined && (
+									<Button className='btn-danger h-100'>ОТКАЗАНО</Button>
+								)}
 						</Col>
 					</Row>
 				</ListGroupItem>
@@ -57,12 +87,12 @@ export function CommonCourseDetails() {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Учебный год</div>
-							<div>{courseDetails?.startYear}</div>
+							<div>{course?.startYear}</div>
 						</Col>
 						<Col>
 							<div className={'fw-bold'}>Семестр</div>
 							<div>
-								{courseDetails?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}
+								{course?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}
 							</div>
 						</Col>
 					</Row>
@@ -71,11 +101,11 @@ export function CommonCourseDetails() {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Всего мест</div>
-							<div>{courseDetails?.maximumStudentsCount}</div>
+							<div>{course.maximumStudentsCount}</div>
 						</Col>
 						<Col>
 							<div className={'fw-bold'}>Студентов зачислено</div>
-							<div>{courseDetails?.studentsEnrolledCount}</div>
+							<div>{course.studentsEnrolledCount}</div>
 						</Col>
 					</Row>
 				</ListGroupItem>
@@ -83,7 +113,7 @@ export function CommonCourseDetails() {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Заявок на рассмотрении</div>
-							<div>{courseDetails?.studentsInQueueCount}</div>
+							<div>{course.studentsInQueueCount}</div>
 						</Col>
 					</Row>
 				</ListGroupItem>

@@ -83,6 +83,13 @@ export const coursesApi = createApi({
 			}),
 			invalidatesTags: ['groupCourses'],
 		}),
+		signUpToCourse: builder.mutation<any, { courseId: string }>({
+			query: ({ courseId }) => ({
+				url: `courses/${courseId}/sign-up`,
+				method: 'POST',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+		}),
 	}),
 })
 
@@ -94,4 +101,5 @@ export const {
 	useGetCourseDetailsQuery,
 	useEditCourseStatusMutation,
 	useCreateNotificationMutation,
+	useSignUpToCourseMutation,
 } = coursesApi
