@@ -2,13 +2,16 @@ import { Button, ListGroup, ListGroupItem, Tab, Tabs } from 'react-bootstrap'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 
 import { useModal } from '../../../../hooks/useModal'
+import { UserCourseRole } from '../../../../store/slices/course.slice'
 import { CreateNotificationModal } from '../modals/CreateNotificationModal'
 interface IInfoTabsCourseDetailsProps {
 	className?: string
 }
 
 export function InfoTabsCourseDetails(props: IInfoTabsCourseDetailsProps) {
-	const courseDetails = useTypedSelector(state => state.openedCourse.course)
+	const { course, userCourseRole } = useTypedSelector(
+		state => state.openedCourse
+	)
 	const { isShow, onHide, onShow } = useModal()
 	return (
 		<>
@@ -19,46 +22,48 @@ export function InfoTabsCourseDetails(props: IInfoTabsCourseDetailsProps) {
 					title={'Требования к курсу'}
 					eventKey={'requirements'}
 				>
-					{courseDetails?.requirements && (
+					{course?.requirements && (
 						<div className={'mt-3 mb-3 ms-3'}>
-							<div
-								dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
-							/>
+							<div dangerouslySetInnerHTML={{ __html: course.requirements }} />
 						</div>
 					)}
 				</Tab>
 				<Tab className={'border'} title={'Аннотация'} eventKey={'annotation'}>
-					{courseDetails?.annotations && (
+					{course?.annotations && (
 						<div className={'mt-3 mb-3 ms-3'}>
-							<div
-								dangerouslySetInnerHTML={{ __html: courseDetails.annotations }}
-							/>
+							<div dangerouslySetInnerHTML={{ __html: course.annotations }} />
 						</div>
 					)}
 				</Tab>
 				<Tab
 					className={'border'}
 					title={
-						!courseDetails?.notifications.length ? (
+						!course?.notifications.length ? (
 							'Уведомления'
 						) : (
 							<div>
 								Уведомления
 								<span className={'ms-1 badge rounded-pill bg-danger'}>
-									{courseDetails.notifications.length > 3
+									{course.notifications.length > 3
 										? '3+'
-										: courseDetails.notifications.length}
+										: course.notifications.length}
 								</span>
 							</div>
 						)
 					}
 					eventKey={'notifications'}
 				>
-					<Button size={'sm'} className={'mt-3 ms-3 mb-3'} onClick={onShow}>
-						СОЗДАТЬ УВЕДОМЛЕНИЕ
-					</Button>
+					{[
+						UserCourseRole.Admin,
+						UserCourseRole.MainTeacher,
+						UserCourseRole.Teacher,
+					].includes(userCourseRole!) && (
+						<Button size={'sm'} className={'mt-3 ms-3 mb-3'} onClick={onShow}>
+							СОЗДАТЬ УВЕДОМЛЕНИЕ
+						</Button>
+					)}
 					<ListGroup>
-						{courseDetails?.notifications
+						{course?.notifications
 							.slice()
 							.reverse()
 							.map((notify, index) => (

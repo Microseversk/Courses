@@ -89,7 +89,12 @@ export function CommonCourseDetails() {
 							)}
 							{course.status === 'OpenForAssigning' &&
 								userCourseRole === UserCourseRole.Student && (
-									<Button className='btn-success h-100'>
+									<Button
+										className='btn-success h-100'
+										onClick={() => {
+											signUp({ courseId: course.id })
+										}}
+									>
 										ЗАПИСАТЬСЯ НА КУРС
 									</Button>
 								)}
