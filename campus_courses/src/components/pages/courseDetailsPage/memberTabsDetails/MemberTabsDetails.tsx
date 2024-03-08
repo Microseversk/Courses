@@ -1,25 +1,30 @@
-import {AlertLink, Button, Col, ListGroup, ListGroupItem, Row, Tab, Tabs} from "react-bootstrap";
-import {IStudent, ITeacher} from "../../../../types/response.types";
-import {Link} from "react-router-dom";
-import {TeachersList} from "./TeachersList";
-import {StudentsList} from "./StudentsList";
+import { Button, Tab, Tabs } from 'react-bootstrap'
+import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { StudentsList } from './StudentsList'
+import { TeachersList } from './TeachersList'
 
 interface IMemberTabsDetailsProps {
-    className?: string,
-    students: IStudent[],
-    teachers: ITeacher[],
+	className?: string
 }
 
 export function MemberTabsDetails(props: IMemberTabsDetailsProps) {
-    return (
-        <Tabs className={props.className} defaultActiveKey={'Students'}>
-            <Tab className={'border mb-3'} title={'Студенты'} eventKey={'Students'}>
-                <StudentsList students={props.students}/>
-            </Tab>
-            <Tab className={'border'} title={'Преподаватели'} eventKey={'Teachers'}>
-                <Button size={'sm'} className={'ms-3 mb-3 mt-3'}>ДОБАВИТЬ ПРЕПОДАВАТЕЛЯ</Button>
-                <TeachersList teachers={props.teachers}/>
-            </Tab>
-        </Tabs>
-    )
+	const courseDetails = useTypedSelector(state => state.openedCourse.course)
+
+	if (!courseDetails?.students || !courseDetails?.teachers) {
+		return <></>
+	}
+
+	return (
+		<Tabs className={props.className} defaultActiveKey={'Students'}>
+			<Tab className={'border mb-3'} title={'Студенты'} eventKey={'Students'}>
+				<StudentsList students={courseDetails.students} />
+			</Tab>
+			<Tab className={'border'} title={'Преподаватели'} eventKey={'Teachers'}>
+				<Button size={'sm'} className={'ms-3 mb-3 mt-3'}>
+					ДОБАВИТЬ ПРЕПОДАВАТЕЛЯ
+				</Button>
+				<TeachersList teachers={courseDetails.teachers} />
+			</Tab>
+		</Tabs>
+	)
 }

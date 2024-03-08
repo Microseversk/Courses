@@ -41,26 +41,9 @@ export function CourseDetailsPage() {
 	if (courseDetails) {
 		return (
 			<Container>
-				<CommonCourseDetails
-					name={courseDetails.name}
-					startYear={courseDetails.startYear}
-					semester={courseDetails.semester}
-					status={courseDetails.status}
-					maximumStudentsCount={courseDetails.maximumStudentsCount}
-					studentsEnrolledCount={courseDetails.studentsEnrolledCount}
-					studentsInQueueCount={courseDetails.studentsInQueueCount}
-				/>
-				<InfoTabsCourseDetails
-					requirements={courseDetails.requirements}
-					annotations={courseDetails.annotations}
-					notifications={courseDetails.notifications}
-					className={'mt-3'}
-				/>
-				<MemberTabsDetails
-					students={courseDetails.students}
-					teachers={courseDetails.teachers}
-					className={'mt-3'}
-				/>
+				<CommonCourseDetails />
+				<InfoTabsCourseDetails className={'mt-3'} />
+				<MemberTabsDetails className={'mt-3'} />
 			</Container>
 		)
 	} else {

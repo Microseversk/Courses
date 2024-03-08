@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { accountApi } from './api/accountApi'
-import { courseSlice } from './api/course.slice'
+import { openedCourseSlice } from './api/course.slice'
 import { coursesApi } from './api/coursesApi'
 import { groupsApi } from './api/groupsApi'
 import { usersApi } from './api/usersApi'
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 	[usersApi.reducerPath]: usersApi.reducer,
 	//Local store
 	[authSlice.reducerPath]: authSlice.reducer,
-	[courseSlice.reducerPath]: courseSlice.reducer,
+	[openedCourseSlice.reducerPath]: openedCourseSlice.reducer,
 })
 
 export const store = configureStore({

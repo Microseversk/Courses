@@ -8,9 +8,9 @@ const initialState: ICourseState = {
 	course: null,
 }
 
-export const courseSlice = createSlice({
-	name: 'courseSlice',
-	reducerPath: 'course',
+export const openedCourseSlice = createSlice({
+	name: 'openedCourseSlice',
+	reducerPath: 'openedCourse',
 	initialState: initialState,
 	reducers: {
 		setCourse(
@@ -22,5 +22,5 @@ export const courseSlice = createSlice({
 	},
 })
 
-export const { setCourse } = courseSlice.actions
-export default courseSlice.reducer
+export const { setCourse } = openedCourseSlice.actions
+export default openedCourseSlice.reducer

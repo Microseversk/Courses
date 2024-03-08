@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
+import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
 
 interface ICommonCourseDetailsProps {
@@ -12,17 +13,22 @@ interface ICommonCourseDetailsProps {
 	studentsInQueueCount: number
 }
 
-export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
+export function CommonCourseDetails() {
+	const courseDetails = useTypedSelector(state => state.openedCourse.course)
 	const [isChangingStatus, setIsChangingStatus] = useState(false)
+
+	if (!courseDetails) {
+		return <>Ошибка данных курса</>
+	}
 
 	return (
 		<>
 			<ChangeStatusModal
-				status={props.status}
+				status={courseDetails.status}
 				onHide={() => setIsChangingStatus(false)}
 				isShow={isChangingStatus}
 			/>
-			<div className={'fs-2 fw-bold'}>{props?.name}</div>
+			<div className={'fs-2 fw-bold'}>{courseDetails?.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
 				<div className={'fw-bold'}>Основные данные курса</div>
 				<Button className={'btn-warning'}>РЕДАКТИРОВАТЬ</Button>
@@ -33,13 +39,13 @@ export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
 						<Col>
 							<div className={'fw-bold'}>Статус курса</div>
 							<div className={'text-success'}>
-								{props?.status === 'Started' ? (
+								{courseDetails?.status === 'Started' ? (
 									<span className={'text-primary'}>в процессе обучения</span>
-								) : props?.status === 'OpenForAssigning' ? (
+								) : courseDetails?.status === 'OpenForAssigning' ? (
 									<span className={'text-success'}>Открыт для записи</span>
-								) : props?.status === 'Created' ? (
+								) : courseDetails?.status === 'Created' ? (
 									<span className={'text-secondary'}>Создан</span>
-								) : props?.status === 'Finished' ? (
+								) : courseDetails?.status === 'Finished' ? (
 									<span className={'text-danger'}>Закрыт</span>
 								) : (
 									<></>
@@ -60,11 +66,13 @@ export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Учебный год</div>
-							<div>{props?.startYear}</div>
+							<div>{courseDetails?.startYear}</div>
 						</Col>
 						<Col>
 							<div className={'fw-bold'}>Семестр</div>
-							<div>{props?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}</div>
+							<div>
+								{courseDetails?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}
+							</div>
 						</Col>
 					</Row>
 				</ListGroupItem>
@@ -72,11 +80,11 @@ export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Всего мест</div>
-							<div>{props?.maximumStudentsCount}</div>
+							<div>{courseDetails?.maximumStudentsCount}</div>
 						</Col>
 						<Col>
 							<div className={'fw-bold'}>Студентов зачислено</div>
-							<div>{props?.studentsEnrolledCount}</div>
+							<div>{courseDetails?.studentsEnrolledCount}</div>
 						</Col>
 					</Row>
 				</ListGroupItem>
@@ -84,7 +92,7 @@ export function CommonCourseDetails(props: ICommonCourseDetailsProps) {
 					<Row className={'d-flex align-content-stretch'}>
 						<Col>
 							<div className={'fw-bold'}>Заявок на рассмотрении</div>
-							<div>{props?.studentsInQueueCount}</div>
+							<div>{courseDetails?.studentsInQueueCount}</div>
 						</Col>
 					</Row>
 				</ListGroupItem>
