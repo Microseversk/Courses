@@ -34,3 +34,8 @@ export interface ICourseEditStatus {
 	courseId: string
 	status: 'Started' | 'OpenForAssigning' | 'Created' | 'Finished'
 }
+
+export interface ICourseNotificationCreate {
+	text: string
+	isImportant: boolean
+}

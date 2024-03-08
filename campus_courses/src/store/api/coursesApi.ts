@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ICourseCreate, ICourseEditStatus } from '../../types/request.types'
+import {
+	ICourseCreate,
+	ICourseEditStatus,
+	ICourseNotificationCreate,
+} from '../../types/request.types'
 import {
 	ICourseDetailsResponse,
 	IGroupCoursesResponse,
@@ -59,9 +63,21 @@ export const coursesApi = createApi({
 			invalidatesTags: ['groupCourses'],
 		}),
 		editCourseStatus: builder.mutation<any, ICourseEditStatus>({
-			query: ({ courseId: courseId, status: status }) => ({
+			query: ({ courseId, status }) => ({
 				url: `/courses/${courseId}/status`,
 				body: { status },
+				method: 'POST',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['groupCourses'],
+		}),
+		createNotification: builder.mutation<
+			any,
+			{ courseId: string; body: ICourseNotificationCreate }
+		>({
+			query: ({ courseId, body }) => ({
+				url: `/courses/${courseId}/notifications`,
+				body: body,
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
@@ -77,4 +93,5 @@ export const {
 	useGetCoursesTeachingQuery,
 	useGetCourseDetailsQuery,
 	useEditCourseStatusMutation,
+	useCreateNotificationMutation,
 } = coursesApi
