@@ -2,6 +2,7 @@ import { FormEvent } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useInput } from '../../../../hooks/useInput'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { useEditCourseTeacherMutation } from '../../../../store/api/coursesApi'
 import { EditCourseTeacherType } from '../../../../types/request.types'
 import { TextEditToolbar } from '../../groupCoursesPage/TextEditToolbar'
 
@@ -12,6 +13,7 @@ interface IEditCourseModalProps {
 
 export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
+	const [editCourse] = useEditCourseTeacherMutation()
 	const { data, handleOnChange } = useInput<EditCourseTeacherType>({
 		annotations: course?.annotations!,
 		requirements: course?.requirements!,
@@ -19,6 +21,10 @@ export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 
 	const handleEditCourse = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		editCourse({
+			courseId: course?.id!,
+			body: { annotations: data.annotations, requirements: data.requirements },
+		})
 		props.onHide()
 	}
 	return (

@@ -1,5 +1,6 @@
 import {
 	CourseCreateType,
+	EditCourseTeacherType,
 	ICourseEditStatus,
 	ICourseNotificationCreate,
 } from '../../types/request.types'
@@ -29,7 +30,7 @@ export const coursesApi = api.injectEndpoints({
 				url: `/courses/${id}/details`,
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			providesTags: ['groupCourses'],
+			providesTags: ['groupCourses', 'courseDetails'],
 		}),
 		getCoursesMy: builder.query<IGroupCoursesResponse[], any>({
 			query: () => ({
@@ -64,7 +65,7 @@ export const coursesApi = api.injectEndpoints({
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			invalidatesTags: ['groupCourses'],
+			invalidatesTags: ['groupCourses', 'courseDetails'],
 		}),
 		createNotification: builder.mutation<
 			any,
@@ -76,7 +77,7 @@ export const coursesApi = api.injectEndpoints({
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			invalidatesTags: ['groupCourses'],
+			invalidatesTags: ['courseDetails'],
 		}),
 		signUpToCourse: builder.mutation<any, { courseId: string }>({
 			query: ({ courseId }) => ({
@@ -84,6 +85,31 @@ export const coursesApi = api.injectEndpoints({
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
+		}),
+		editCourseTeacher: builder.mutation<
+			any,
+			{ courseId: string; body: EditCourseTeacherType }
+		>({
+			query: ({ courseId, body }) => ({
+				url: `/courses/${courseId}`,
+				body: body,
+				method: 'PUT',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['courseDetails'],
+		}),
+		//TODO Проверить необходимость эндпоинта
+		editCourseAdmin: builder.mutation<
+			any,
+			{ courseId: string; body: CourseCreateType }
+		>({
+			query: ({ courseId, body }) => ({
+				url: `/courses/${courseId}`,
+				body: body,
+				method: 'PUT',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['courseDetails'],
 		}),
 	}),
 })
@@ -97,4 +123,5 @@ export const {
 	useEditCourseStatusMutation,
 	useCreateNotificationMutation,
 	useSignUpToCourseMutation,
+	useEditCourseTeacherMutation,
 } = coursesApi
