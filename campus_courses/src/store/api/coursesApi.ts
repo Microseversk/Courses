@@ -3,6 +3,7 @@ import {
 	EditCourseTeacherType,
 	ICourseEditStatus,
 	ICourseNotificationCreate,
+	SetMarkType,
 } from '../../types/request.types'
 import {
 	ICourseDetailsResponse,
@@ -132,6 +133,18 @@ export const coursesApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['courseDetails'],
 		}),
+		setMark: builder.mutation<
+			any,
+			{ courseId: string; studentId: string; body: SetMarkType }
+		>({
+			query: ({ courseId, studentId, body }) => ({
+				url: `/courses/${courseId}/marks/${studentId}`,
+				body: body,
+				method: 'POST',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['courseDetails'],
+		}),
 	}),
 })
 
@@ -147,4 +160,5 @@ export const {
 	useEditCourseTeacherMutation,
 	useSetNewStudentStatusMutation,
 	useAddTeacherMutation,
+	useSetMarkMutation,
 } = coursesApi

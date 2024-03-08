@@ -44,3 +44,11 @@ export type EditCourseTeacherType = {
 	requirements: string
 	annotations: string
 }
+
+export type MarkType = 'Passed' | 'Failed'
+export type MarkTime = 'Midterm' | 'Final'
+
+export type SetMarkType = {
+	markType: MarkTime
+	mark: MarkType
+}
