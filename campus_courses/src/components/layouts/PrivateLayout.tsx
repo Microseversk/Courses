@@ -5,7 +5,7 @@ import {
 	useGetUserProfileQuery,
 	useGetUserRolesQuery,
 } from '../../store/api/accountApi'
-import { setAuth, setUser } from '../../store/auth.slice'
+import { setAuth, setUser } from '../../store/slices/auth.slice'
 import { AppDispatch } from '../../store/store'
 import { Header } from './header/Header'
 

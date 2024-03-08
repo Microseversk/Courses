@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IRolesResponse } from '../types/response.types'
+import { IRolesResponse } from '../../types/response.types'
 
 interface IUser {
 	fullName: string

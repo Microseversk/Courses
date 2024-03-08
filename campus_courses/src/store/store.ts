@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { accountApi } from './api/accountApi'
-import { openedCourseSlice } from './api/course.slice'
 import { coursesApi } from './api/coursesApi'
 import { groupsApi } from './api/groupsApi'
 import { usersApi } from './api/usersApi'
-import { authSlice } from './auth.slice'
+import { authSlice } from './slices/auth.slice'
+import { openedCourseSlice } from './slices/course.slice'
 
 const rootReducer = combineReducers({
 	//Server store
