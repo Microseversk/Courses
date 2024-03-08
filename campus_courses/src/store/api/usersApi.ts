@@ -1,21 +1,15 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {IUsersResponse} from "../../types/response.types";
+import { IUsersResponse } from '../../types/response.types'
+import { api } from './api'
 
-export const usersApi = createApi({
-    reducerPath: 'usersApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'https://camp-courses.api.kreosoft.space/'
-    }),
-    endpoints: (builder) => ({
-        getUsers: builder.query<IUsersResponse[],any>({
-            query: () => ({
-                url: '/users',
-                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
-            })
-        })
-    })
+export const usersApi = api.injectEndpoints({
+	endpoints: builder => ({
+		getUsers: builder.query<IUsersResponse[], any>({
+			query: () => ({
+				url: '/users',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+		}),
+	}),
 })
 
-export const {
-    useGetUsersQuery,
-} = usersApi
+export const { useGetUsersQuery } = usersApi

@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
 	CourseCreateType,
 	ICourseEditStatus,
@@ -8,14 +7,9 @@ import {
 	ICourseDetailsResponse,
 	IGroupCoursesResponse,
 } from '../../types/response.types'
+import { api } from './api'
 
-export const coursesApi = createApi({
-	reducerPath: 'coursesApi',
-	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://camp-courses.api.kreosoft.space/',
-	}),
-
-	tagTypes: ['groupCourses', 'coursesMy', 'coursesTeaching'],
+export const coursesApi = api.injectEndpoints({
 	endpoints: builder => ({
 		getGroupCourses: builder.query<
 			IGroupCoursesResponse[],

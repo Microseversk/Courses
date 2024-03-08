@@ -1,14 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { IGroupCreate, IGroupEdit } from '../../types/request.types'
 import { IGroupResponse } from '../../types/response.types'
+import { api } from './api'
 
-export const groupsApi = createApi({
-	reducerPath: 'groups',
-	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://camp-courses.api.kreosoft.space/',
-	}),
-
-	tagTypes: ['groups'],
+export const groupsApi = api.injectEndpoints({
 	endpoints: builder => ({
 		getGroups: builder.query<IGroupResponse[], any>({
 			query: () => ({
