@@ -11,7 +11,7 @@ import { CommonCourseDetails } from './commonDetails/Common.courseDetails'
 import { InfoTabsCourseDetails } from './infoTabsDetails/InfoTabs.courseDetails'
 import { MemberTabsDetails } from './memberTabsDetails/MemberTabsDetails'
 
-export function CourseDetailsPage() {
+export default function CourseDetailsPage() {
 	const dispatch = useDispatch<AppDispatch>()
 	const user = useTypedSelector(state => state.auth.user)
 	const { id: courseId } = useParams<{ id: string }>()
