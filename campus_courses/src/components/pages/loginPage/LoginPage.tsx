@@ -11,7 +11,7 @@ export interface IUserLogin {
 	password: string
 }
 
-export function LoginPage() {
+export default function LoginPage() {
 	const { data: loginData, handleOnChange } = useInput<IUserLogin>({
 		email: 'gymboss@gachi.com',
 		password: 'B0yNextD00r',
