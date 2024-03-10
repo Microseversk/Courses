@@ -38,14 +38,14 @@ export const coursesApi = api.injectEndpoints({
 				url: `/courses/my`,
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			providesTags: ['coursesMy'],
+			providesTags: ['groupCourses'],
 		}),
 		getCoursesTeaching: builder.query<IGroupCoursesResponse[], any>({
 			query: () => ({
 				url: `/courses/teaching`,
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			providesTags: ['coursesTeaching'],
+			providesTags: ['groupCourses'],
 		}),
 		createCourse: builder.mutation<
 			any,
@@ -86,6 +86,7 @@ export const coursesApi = api.injectEndpoints({
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
+			invalidatesTags: ['groupCourses'],
 		}),
 		editCourseTeacher: builder.mutation<
 			any,
@@ -110,7 +111,7 @@ export const coursesApi = api.injectEndpoints({
 				method: 'PUT',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			invalidatesTags: ['courseDetails'],
+			invalidatesTags: ['courseDetails', 'groupCourses'],
 		}),
 		setNewStudentStatus: builder.mutation<
 			any,

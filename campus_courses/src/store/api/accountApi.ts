@@ -15,12 +15,7 @@ export const accountApi = api.injectEndpoints({
 				body: loginTerm,
 				method: 'POST',
 			}),
-			invalidatesTags: [
-				'userProfile',
-				'userRoles',
-				'coursesMy',
-				'coursesTeaching',
-			],
+			invalidatesTags: ['userProfile', 'userRoles', 'groupCourses'],
 		}),
 		registerUser: builder.mutation<ITokenResponse, IUserRegistration>({
 			query: (registerTerm: IUserRegistration) => ({
@@ -28,12 +23,7 @@ export const accountApi = api.injectEndpoints({
 				body: registerTerm,
 				method: 'POST',
 			}),
-			invalidatesTags: [
-				'userProfile',
-				'userRoles',
-				'coursesMy',
-				'coursesTeaching',
-			],
+			invalidatesTags: ['userProfile', 'userRoles', 'groupCourses'],
 		}),
 		logoutUser: builder.mutation<any, any>({
 			query: (token: string) => ({
@@ -41,12 +31,7 @@ export const accountApi = api.injectEndpoints({
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			}),
-			invalidatesTags: [
-				'userProfile',
-				'userRoles',
-				'coursesMy',
-				'coursesTeaching',
-			],
+			invalidatesTags: ['userProfile', 'userRoles', 'groupCourses'],
 		}),
 		editUserProfile: builder.mutation<any, IEditUserProfile>({
 			query: (data: IEditUserProfile) => ({
