@@ -1,10 +1,9 @@
-import { FormEvent, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button, Card, Container, Form } from 'react-bootstrap'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useInput } from '../../../hooks/useInput'
+import { RegularsHelper } from '../../../helpers/RegularsHelper'
 import { useLoginUserMutation } from '../../../store/api/accountApi'
-import { Loader } from '../../layouts/loader/Loader'
-import { CustomInput } from '../registrationPage/CustomInput'
 
 export interface IUserLogin {
 	email: string
@@ -12,10 +11,6 @@ export interface IUserLogin {
 }
 
 export default function LoginPage() {
-	const { data: loginData, handleOnChange } = useInput<IUserLogin>({
-		email: 'gymboss@gachi.com',
-		password: 'B0yNextD00r',
-	})
 	const [loginUser, { isLoading, error, data: response }] =
 		useLoginUserMutation()
 	const navigate = useNavigate()
@@ -27,13 +22,17 @@ export default function LoginPage() {
 		}
 	}, [response])
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		loginUser(loginData)
-	}
+	const {
+		register,
+		reset,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<IUserLogin>({
+		mode: 'onChange',
+	})
 
-	if (isLoading) {
-		return <Loader />
+	const onSubmit: SubmitHandler<IUserLogin> = data => {
+		loginUser(data)
 	}
 
 	return (
@@ -43,21 +42,24 @@ export default function LoginPage() {
 					<Card.Title>Авторизация</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<Form onSubmit={handleSubmit}>
-						<CustomInput
-							label={'Email'}
-							type={'email'}
-							value={loginData.email}
-							onChange={value => handleOnChange('email', value)}
+					<Form onSubmit={handleSubmit(onSubmit)}>
+						<Form.Label>Email</Form.Label>
+						<Form.Control
+							{...register('email', {
+								required: true,
+								pattern: RegularsHelper.EmailPattern,
+							})}
 						/>
-						<CustomInput
-							label={'Password'}
-							type={'password'}
-							value={loginData.password}
-							onChange={value => handleOnChange('password', value)}
+						{errors.email && (
+							<div className='text-danger'>Некорректный email</div>
+						)}
+						<Form.Label className='mt-3'>Пароль</Form.Label>
+						<Form.Control
+							{...register('password', { required: true })}
+							type='password'
 						/>
 						{error && (
-							<div className={'mt-1 text-danger'}>Неверные учетные данные</div>
+							<div className='text-danger'>Неверный email или пароль</div>
 						)}
 						<Button type={'submit'} className={'mt-3'}>
 							Войти
