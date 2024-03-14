@@ -46,10 +46,6 @@ export function PrivateLayout({ children }: ILayoutProps) {
 		}
 	}, [profile, roles, profileError, rolesError])
 
-	if (isLoadingProfile || isLoadingRoles) {
-		return <></>
-	}
-
 	return (
 		<>
 			<Header />
