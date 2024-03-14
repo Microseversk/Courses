@@ -1,46 +1,37 @@
-import { FormEvent, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { DateHelper } from '../../../helpers/DateHelper'
-import { useInput } from '../../../hooks/useInput'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useEditUserProfileMutation } from '../../../store/api/accountApi'
-import { CustomInput } from '../registrationPage/CustomInput'
 
 interface IEditProfile {
 	fullName: string
 	birthDate: string
-	email: string
 }
 
 export default function ProfilePage() {
 	const profile = useTypedSelector(state => state.auth.user)
 	const [editUserProfile] = useEditUserProfileMutation()
-	const { data: editData, handleOnChange } = useInput<IEditProfile>({
-		fullName: '',
-		birthDate: '',
-		email: '',
-	})
+	const { register, handleSubmit, setValue } = useForm<IEditProfile>()
+
+	const onSubmit: SubmitHandler<IEditProfile> = data => {
+		console.log(data)
+		editUserProfile({
+			fullName: data.fullName,
+			birthDate: DateHelper.to_ISO_string(data.birthDate),
+		})
+	}
 
 	useEffect(() => {
 		if (profile) {
-			console.log('change profile')
-			handleOnChange('fullName', profile.fullName)
-			handleOnChange(
+			setValue('fullName', profile?.fullName)
+			setValue(
 				'birthDate',
-				DateHelper.to_DD_MM_YYYY(profile.birthDate).yyyy_mm_dd
+				DateHelper.to_DD_MM_YYYY(profile?.birthDate).yyyy_mm_dd
 			)
-			handleOnChange('email', profile.email)
 		}
 	}, [profile])
-
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		console.log(DateHelper.to_ISO_string(editData.birthDate))
-		editUserProfile({
-			fullName: editData.fullName,
-			birthDate: DateHelper.to_ISO_string(editData.birthDate),
-		})
-	}
 
 	return (
 		<Container>
@@ -49,17 +40,13 @@ export default function ProfilePage() {
 					<Card.Title>Профиль</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<Form onSubmit={handleSubmit}>
+					<Form onSubmit={handleSubmit(onSubmit)}>
 						<Row className={'d-flex align-items-center'}>
 							<Col md={2} xs={12}>
 								ФИО:
 							</Col>
 							<Col>
-								<CustomInput
-									type={'text'}
-									value={editData.fullName}
-									onChange={value => handleOnChange('fullName', value)}
-								/>
+								<Form.Control {...register('fullName')} />
 							</Col>
 						</Row>
 						<Row className={'d-flex mt-3 align-items-center'}>
@@ -68,7 +55,7 @@ export default function ProfilePage() {
 							</Col>
 							<Col>
 								<Card.Text className={'mt-1 mt-md-0'}>
-									{editData.email}
+									{profile?.email}
 								</Card.Text>
 							</Col>
 						</Row>
@@ -77,11 +64,7 @@ export default function ProfilePage() {
 								День рождения:
 							</Col>
 							<Col className={'mt-1 mt-md-0'}>
-								<CustomInput
-									type={'date'}
-									value={editData.birthDate}
-									onChange={value => handleOnChange('birthDate', value)}
-								/>
+								<Form.Control type='date' {...register('birthDate')} />
 							</Col>
 						</Row>
 						<div className={'w-100 d-flex justify-content-end'}>

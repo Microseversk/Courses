@@ -8,6 +8,7 @@ import {
 import { setAuth, setUser } from '../../store/slices/auth.slice'
 import { AppDispatch } from '../../store/store'
 import { Header } from './header/Header'
+import { Loader } from './loader/Loader'
 
 export interface ILayoutProps {
 	children: ReactNode
@@ -49,7 +50,7 @@ export function PrivateLayout({ children }: ILayoutProps) {
 	return (
 		<>
 			<Header />
-			{children}
+			{isLoadingProfile ? <Loader /> : <>{children}</>}
 		</>
 	)
 }

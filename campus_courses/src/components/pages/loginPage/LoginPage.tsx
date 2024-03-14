@@ -24,11 +24,14 @@ export default function LoginPage() {
 
 	const {
 		register,
-		reset,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<IUserLogin>({
 		mode: 'onChange',
+		defaultValues: {
+			email: 'gymboss@gachi.com',
+			password: 'B0yNextD00r',
+		},
 	})
 
 	const onSubmit: SubmitHandler<IUserLogin> = data => {
