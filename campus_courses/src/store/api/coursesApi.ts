@@ -52,7 +52,7 @@ export const coursesApi = api.injectEndpoints({
 			{ body: CourseCreateType; groupId: string | undefined }
 		>({
 			query: data => ({
-				url: `courses/${data.groupId}`,
+				url: `groups/${data.groupId}`,
 				body: data.body,
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
