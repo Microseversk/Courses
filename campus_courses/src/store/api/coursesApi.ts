@@ -93,7 +93,7 @@ export const coursesApi = api.injectEndpoints({
 			{ courseId: string; body: EditCourseTeacherType }
 		>({
 			query: ({ courseId, body }) => ({
-				url: `/courses/${courseId}`,
+				url: `/courses/${courseId}/requirements-and-annotations`,
 				body: body,
 				method: 'PUT',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -159,6 +159,7 @@ export const {
 	useCreateNotificationMutation,
 	useSignUpToCourseMutation,
 	useEditCourseTeacherMutation,
+	useEditCourseAdminMutation,
 	useSetNewStudentStatusMutation,
 	useAddTeacherMutation,
 	useSetMarkMutation,

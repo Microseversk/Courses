@@ -11,6 +11,7 @@ import {
 import { DateHelper } from '../../../../helpers/DateHelper'
 import { useInput } from '../../../../hooks/useInput'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { useEditCourseAdminMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
 import { CourseCreateType } from '../../../../types/request.types'
 import { TextEditToolbar } from '../../groupCoursesPage/TextEditToolbar'
@@ -23,6 +24,7 @@ interface IEditCourseModalProps {
 export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
+	const [editCourse] = useEditCourseAdminMutation()
 	const { data, handleOnChange } = useInput<CourseCreateType>({
 		name: course?.name!,
 		startYear: course?.startYear!,
@@ -35,6 +37,7 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 
 	const handleEditCourse = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		editCourse({ courseId: course?.id!, body: data })
 		props.onHide()
 	}
 	return (
@@ -108,6 +111,7 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 					<FormSelect
 						onChange={e => handleOnChange('mainTeacherId', e.target.value)}
 					>
+						<option value=''>Не выбрано</option>
 						{users?.map(user => (
 							<option key={user.id} value={user.id}>
 								{user.fullName}
@@ -117,7 +121,9 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button className='btn-secondary'>Отмена</Button>
+				<Button className='btn-secondary' onClick={props.onHide}>
+					Отмена
+				</Button>
 				<Button type='submit' form='editCourseTeacherForm'>
 					Сохранить
 				</Button>
