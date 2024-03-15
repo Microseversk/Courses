@@ -30,7 +30,6 @@ export function PrivateLayout({ children }: ILayoutProps) {
 
 	useEffect(() => {
 		if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
-			console.log('Вставка человека')
 			dispatch(setAuth(true))
 			dispatch(
 				setUser({
@@ -41,7 +40,6 @@ export function PrivateLayout({ children }: ILayoutProps) {
 		}
 
 		if (profileError || rolesError) {
-			console.log('Ошибка фетча')
 			localStorage.removeItem('token')
 			navigation('/login')
 		}

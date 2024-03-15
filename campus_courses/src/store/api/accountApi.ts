@@ -1,4 +1,4 @@
-import { IUserLogin } from '../../components/pages/loginPage/LoginPage'
+import { IUserLogin } from '../../components/pages/loginPage/LoginForm'
 import { IEditUserProfile, IUserRegistration } from '../../types/request.types'
 import {
 	IProfileResponse,
