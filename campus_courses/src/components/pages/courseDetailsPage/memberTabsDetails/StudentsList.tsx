@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import {
-	AlertLink,
 	Button,
 	Col,
 	ListGroup,
 	ListGroupItem,
+	NavLink,
 	Row,
 } from 'react-bootstrap'
 import { useModal } from '../../../../hooks/useModal'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSetNewStudentStatusMutation } from '../../../../store/api/coursesApi'
+import { UserCourseRole } from '../../../../store/slices/course.slice'
 import { MarkTime } from '../../../../types/request.types'
 import { IStudent } from '../../../../types/response.types'
 import { SetMarkModal } from '../modals/SetMarkModal'
@@ -65,7 +66,7 @@ export function StudentsList(props: IStudentsListProps) {
 							{student.status === 'Accepted' && student.midtermResult && (
 								<>
 									<Col sm={12} md={4} className={' mt-2 mt-md-0'}>
-										<AlertLink
+										<NavLink
 											onClick={() => {
 												setCheckedUser({
 													student: student,
@@ -73,10 +74,18 @@ export function StudentsList(props: IStudentsListProps) {
 												})
 												onShow()
 											}}
-											className={'link-primary fw-normal'}
+											className={
+												[
+													UserCourseRole.Admin,
+													UserCourseRole.Teacher,
+													UserCourseRole.MainTeacher,
+												].includes(userCourseRole!)
+													? 'link-primary d-inline'
+													: 'disabled d-inline'
+											}
 										>
 											Промежуточная аттестация -
-										</AlertLink>
+										</NavLink>
 										{student.midtermResult === 'Passed' ? (
 											<span className={'ms-1 badge bg-success'}>Пройдена</span>
 										) : student.midtermResult === 'Failed' ? (
@@ -90,7 +99,7 @@ export function StudentsList(props: IStudentsListProps) {
 										)}
 									</Col>
 									<Col sm={12} md={4}>
-										<AlertLink
+										<NavLink
 											onClick={() => {
 												setCheckedUser({
 													student: student,
@@ -98,10 +107,18 @@ export function StudentsList(props: IStudentsListProps) {
 												})
 												onShow()
 											}}
-											className={'link-primary fw-normal'}
+											className={
+												[
+													UserCourseRole.Admin,
+													UserCourseRole.Teacher,
+													UserCourseRole.MainTeacher,
+												].includes(userCourseRole!)
+													? 'link-primary d-inline'
+													: 'disabled d-inline'
+											}
 										>
 											Финальная аттестация -
-										</AlertLink>
+										</NavLink>
 										{student.finalResult === 'Passed' ? (
 											<span className={'ms-1 badge bg-success'}>Пройдена</span>
 										) : student.finalResult === 'Failed' ? (
