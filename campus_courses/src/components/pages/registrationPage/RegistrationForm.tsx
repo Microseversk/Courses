@@ -3,7 +3,6 @@ import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { DateHelper } from '../../../helpers/DateHelper'
-import { RegularsHelper } from '../../../helpers/RegularsHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useRegisterUserMutation } from '../../../store/api/accountApi'
 import { IUserRegistration } from '../../../types/request.types'
@@ -44,11 +43,7 @@ export function RegistrationForm() {
 			<Form.Label>ФИО</Form.Label>
 			<Form.Control
 				{...register('fullName', {
-					required: 'Обязательное поле',
-					maxLength: {
-						value: 50,
-						message: 'Длина ФИО не должна превышать 50 символов',
-					},
+					validate: ValidateHelper.fullName,
 				})}
 			/>
 			{errors.fullName && <ErrorMessage text={errors.fullName.message} />}
@@ -56,18 +51,14 @@ export function RegistrationForm() {
 			<Form.Control
 				type='date'
 				{...register('birthDate', {
-					validate: value => ValidateHelper.validateBirthDate(value),
+					validate: ValidateHelper.birthDate,
 				})}
 			/>
 			{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
 			<Form.Label className='mt-3'>Email</Form.Label>
 			<Form.Control
 				{...register('email', {
-					required: 'Обязательное поле',
-					pattern: {
-						value: RegularsHelper.EmailPattern,
-						message: 'Некорректный email',
-					},
+					validate: ValidateHelper.email,
 				})}
 			/>
 			{errors.email && <ErrorMessage text={errors.email.message} />}
@@ -79,11 +70,7 @@ export function RegistrationForm() {
 			<Form.Control
 				type='password'
 				{...register('password', {
-					required: 'Обязательное поле',
-					minLength: {
-						value: 6,
-						message: 'Длина должна быть не меньше 6 символов',
-					},
+					validate: ValidateHelper.password,
 				})}
 			/>
 			{errors.password && <ErrorMessage text={errors.password.message} />}
@@ -93,10 +80,10 @@ export function RegistrationForm() {
 				type='password'
 				{...register('confirmPassword', {
 					validate: value => {
-						if (value === getValues('password')) {
-							return true
+						if (!(value === getValues('password'))) {
+							return 'Пароли не совпадают'
 						}
-						return 'Пароли не совпадают'
+						return true
 					},
 				})}
 			/>
