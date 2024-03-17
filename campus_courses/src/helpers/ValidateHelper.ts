@@ -9,6 +9,8 @@ const ValidateMessages = {
 	minLength: (minLength: number): string =>
 		`Длина должна быть не менее ${minLength} символов`,
 	incorrectEmail: 'Некорректный email',
+	minYear: (minYear: number): string => `Год не меньше ${minYear}`,
+	maxYear: (maxYear: number): string => `Год не больше ${maxYear}`,
 }
 
 export const ValidateHelper: { [key: string]: ValidateFunction } = {
@@ -55,6 +57,31 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 		}
 		if (password.length < 6) {
 			return ValidateMessages.minLength(6)
+		}
+		return true
+	},
+
+	courseName: name => {
+		if (!name.length) {
+			return ValidateMessages.required
+		}
+		return true
+	},
+
+	courseStartYear: year => {
+		const intYear = parseInt(year)
+		const currYear = new Date().getFullYear()
+		const strCurrYear = currYear.toString()
+
+		if (!year.length) {
+			return ValidateMessages.required
+		}
+
+		if (intYear < currYear) {
+			return ValidateMessages.minYear(currYear)
+		}
+		if (intYear > currYear + 5) {
+			return ValidateMessages.maxYear(currYear + 5)
 		}
 		return true
 	},
