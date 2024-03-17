@@ -4,7 +4,7 @@ import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { Header } from '../layouts/header/Header'
 //import { CourseDetailsPage } from '../pages/courseDetailsPage/CourseDetailsPage'
-//import { GreetingPage } from '../pages/greetingPage/GreetingPage'
+import GreetingPage from '../pages/greetingPage/GreetingPage'
 //import { GroupCoursesPage } from '../pages/groupCoursesPage/GroupCoursesPage'
 //import { GroupsPage } from '../pages/groupsPage/GroupsPage'
 //import LoginPage from '../pages/loginPage/LoginPage'
@@ -17,7 +17,7 @@ const LoginPage = lazy(() => import('../pages/loginPage/LoginPage'))
 const CourseDetailsPage = lazy(
 	() => import('../pages/courseDetailsPage/CourseDetailsPage')
 )
-const GreetingPage = lazy(() => import('../pages/greetingPage/GreetingPage'))
+// const GreetingPage = lazy(() => import('../pages/greetingPage/GreetingPage'))
 const GroupCoursesPage = lazy(
 	() => import('../pages/groupCoursesPage/GroupCoursesPage')
 )

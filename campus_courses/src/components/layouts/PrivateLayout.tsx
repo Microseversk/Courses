@@ -48,7 +48,7 @@ export function PrivateLayout({ children }: ILayoutProps) {
 	return (
 		<>
 			<Header />
-			{isLoadingProfile ? <Loader /> : <>{children}</>}
+			{isLoadingProfile || isLoadingRoles ? <Loader /> : <>{children}</>}
 		</>
 	)
 }
