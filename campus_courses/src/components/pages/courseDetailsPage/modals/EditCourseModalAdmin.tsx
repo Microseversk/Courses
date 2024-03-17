@@ -14,7 +14,7 @@ import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseAdminMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
 import { CourseCreateType } from '../../../../types/request.types'
-import { TextEditToolbar } from '../../groupCoursesPage/TextEditToolbar'
+import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
 interface IEditCourseModalProps {
 	isShow: boolean

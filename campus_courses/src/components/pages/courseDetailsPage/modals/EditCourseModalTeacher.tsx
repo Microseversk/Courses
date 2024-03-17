@@ -4,7 +4,7 @@ import { useInput } from '../../../../hooks/useInput'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseTeacherMutation } from '../../../../store/api/coursesApi'
 import { EditCourseTeacherType } from '../../../../types/request.types'
-import { TextEditToolbar } from '../../groupCoursesPage/TextEditToolbar'
+import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
 interface IEditCourseModalProps {
 	isShow: boolean

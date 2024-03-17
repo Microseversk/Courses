@@ -18,7 +18,7 @@ import { useInput } from '../../../hooks/useInput'
 import { useCreateCourseMutation } from '../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../store/api/usersApi'
 import { CourseCreateType } from '../../../types/request.types'
-import { TextEditToolbar } from './TextEditToolbar'
+import { TextEditToolbar } from '../../shared/TextEditToolbar'
 
 interface ICreateCourseModalProps {
 	isShow: boolean

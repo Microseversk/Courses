@@ -13,6 +13,7 @@ export default function GroupCoursesPage() {
 	const isAdmin = useTypedSelector(state => state.auth.user?.roles?.isAdmin)
 	const { data: courses, isLoading: isLoadingCourses } =
 		useGetGroupCoursesQuery({ id: groupId?.id })
+
 	const { data: groups, isLoading: isLoadingGroups } = useGetGroupsQuery('')
 	const [isCreatingCourse, setIsCreatingCourse] = useState(false)
 
