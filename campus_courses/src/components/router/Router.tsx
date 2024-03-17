@@ -4,6 +4,7 @@ import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { Header } from '../layouts/header/Header'
 //import { CourseDetailsPage } from '../pages/courseDetailsPage/CourseDetailsPage'
+import { Loader } from '../layouts/loader/Loader'
 import GreetingPage from '../pages/greetingPage/GreetingPage'
 //import { GroupCoursesPage } from '../pages/groupCoursesPage/GroupCoursesPage'
 //import { GroupsPage } from '../pages/groupsPage/GroupsPage'
@@ -33,7 +34,14 @@ const TeachingCoursesPage = lazy(
 
 export function Router() {
 	return (
-		<Suspense fallback={<Header />}>
+		<Suspense
+			fallback={
+				<>
+					<Header />
+					<Loader />
+				</>
+			}
+		>
 			<Routes>
 				<Route
 					path='/'
