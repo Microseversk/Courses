@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	Button,
 	Form,
@@ -12,12 +12,14 @@ import {
 	ModalHeader,
 	ModalTitle,
 } from 'react-bootstrap'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
-import { DateHelper } from '../../../helpers/DateHelper'
-import { useInput } from '../../../hooks/useInput'
+import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useCreateCourseMutation } from '../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../store/api/usersApi'
 import { CourseCreateType } from '../../../types/request.types'
+import { ButtonCustom } from '../../shared/ButtonCustom'
+import { ErrorMessage } from '../../shared/ErrorMessage'
 import { TextEditToolbar } from '../../shared/TextEditToolbar'
 
 interface ICreateCourseModalProps {
@@ -27,121 +29,151 @@ interface ICreateCourseModalProps {
 
 export function CreateCourseModal(props: ICreateCourseModalProps) {
 	const groupId = useParams()
-	const [createCourse] = useCreateCourseMutation()
+	const [createCourse, { isLoading }] = useCreateCourseMutation()
 	const { data: users } = useGetUsersQuery('')
-	const { data, handleOnChange } = useInput<CourseCreateType>({
-		name: '',
-		startYear: DateHelper.get_current_year(),
-		maximumStudentsCount: 1,
-		semester: 'Autumn',
-		annotations: '',
-		requirements: '',
-		mainTeacherId: '',
+	const [reqsIsValid, setReqsIsValid] = useState(true)
+	const [ansIsValid, setAnsIsValid] = useState(true)
+	const {
+		register,
+		reset,
+		getValues,
+		setValue,
+		formState: { errors },
+		handleSubmit,
+	} = useForm<CourseCreateType>({
+		mode: 'onChange',
 	})
 
-	const handleCreateCourse = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		console.log(data)
-		createCourse({ body: data, groupId: groupId.id })
+	useEffect(() => {
+		if (!isLoading) {
+			onModalHide()
+		}
+	}, [isLoading])
+
+	const onModalHide = () => {
 		props.onHide()
-		handleOnChange('name', '')
-		handleOnChange('startYear', DateHelper.get_current_year().toString())
-		handleOnChange('maximumStudentsCount', '1')
-		handleOnChange('semester', 'Autumn')
-		handleOnChange('annotations', '')
-		handleOnChange('requirements', '')
-		handleOnChange('mainTeacherId', '')
+		reset()
+	}
+
+	const onCreateCourse: SubmitHandler<CourseCreateType> = data => {
+		if (getValues('annotations').length) {
+			setAnsIsValid(false)
+		}
+		if (getValues('requirements').length) {
+			setReqsIsValid(false)
+		}
+
+		if (!ansIsValid || !reqsIsValid) {
+			return
+		}
+
+		setAnsIsValid(true)
+		setReqsIsValid(true)
+		createCourse({ groupId: groupId.id, body: data })
 	}
 
 	return (
-		<Modal show={props.isShow} onHide={props.onHide} size={'lg'}>
+		<Modal show={props.isShow} onHide={onModalHide} size={'lg'}>
 			<ModalHeader closeButton>
 				<ModalTitle>Создание курса</ModalTitle>
 			</ModalHeader>
 			<ModalBody>
-				<Form onSubmit={handleCreateCourse} id={'createCourseForm'}>
+				<Form onSubmit={handleSubmit(onCreateCourse)} id={'createCourseForm'}>
 					<FormLabel>Название курса</FormLabel>
 					<FormControl
-						value={data.name}
-						onChange={e => handleOnChange('name', e.target.value)}
+						{...register('name', { validate: ValidateHelper.courseName })}
 					/>
+					{errors.name && <ErrorMessage text={errors.name.message} />}
 					<FormLabel className={'mt-3'}>Год начала курса</FormLabel>
 					<FormControl
-						type={'number'}
-						min={DateHelper.get_current_year()}
-						value={data.startYear}
-						onChange={e =>
-							handleOnChange(
-								'startYear',
-								e.target.value,
-								e.target.value.length <= 4
-							)
-						}
+						{...register('startYear', {
+							required: 'Обязательное поле',
+							min: {
+								value: new Date().getFullYear(),
+								message: `Год не меньше ${new Date().getFullYear()}`,
+							},
+							max: {
+								value: new Date().getFullYear() + 5,
+								message: `Год не больше ${new Date().getFullYear() + 5}`,
+							},
+						})}
+						type='number'
 					/>
+					{errors.startYear && <ErrorMessage text={errors.startYear.message} />}
 					<FormLabel className={'mt-3'}>Общее количество мест</FormLabel>
 					<FormControl
+						{...register('maximumStudentsCount', {
+							required: 'Обязательное поле',
+							min: {
+								value: 1,
+								message: 'Не меньше 1',
+							},
+							max: {
+								value: 200,
+								message: 'Не больше 200',
+							},
+						})}
 						type={'number'}
-						min={1}
-						value={data.maximumStudentsCount}
-						onChange={e =>
-							handleOnChange(
-								'maximumStudentsCount',
-								e.target.value,
-								e.target.value.length <= 4 && e.target.value[0] !== '0'
-							)
-						}
 					/>
+					{errors.maximumStudentsCount && (
+						<ErrorMessage text={errors.maximumStudentsCount.message} />
+					)}
 					<FormLabel className={'mt-3'}>Семестр</FormLabel>
 					<div className={'d-flex gap-3'}>
 						<FormCheck
+							{...register('semester')}
+							defaultChecked
 							name={'semester'}
 							type={'radio'}
+							value={'Autumn'}
 							label={'Осенний'}
-							checked={data.semester === 'Autumn'}
-							onChange={() => handleOnChange('semester', 'Autumn')}
 						/>
 						<FormCheck
+							{...register('semester')}
 							name={'semester'}
 							type={'radio'}
+							value={'Spring'}
 							label={'Весенний'}
-							checked={data.semester === 'Spring'}
-							onChange={() => handleOnChange('semester', 'Spring')}
 						/>
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
 					<TextEditToolbar
-						value={data.requirements}
-						handleChange={(value: string) =>
-							handleOnChange('requirements', value)
-						}
+						value={getValues('requirements')}
+						handleChange={(value: string) => setValue('requirements', value)}
 					/>
+					{!reqsIsValid && <ErrorMessage text='Обязательное поле' />}
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
 					<TextEditToolbar
-						value={data.annotations}
-						handleChange={(value: string) =>
-							handleOnChange('annotations', value)
-						}
+						value={getValues('annotations')}
+						handleChange={(value: string) => setValue('annotations', value)}
 					/>
+					{!ansIsValid && <ErrorMessage text='Обязательное поле' />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 					<FormSelect
-						onChange={e => handleOnChange('mainTeacherId', e.target.value)}
+						{...register('mainTeacherId', { required: 'Обязательное поле' })}
 					>
 						<option value=''>Не выбрано</option>
-						{users?.map((user, index) => (
+						{users?.map(user => (
 							<option key={user.id} value={user.id}>
 								{user.fullName}
 							</option>
 						))}
 					</FormSelect>
+					{errors.mainTeacherId && (
+						<ErrorMessage text={errors.mainTeacherId.message} />
+					)}
 				</Form>
 			</ModalBody>
 			<ModalFooter>
-				<Button className={'btn-secondary'} onClick={props.onHide}>
+				<Button className={'btn-secondary'} onClick={onModalHide}>
 					Отмена
 				</Button>
-				<Button form={'createCourseForm'} type={'submit'}>
-					Сохранить
-				</Button>
+				<ButtonCustom
+					form={'createCourseForm'}
+					type={'submit'}
+					text='Создать'
+					isLoading={isLoading}
+				/>
 			</ModalFooter>
 		</Modal>
 	)
