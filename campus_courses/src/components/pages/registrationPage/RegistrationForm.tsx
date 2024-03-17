@@ -105,6 +105,7 @@ export function RegistrationForm() {
 			)}
 
 			<ButtonCustom
+				className='mt-3'
 				text='Зарегистрироваться'
 				isLoading={isLoading || !!response}
 				type='submit'

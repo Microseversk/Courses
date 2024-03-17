@@ -55,6 +55,7 @@ export function LoginForm() {
 			/>
 			{serverError && <ErrorMessage text='Неверный email или пароль' />}
 			<ButtonCustom
+				className='mt-3'
 				isLoading={isLoading || !!response}
 				text='Войти'
 				type='submit'

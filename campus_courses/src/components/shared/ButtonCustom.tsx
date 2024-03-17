@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import Loading from 'react-loading'
 
 interface IButtonCustomProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	isLoading: boolean
+	isLoading?: boolean
 	text: string | undefined
 }
 
@@ -13,7 +13,7 @@ export function ButtonCustom({
 	...other
 }: IButtonCustomProps) {
 	return (
-		<Button {...other} className={'mt-3'} style={{ position: 'relative' }}>
+		<Button {...other} style={{ position: 'relative' }} disabled={isLoading}>
 			{isLoading ? (
 				<div
 					style={{

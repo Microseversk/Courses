@@ -88,7 +88,12 @@ export function ProfileForm() {
 				</Col>
 			</Row>
 			<div className={'w-100 d-flex justify-content-end'}>
-				<ButtonCustom text='Изменить' isLoading={isLoading} type='submit' />
+				<ButtonCustom
+					className='mt-3'
+					text='Изменить'
+					isLoading={isLoading}
+					type='submit'
+				/>
 			</div>
 		</Form>
 	)

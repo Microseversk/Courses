@@ -1,40 +1,75 @@
-import {Button, Form, Modal} from "react-bootstrap";
-import {useEffect, useState} from "react";
-import {groupsApi, useEditGroupMutation} from "../../../store/api/groupsApi";
+import { useEffect } from 'react'
+import { Button, Form, Modal } from 'react-bootstrap'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useEditGroupMutation } from '../../../store/api/groupsApi'
+import { ButtonCustom } from '../../shared/ButtonCustom'
+import { ErrorMessage } from '../../shared/ErrorMessage'
 
 interface EditGroupItemModalProps {
-    isShow: boolean,
-    onHide: () => void,
-    name : string,
-    id : string
-
+	isShow: boolean
+	onHide: () => void
+	name: string
+	id: string
 }
 
-export function EditGroupItemModal(props : EditGroupItemModalProps) {
+interface IGroupeEdit {
+	id: string
+	name: string
+}
 
-    const [groupName, setGroupName] = useState(props.name)
-    const [editGroup, {isLoading}] = useEditGroupMutation()
+export function EditGroupItemModal(props: EditGroupItemModalProps) {
+	const [editGroup, { isLoading }] = useEditGroupMutation()
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+	} = useForm<IGroupeEdit>()
 
-    useEffect(() => {
-        setGroupName(props.name)
-    }, [props.isShow]);
-    const handleEdit = () => {
-        editGroup({id: props.id, name: groupName})
-        props.onHide()
-    }
-    return (
-        <Modal show={props.isShow} onHide={props.onHide} size={'lg'}>
-            <Modal.Header closeButton>
-                <Modal.Title>Редактирование группы</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form.Label>Название группы</Form.Label>
-                <Form.Control type={'text'} value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button className={'btn-secondary'} onClick={props.onHide}>Отмена</Button>
-                <Button onClick={handleEdit}>Сохранить</Button>
-            </Modal.Footer>
-        </Modal>
-    )
+	useEffect(() => {
+		if (props.isShow) {
+			setValue('id', props.id)
+			setValue('name', props.name)
+		}
+	}, [props.name, props.isShow])
+
+	const onHideModal = () => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}
+
+	const onEditGroup: SubmitHandler<IGroupeEdit> = data => {
+		editGroup(data)
+	}
+
+	return (
+		<Modal show={props.isShow} onHide={onHideModal} size={'lg'}>
+			<Modal.Header closeButton>
+				<Modal.Title>Редактирование группы</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<Form onSubmit={handleSubmit(onEditGroup)} id='editGroupForm'>
+					<Form.Label>Название группы</Form.Label>
+					<Form.Control
+						{...register('name', { required: 'Введите новое имя группы' })}
+					/>
+					{errors.name && <ErrorMessage text={errors.name.message} />}
+				</Form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button className={'btn-secondary'} onClick={onHideModal}>
+					Отмена
+				</Button>
+				<ButtonCustom
+					type='submit'
+					isLoading={isLoading}
+					text='Сохранить'
+					form='editGroupForm'
+				>
+					Сохранить
+				</ButtonCustom>
+			</Modal.Footer>
+		</Modal>
+	)
 }
