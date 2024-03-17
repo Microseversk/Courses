@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import { useEffect } from 'react'
 import {
 	Button,
 	Form,
@@ -8,12 +8,12 @@ import {
 	FormSelect,
 	Modal,
 } from 'react-bootstrap'
-import { DateHelper } from '../../../../helpers/DateHelper'
-import { useInput } from '../../../../hooks/useInput'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseAdminMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
 import { CourseCreateType } from '../../../../types/request.types'
+import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
 interface IEditCourseModalProps {
@@ -24,93 +24,73 @@ interface IEditCourseModalProps {
 export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
-	const [editCourse] = useEditCourseAdminMutation()
-	const { data, handleOnChange } = useInput<CourseCreateType>({
-		name: course?.name!,
-		startYear: course?.startYear!,
-		semester: course?.semester!,
-		annotations: course?.annotations!,
-		requirements: course?.requirements!,
-		mainTeacherId: '',
-		maximumStudentsCount: course?.maximumStudentsCount!,
-	})
+	const [editCourse, { isLoading }] = useEditCourseAdminMutation()
 
-	const handleEditCourse = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	const { register, reset, getValues, setValue, handleSubmit } =
+		useForm<CourseCreateType>({
+			defaultValues: course!,
+		})
+
+	useEffect(() => {
+		reset(course!)
+		if (course?.annotations && course.requirements) {
+			setValue('annotations', course?.annotations)
+			setValue('requirements', course?.requirements)
+		}
+	}, [props.onHide])
+
+	useEffect(() => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}, [isLoading])
+
+	const onEditCourseByAdmin: SubmitHandler<CourseCreateType> = data => {
 		editCourse({ courseId: course?.id!, body: data })
-		props.onHide()
 	}
 	return (
 		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
 			<Modal.Body>
-				<Form onSubmit={handleEditCourse} id='editCourseTeacherForm'>
+				<Form
+					onSubmit={handleSubmit(onEditCourseByAdmin)}
+					id='editCourseTeacherForm'
+				>
 					<FormLabel>Название курса</FormLabel>
-					<FormControl
-						value={data.name}
-						onChange={e => handleOnChange('name', e.target.value)}
-					/>
+					<FormControl {...register('name')} />
 					<FormLabel className={'mt-3'}>Год начала курса</FormLabel>
-					<FormControl
-						type={'number'}
-						min={DateHelper.get_current_year()}
-						value={data.startYear}
-						onChange={e =>
-							handleOnChange(
-								'startYear',
-								e.target.value,
-								e.target.value.length <= 4
-							)
-						}
-					/>
+					<FormControl {...register('startYear')} type={'number'} />
 					<FormLabel className={'mt-3'}>Общее количество мест</FormLabel>
-					<FormControl
-						type={'number'}
-						min={1}
-						value={data.maximumStudentsCount}
-						onChange={e =>
-							handleOnChange(
-								'maximumStudentsCount',
-								e.target.value,
-								e.target.value.length <= 4 && e.target.value[0] !== '0'
-							)
-						}
-					/>
+					<FormControl {...register('maximumStudentsCount')} type={'number'} />
 					<FormLabel className={'mt-3'}>Семестр</FormLabel>
 					<div className={'d-flex gap-3'}>
 						<FormCheck
+							{...register('semester')}
 							name={'semester'}
 							type={'radio'}
+							value={'Autumn'}
 							label={'Осенний'}
-							checked={data.semester === 'Autumn'}
-							onChange={() => handleOnChange('semester', 'Autumn')}
 						/>
 						<FormCheck
+							{...register('semester')}
 							name={'semester'}
 							type={'radio'}
+							value={'Spring'}
 							label={'Весенний'}
-							checked={data.semester === 'Spring'}
-							onChange={() => handleOnChange('semester', 'Spring')}
 						/>
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
 					<TextEditToolbar
-						value={data.requirements}
-						handleChange={(value: string) =>
-							handleOnChange('requirements', value)
-						}
+						value={getValues('requirements')}
+						handleChange={(value: string) => setValue('requirements', value)}
 					/>
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
 					<TextEditToolbar
-						value={data.annotations}
-						handleChange={(value: string) =>
-							handleOnChange('annotations', value)
-						}
+						value={getValues('annotations')}
+						handleChange={(value: string) => setValue('annotations', value)}
 					/>
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
-					<FormSelect
-						onChange={e => handleOnChange('mainTeacherId', e.target.value)}
-					>
+					<FormSelect {...register('mainTeacherId')}>
 						<option value=''>Не выбрано</option>
 						{users?.map(user => (
 							<option key={user.id} value={user.id}>
@@ -124,9 +104,12 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<Button type='submit' form='editCourseTeacherForm'>
-					Сохранить
-				</Button>
+				<ButtonCustom
+					type='submit'
+					text='Сохранить'
+					form='editCourseTeacherForm'
+					isLoading={isLoading}
+				/>
 			</Modal.Footer>
 		</Modal>
 	)
