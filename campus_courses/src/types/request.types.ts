@@ -44,7 +44,7 @@ export interface ICourseNotificationCreate {
 	isImportant: boolean
 }
 
-export type EditCourseTeacherType = {
+export type EditCourseTeacher = {
 	requirements: string
 	annotations: string
 }

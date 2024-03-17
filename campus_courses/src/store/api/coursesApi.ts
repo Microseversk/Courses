@@ -1,6 +1,6 @@
 import {
 	CourseCreateType,
-	EditCourseTeacherType,
+	EditCourseTeacher,
 	ICourseEditStatus,
 	ICourseNotificationCreate,
 	IDeleteCourse,
@@ -99,7 +99,7 @@ export const coursesApi = api.injectEndpoints({
 		}),
 		editCourseTeacher: builder.mutation<
 			any,
-			{ courseId: string; body: EditCourseTeacherType }
+			{ courseId: string; body: EditCourseTeacher }
 		>({
 			query: ({ courseId, body }) => ({
 				url: `/courses/${courseId}/requirements-and-annotations`,
