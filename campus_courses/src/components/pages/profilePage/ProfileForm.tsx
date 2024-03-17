@@ -81,12 +81,7 @@ export function ProfileForm() {
 						type='date'
 						{...register('birthDate', {
 							required: 'Некорректная дата',
-							validate: value => {
-								if (DateHelper.validate_date(value)) {
-									return true
-								}
-								return 'Корректная дата от 1.1.1900 до текущего дня'
-							},
+							validate: value => DateHelper.validate_birth_date(value),
 						})}
 					/>
 					{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
