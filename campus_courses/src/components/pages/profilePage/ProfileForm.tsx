@@ -5,6 +5,7 @@ import { DateHelper } from '../../../helpers/DateHelper'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useEditUserProfileMutation } from '../../../store/api/accountApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
+import { ErrorMessage } from '../../shared/ErrorMessage'
 
 interface IEditProfile {
 	fullName: string
@@ -14,14 +15,14 @@ interface IEditProfile {
 export function ProfileForm() {
 	const [editUserProfile, { isLoading }] = useEditUserProfileMutation()
 	const profile = useTypedSelector(state => state.auth.user)
-	const { register, handleSubmit, setValue } = useForm<IEditProfile>()
-	const onSubmit: SubmitHandler<IEditProfile> = data => {
-		console.log(data)
-		editUserProfile({
-			fullName: data.fullName,
-			birthDate: DateHelper.to_ISO_string(data.birthDate),
-		})
-	}
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+	} = useForm<IEditProfile>({
+		mode: 'onChange',
+	})
 
 	useEffect(() => {
 		if (profile) {
@@ -33,6 +34,14 @@ export function ProfileForm() {
 		}
 	}, [profile])
 
+	const onSubmit: SubmitHandler<IEditProfile> = data => {
+		console.log(data)
+		editUserProfile({
+			fullName: data.fullName,
+			birthDate: DateHelper.to_ISO_string(data.birthDate),
+		})
+	}
+
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
 			<Row className={'d-flex align-items-center'}>
@@ -40,7 +49,19 @@ export function ProfileForm() {
 					ФИО:
 				</Col>
 				<Col>
-					<Form.Control {...register('fullName')} />
+					<Form.Control
+						{...register('fullName', {
+							required: {
+								value: true,
+								message: 'Обязательное поле',
+							},
+							maxLength: {
+								value: 50,
+								message: `Длина ФИО не должна превышать 50 символов`,
+							},
+						})}
+					/>
+					{errors.fullName && <ErrorMessage text={errors.fullName.message} />}
 				</Col>
 			</Row>
 			<Row className={'d-flex mt-3 align-items-center'}>
@@ -56,11 +77,23 @@ export function ProfileForm() {
 					День рождения:
 				</Col>
 				<Col className={'mt-1 mt-md-0'}>
-					<Form.Control type='date' {...register('birthDate')} />
+					<Form.Control
+						type='date'
+						{...register('birthDate', {
+							required: 'Некорректная дата',
+							validate: value => {
+								if (DateHelper.validate_date(value)) {
+									return true
+								}
+								return 'Корректная дата от 1.1.1900 до текущего дня'
+							},
+						})}
+					/>
+					{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
 				</Col>
 			</Row>
 			<div className={'w-100 d-flex justify-content-end'}>
-				<ButtonCustom text='Изменить' isLoading={isLoading} />
+				<ButtonCustom text='Изменить' isLoading={isLoading} type='submit' />
 			</div>
 		</Form>
 	)

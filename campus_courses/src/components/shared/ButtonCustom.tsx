@@ -1,14 +1,19 @@
+import { ButtonHTMLAttributes } from 'react'
 import { Button } from 'react-bootstrap'
 import Loading from 'react-loading'
 
-interface IButtonCustomProps {
+interface IButtonCustomProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	isLoading: boolean
 	text: string | undefined
 }
 
-export function ButtonCustom({ isLoading, text }: IButtonCustomProps) {
+export function ButtonCustom({
+	isLoading,
+	text,
+	...other
+}: IButtonCustomProps) {
 	return (
-		<Button type={'submit'} className={'mt-3'} style={{ position: 'relative' }}>
+		<Button {...other} className={'mt-3'} style={{ position: 'relative' }}>
 			{isLoading ? (
 				<div
 					style={{

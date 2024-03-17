@@ -54,7 +54,11 @@ export function LoginForm() {
 				type='password'
 			/>
 			{serverError && <ErrorMessage text='Неверный email или пароль' />}
-			<ButtonCustom isLoading={isLoading || !!response} text='Войти' />
+			<ButtonCustom
+				isLoading={isLoading || !!response}
+				text='Войти'
+				type='submit'
+			/>
 		</Form>
 	)
 }
