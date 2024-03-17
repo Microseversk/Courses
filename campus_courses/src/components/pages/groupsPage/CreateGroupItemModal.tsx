@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useCreateGroupMutation } from '../../../store/api/groupsApi'
@@ -14,24 +15,30 @@ interface CreateGroupItemModalProps {
 }
 
 export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
+	const [createGroup, { isLoading }] = useCreateGroupMutation()
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
 	} = useForm<ICreateGroup>()
-	const [createGroup, { isLoading }] = useCreateGroupMutation()
 
 	const onCreateGroup: SubmitHandler<ICreateGroup> = data => {
 		createGroup(data)
-		props.onHide()
-		reset()
 	}
 
 	const onHideModal = () => {
-		props.onHide()
-		reset()
+		if (!isLoading) {
+			props.onHide()
+			reset()
+		}
 	}
+
+	useEffect(() => {
+		if (isLoading === false) {
+			onHideModal()
+		}
+	}, [isLoading])
 
 	return (
 		<Modal show={props.isShow} onHide={onHideModal} size={'lg'}>

@@ -39,6 +39,12 @@ export function EditGroupItemModal(props: EditGroupItemModalProps) {
 		}
 	}
 
+	useEffect(() => {
+		if (isLoading === false) {
+			onHideModal()
+		}
+	}, [isLoading])
+
 	const onEditGroup: SubmitHandler<IGroupeEdit> = data => {
 		editGroup(data)
 	}
