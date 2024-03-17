@@ -3,6 +3,7 @@ import {
 	EditCourseTeacherType,
 	ICourseEditStatus,
 	ICourseNotificationCreate,
+	IDeleteCourse,
 	SetMarkType,
 } from '../../types/request.types'
 import {
@@ -59,6 +60,14 @@ export const coursesApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['groupCourses'],
 		}),
+		deleteCourse: builder.mutation<any, IDeleteCourse>({
+			query: data => ({
+				url: `courses/${data.courseId}`,
+				method: 'DELETE',
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}),
+			invalidatesTags: ['groupCourses'],
+		}),
 		editCourseStatus: builder.mutation<any, ICourseEditStatus>({
 			query: ({ courseId, status }) => ({
 				url: `/courses/${courseId}/status`,
@@ -100,7 +109,6 @@ export const coursesApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['courseDetails'],
 		}),
-		//TODO Проверить необходимость эндпоинта
 		editCourseAdmin: builder.mutation<
 			any,
 			{ courseId: string; body: CourseCreateType }
@@ -151,6 +159,7 @@ export const coursesApi = api.injectEndpoints({
 
 export const {
 	useCreateCourseMutation,
+	useDeleteCourseMutation,
 	useGetGroupCoursesQuery,
 	useGetCoursesMyQuery,
 	useGetCoursesTeachingQuery,

@@ -1,17 +1,25 @@
 import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../../hooks/useModal'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
-import { useSignUpToCourseMutation } from '../../../../store/api/coursesApi'
+import {
+	useDeleteCourseMutation,
+	useSignUpToCourseMutation,
+} from '../../../../store/api/coursesApi'
 import { UserCourseRole } from '../../../../store/slices/course.slice'
+import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
 import { EditCourseModalAdmin } from '../modals/EditCourseModalAdmin'
 import { EditCourseModalTeacher } from '../modals/EditCourseModalTeacher'
 
 export function CommonCourseDetails() {
+	const navigation = useNavigate()
 	const { course, userCourseRole } = useTypedSelector(
 		state => state?.openedCourse
 	)
 	const [signUp] = useSignUpToCourseMutation()
+	const [deleteCourse, { isLoading: isLoadingDelete }] =
+		useDeleteCourseMutation()
 	const {
 		isShow: isShowEditStatus,
 		onHide: onHideEditStatus,
@@ -50,9 +58,23 @@ export function CommonCourseDetails() {
 					UserCourseRole.MainTeacher,
 					UserCourseRole.Teacher,
 				].includes(userCourseRole) && (
-					<Button className={'btn-warning'} onClick={onShowEditCourse}>
+					<Button
+						className={'btn-warning ms-auto me-3'}
+						onClick={onShowEditCourse}
+					>
 						РЕДАКТИРОВАТЬ
 					</Button>
+				)}
+				{userCourseRole === UserCourseRole.Admin && (
+					<ButtonCustom
+						text='УДАЛИТЬ'
+						className={'btn-danger me-3'}
+						onClick={() => {
+							deleteCourse({ courseId: course.id })
+							navigation(-1)
+						}}
+						isLoading={isLoadingDelete}
+					/>
 				)}
 			</div>
 			<ListGroup className={'mt-2'}>
