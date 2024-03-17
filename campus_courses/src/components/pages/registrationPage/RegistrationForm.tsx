@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { RegularsHelper } from '../../../helpers/RegularsHelper'
+import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useRegisterUserMutation } from '../../../store/api/accountApi'
 import { IUserRegistration } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
@@ -55,8 +56,7 @@ export function RegistrationForm() {
 			<Form.Control
 				type='date'
 				{...register('birthDate', {
-					required: 'Некорректная дата',
-					validate: value => DateHelper.validate_birth_date(value),
+					validate: value => ValidateHelper.validateBirthDate(value),
 				})}
 			/>
 			{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
