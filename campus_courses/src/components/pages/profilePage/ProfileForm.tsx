@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
@@ -36,11 +37,11 @@ export function ProfileForm() {
 	}, [profile])
 
 	const onSubmit: SubmitHandler<IEditProfile> = data => {
-		console.log(data)
 		editUserProfile({
 			fullName: data.fullName,
 			birthDate: DateHelper.to_ISO_string(data.birthDate),
 		})
+		toast.success('Профиль обновлен')
 	}
 
 	return (
@@ -81,7 +82,7 @@ export function ProfileForm() {
 					<Form.Control
 						type='date'
 						{...register('birthDate', {
-							validate: value => ValidateHelper.validateBirthDate(value),
+							validate: ValidateHelper.validateBirthDate,
 						})}
 					/>
 					{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
