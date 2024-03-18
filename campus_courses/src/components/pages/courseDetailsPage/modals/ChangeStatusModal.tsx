@@ -8,6 +8,7 @@ import {
 	ModalHeader,
 } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseStatusMutation } from '../../../../store/api/coursesApi'
 import { ICourseEditStatus } from '../../../../types/request.types'
@@ -18,7 +19,7 @@ interface IChangeStatusModalProps {
 }
 
 export function ChangeStatusModal(props: IChangeStatusModalProps) {
-	const [editStatus] = useEditCourseStatusMutation()
+	const [editStatus, { isSuccess, isError }] = useEditCourseStatusMutation()
 	const { status, id } = useTypedSelector(state => state.openedCourse.course!)
 
 	const onChangeCourseStatus: SubmitHandler<ICourseEditStatus> = data => {
@@ -31,6 +32,8 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 			courseId: id,
 		},
 	})
+
+	useToastMutate(isSuccess, isError, 'Статус изменён')
 
 	const onModalHide = () => {
 		reset()

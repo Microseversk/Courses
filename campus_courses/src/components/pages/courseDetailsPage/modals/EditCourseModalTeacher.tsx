@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseTeacherMutation } from '../../../../store/api/coursesApi'
 import { EditCourseTeacher } from '../../../../types/request.types'
@@ -14,9 +15,12 @@ interface IEditCourseModalProps {
 
 export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
-	const [editCourse, { isLoading }] = useEditCourseTeacherMutation()
+	const [editCourse, { isLoading, isSuccess, isError }] =
+		useEditCourseTeacherMutation()
 
 	const { setValue, getValues, handleSubmit } = useForm<EditCourseTeacher>()
+
+	useToastMutate(isSuccess, isError, 'Курс изменён')
 
 	const onEditCourseByTeacher: SubmitHandler<EditCourseTeacher> = data => {
 		editCourse({

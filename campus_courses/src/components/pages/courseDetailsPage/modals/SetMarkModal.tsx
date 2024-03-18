@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { Button, Form, FormCheck, FormLabel, Modal } from 'react-bootstrap'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSetMarkMutation } from '../../../../store/api/coursesApi'
 import { MarkTime, MarkType } from '../../../../types/request.types'
@@ -14,10 +15,12 @@ type SetMarkModalProps = {
 
 export function SetMarkModal(props: SetMarkModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id)
-	const [setStudentMark] = useSetMarkMutation()
+	const [setStudentMark, { isSuccess, isError }] = useSetMarkMutation()
 	const [mark, setMark] = useState<MarkType | null>()
 
-	const handleSetMark = (e: FormEvent<HTMLFormElement>) => {
+	useToastMutate(isSuccess, isError, 'Оценка поставлена')
+
+	const onSetMark = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (!mark) return
 		setStudentMark({
@@ -39,7 +42,7 @@ export function SetMarkModal(props: SetMarkModalProps) {
 				"
 			</Modal.Header>
 			<Modal.Body>
-				<Form id='setMarkForm' onSubmit={handleSetMark}>
+				<Form id='setMarkForm' onSubmit={onSetMark}>
 					<FormLabel>Студент - {props.student && props.student.name}</FormLabel>
 					<FormCheck
 						name='mark'

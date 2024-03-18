@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useCreateNotificationMutation } from '../../../../store/api/coursesApi'
 
@@ -10,11 +11,12 @@ type ICreateNotificationModalProps = {
 
 export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id!)
-	const [createNotify] = useCreateNotificationMutation()
+	const [createNotify, { isSuccess, isError }] = useCreateNotificationMutation()
 	const [text, setText] = useState('')
 	const [isImportant, setIsImportant] = useState(false)
+	useToastMutate(isSuccess, isError, 'Уведомление создано')
 
-	const handleCreateNotification = (e: FormEvent<HTMLFormElement>) => {
+	const onCreateNotification = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		createNotify({ courseId, body: { text, isImportant } })
 		props.onHide()
@@ -25,7 +27,7 @@ export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 		<Modal show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Создание уведомления</Modal.Header>
 			<Modal.Body>
-				<Form id='createNotifyForm' onSubmit={handleCreateNotification}>
+				<Form id='createNotifyForm' onSubmit={onCreateNotification}>
 					<Form.Control
 						as='textarea'
 						rows={4}

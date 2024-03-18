@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseAdminMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
@@ -26,7 +27,8 @@ interface IEditCourseModalProps {
 export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
-	const [editCourse, { isLoading }] = useEditCourseAdminMutation()
+	const [editCourse, { isLoading, isSuccess, isError }] =
+		useEditCourseAdminMutation()
 	const [reqsIsValid, setReqsIsValid] = useState(true)
 	const [ansIsValid, setAnsIsValid] = useState(true)
 
@@ -41,6 +43,8 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 		defaultValues: course!,
 		mode: 'onChange',
 	})
+
+	useToastMutate(isSuccess, isError, 'Курс изменён')
 
 	useEffect(() => {
 		reset(course!)
