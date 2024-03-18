@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
@@ -18,6 +19,7 @@ export function RegistrationForm() {
 		console.log(error)
 		if (response) {
 			localStorage.setItem('token', response.token)
+			toast.success('Успешная регистрация')
 			navigate('/')
 		}
 	}, [response, error])

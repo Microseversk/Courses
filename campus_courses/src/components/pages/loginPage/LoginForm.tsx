@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { RegularsHelper } from '../../../helpers/RegularsHelper'
 import { useLoginUserMutation } from '../../../store/api/accountApi'
@@ -30,6 +31,7 @@ export function LoginForm() {
 	useEffect(() => {
 		if (response) {
 			nav('/')
+			toast.success('Успешный вход')
 			localStorage.setItem('token', response.token)
 		}
 	}, [response])

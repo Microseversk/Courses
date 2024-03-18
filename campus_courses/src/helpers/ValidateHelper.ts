@@ -4,6 +4,7 @@ type ValidateFunction = (data: string) => boolean | string
 
 const ValidateMessages = {
 	required: 'Обязательное поле',
+	requiredDigit: 'Должна присутствовать 1 цифра',
 	maxLength: (maxLength: number): string =>
 		`Длина не должна превышать ${maxLength} символов`,
 	minLength: (minLength: number): string =>
@@ -57,6 +58,10 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 		}
 		if (password.length < 6) {
 			return ValidateMessages.minLength(6)
+		}
+
+		if (!/\d/.test(password)) {
+			return ValidateMessages.requiredDigit
 		}
 		return true
 	},
