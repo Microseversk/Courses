@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { RegularsHelper } from '../../../helpers/RegularsHelper'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useLoginUserMutation } from '../../../store/api/accountApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
@@ -15,7 +15,7 @@ export interface IUserLogin {
 
 export function LoginForm() {
 	const nav = useNavigate()
-	const [loginUser, { isLoading, error: serverError, data: response }] =
+	const [loginUser, { isLoading, error, data: response, isSuccess }] =
 		useLoginUserMutation()
 	const {
 		register,
@@ -31,10 +31,15 @@ export function LoginForm() {
 	useEffect(() => {
 		if (response) {
 			nav('/')
-			toast.success('Успешный вход')
 			localStorage.setItem('token', response.token)
 		}
 	}, [response])
+
+	useToastMutate(
+		isSuccess,
+		error && 'status' in error && error.status !== 400,
+		'Успешный вход'
+	)
 
 	const onSubmit: SubmitHandler<IUserLogin> = data => {
 		loginUser(data)
@@ -55,7 +60,7 @@ export function LoginForm() {
 				{...register('password', { required: true })}
 				type='password'
 			/>
-			{serverError && <ErrorMessage text='Неверный email или пароль' />}
+			{error && <ErrorMessage text='Неверный email или пароль' />}
 			<ButtonCustom
 				className='mt-3'
 				isLoading={isLoading || !!response}

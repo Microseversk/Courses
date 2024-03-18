@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useEditUserProfileMutation } from '../../../store/api/accountApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
@@ -15,7 +15,8 @@ interface IEditProfile {
 }
 
 export function ProfileForm() {
-	const [editUserProfile, { isLoading }] = useEditUserProfileMutation()
+	const [editUserProfile, { isLoading, isSuccess, isError }] =
+		useEditUserProfileMutation()
 	const profile = useTypedSelector(state => state.auth.user)
 	const {
 		register,
@@ -25,6 +26,8 @@ export function ProfileForm() {
 	} = useForm<IEditProfile>({
 		mode: 'onChange',
 	})
+
+	useToastMutate(isSuccess, isError, 'Профиль обновлен')
 
 	useEffect(() => {
 		if (profile) {
@@ -41,7 +44,6 @@ export function ProfileForm() {
 			fullName: data.fullName,
 			birthDate: DateHelper.to_ISO_string(data.birthDate),
 		})
-		toast.success('Профиль обновлен')
 	}
 
 	return (

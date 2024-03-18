@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useRegisterUserMutation } from '../../../store/api/accountApi'
 import { IUserRegistration } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
@@ -12,24 +12,8 @@ import { ErrorMessage } from '../../shared/ErrorMessage'
 
 export function RegistrationForm() {
 	const navigate = useNavigate()
-	const [registerUser, { data: response, isLoading, error }] =
+	const [registerUser, { data: response, isLoading, error, isSuccess }] =
 		useRegisterUserMutation()
-
-	useEffect(() => {
-		console.log(error)
-		if (response) {
-			localStorage.setItem('token', response.token)
-			toast.success('Успешная регистрация')
-			navigate('/')
-		}
-	}, [response, error])
-
-	const onSubmit: SubmitHandler<IUserRegistration> = data => {
-		registerUser({
-			...data,
-			birthDate: DateHelper.to_ISO_string(data.birthDate),
-		})
-	}
 
 	const {
 		register,
@@ -39,6 +23,27 @@ export function RegistrationForm() {
 	} = useForm<IUserRegistration>({
 		mode: 'onChange',
 	})
+
+	useEffect(() => {
+		console.log(error)
+		if (response) {
+			localStorage.setItem('token', response.token)
+			navigate('/')
+		}
+	}, [response, error])
+
+	useToastMutate(
+		isSuccess,
+		error && 'status' in error && error.status !== 409,
+		'Успешная регистрация'
+	)
+
+	const onSubmit: SubmitHandler<IUserRegistration> = data => {
+		registerUser({
+			...data,
+			birthDate: DateHelper.to_ISO_string(data.birthDate),
+		})
+	}
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)} noValidate>
