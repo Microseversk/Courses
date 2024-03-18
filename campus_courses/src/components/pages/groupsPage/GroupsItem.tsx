@@ -1,6 +1,7 @@
 import { Button, Col, ListGroup, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useModal } from '../../../hooks/useModal'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useDeleteGroupMutation } from '../../../store/api/groupsApi'
 import { IGroupResponse } from '../../../types/response.types'
@@ -9,11 +10,14 @@ import { EditGroupItemModal } from './EditGroupItemModal'
 
 export function GroupsItem(props: IGroupResponse) {
 	const user = useTypedSelector(state => state.auth.user)
-	const [deleteGroup, { isLoading }] = useDeleteGroupMutation()
+	const [deleteGroup, { isLoading, isSuccess, isError }] =
+		useDeleteGroupMutation()
 
 	const { isShow, onHide, onShow } = useModal()
 
-	const handleDelete = () => {
+	useToastMutate(isSuccess, isError, 'Группа удалена')
+
+	const onDelete = () => {
 		deleteGroup({ id: props.id })
 	}
 
@@ -51,7 +55,7 @@ export function GroupsItem(props: IGroupResponse) {
 							</Button>
 							<ButtonCustom
 								className={'btn-danger'}
-								onClick={handleDelete}
+								onClick={onDelete}
 								text='УДАЛИТЬ'
 								isLoading={isLoading}
 							/>
