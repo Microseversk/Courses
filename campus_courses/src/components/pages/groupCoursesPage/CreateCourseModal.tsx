@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
 	Button,
 	Form,
@@ -30,16 +30,14 @@ interface ICreateCourseModalProps {
 
 export function CreateCourseModal(props: ICreateCourseModalProps) {
 	const groupId = useParams()
+	const { data: users } = useGetUsersQuery('')
 	const [createCourse, { isLoading, isSuccess, isError }] =
 		useCreateCourseMutation()
-	const { data: users } = useGetUsersQuery('')
-	const [reqsIsValid, setReqsIsValid] = useState(true)
-	const [ansIsValid, setAnsIsValid] = useState(true)
 	const {
 		register,
 		reset,
-		getValues,
 		setValue,
+		watch,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<CourseCreateType>({
@@ -54,25 +52,31 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 
 	useToastMutate(isSuccess, isError, 'Курс создан')
 
+	useEffect(() => {
+		register('annotations', { required: 'Обязательное поле' })
+		register('requirements', { required: 'Обязательное поле' })
+	}, [props.isShow])
+
+	const onEditorStateChange = (
+		editorState: string,
+		delta: any,
+		source: any,
+		editor: any,
+		name: any
+	) => {
+		if (editor.getText().length === 1) {
+			setValue(name, '')
+			return
+		}
+		setValue(name, editor.getHTML())
+	}
+
 	const onModalHide = () => {
 		props.onHide()
 		reset()
 	}
 
 	const onCreateCourse: SubmitHandler<CourseCreateType> = data => {
-		if (getValues('annotations').length) {
-			setAnsIsValid(false)
-		}
-		if (getValues('requirements').length) {
-			setReqsIsValid(false)
-		}
-
-		if (!ansIsValid || !reqsIsValid) {
-			return
-		}
-
-		setAnsIsValid(true)
-		setReqsIsValid(true)
 		createCourse({ groupId: groupId.id, body: data })
 	}
 
@@ -142,16 +146,23 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
 					<TextEditToolbar
-						value={getValues('requirements')}
-						handleChange={(value: string) => setValue('requirements', value)}
+						name='requirements'
+						handleChange={onEditorStateChange}
+						value={watch('requirements')}
 					/>
-					{!reqsIsValid && <ErrorMessage text='Обязательное поле' />}
+					{errors.requirements && (
+						<ErrorMessage text={errors.requirements.message} />
+					)}
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
 					<TextEditToolbar
-						value={getValues('annotations')}
-						handleChange={(value: string) => setValue('annotations', value)}
+						name='annotations'
+						handleChange={onEditorStateChange}
+						value={watch('annotations')}
 					/>
-					{!ansIsValid && <ErrorMessage text='Обязательное поле' />}
+
+					{errors.annotations && (
+						<ErrorMessage text={errors.annotations.message} />
+					)}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 					<FormSelect
 						{...register('mainTeacherId', { required: 'Обязательное поле' })}

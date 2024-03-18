@@ -1,4 +1,4 @@
-import ReactQuill from 'react-quill'
+import * as ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
 TextEditToolbar.modules = {
@@ -13,10 +13,14 @@ TextEditToolbar.modules = {
 
 export function TextEditToolbar({ handleChange, value, ...other }) {
 	return (
-		<ReactQuill
-			value={value}
-			onChange={text => handleChange(text)}
-			modules={TextEditToolbar.modules}
-		/>
+		<div className={other.className}>
+			<ReactQuill
+				value={value}
+				onChange={(editorState, delta, source, editor) => {
+					handleChange(editorState, delta, source, editor, other.name)
+				}}
+				modules={TextEditToolbar.modules}
+			/>
+		</div>
 	)
 }

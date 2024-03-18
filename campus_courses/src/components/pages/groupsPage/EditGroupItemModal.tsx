@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useEditGroupMutation } from '../../../store/api/groupsApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
@@ -18,7 +19,7 @@ interface IGroupeEdit {
 }
 
 export function EditGroupItemModal(props: EditGroupItemModalProps) {
-	const [editGroup, { isLoading }] = useEditGroupMutation()
+	const [editGroup, { isLoading, isSuccess, isError }] = useEditGroupMutation()
 	const {
 		register,
 		handleSubmit,
@@ -32,6 +33,8 @@ export function EditGroupItemModal(props: EditGroupItemModalProps) {
 			setValue('name', props.name)
 		}
 	}, [props.name, props.isShow])
+
+	useToastMutate(isSuccess, isError, 'Группа изменена')
 
 	const onHideModal = () => {
 		if (!isLoading) {
