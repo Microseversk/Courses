@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../../hooks/useModal'
+import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import {
 	useDeleteCourseMutation,
@@ -17,9 +19,20 @@ export function CommonCourseDetails() {
 	const { course, userCourseRole } = useTypedSelector(
 		state => state?.openedCourse
 	)
-	const [signUp] = useSignUpToCourseMutation()
-	const [deleteCourse, { isLoading: isLoadingDelete }] =
-		useDeleteCourseMutation()
+	const [signUp, { isSuccess: isSuccessSignUp, isError: isErrorSignUp }] =
+		useSignUpToCourseMutation()
+	const [
+		deleteCourse,
+		{
+			isLoading: isLoadingDelete,
+			isSuccess: isSuccessDeleteCourse,
+			isError: isErrorDeleteCourse,
+		},
+	] = useDeleteCourseMutation()
+
+	useToastMutate(isSuccessSignUp, isErrorSignUp, 'Заявка подана')
+	useToastMutate(isSuccessDeleteCourse, isErrorDeleteCourse, 'Курс удалён')
+
 	const {
 		isShow: isShowEditStatus,
 		onHide: onHideEditStatus,
@@ -30,9 +43,18 @@ export function CommonCourseDetails() {
 		onHide: onHideEditCourse,
 		onShow: onShowEditCourse,
 	} = useModal()
+	useEffect(() => {
+		if (isSuccessDeleteCourse) {
+			navigation(-1)
+		}
+	}, [isSuccessDeleteCourse])
 
 	if (!course || !userCourseRole) {
 		return <>Ошибка данных курса</>
+	}
+
+	const onDeleteCourse = () => {
+		deleteCourse({ courseId: course.id })
 	}
 
 	return (
@@ -69,10 +91,7 @@ export function CommonCourseDetails() {
 					<ButtonCustom
 						text='УДАЛИТЬ'
 						className={'btn-danger me-3'}
-						onClick={() => {
-							deleteCourse({ courseId: course.id })
-							navigation(-1)
-						}}
+						onClick={onDeleteCourse}
 						isLoading={isLoadingDelete}
 					/>
 				)}

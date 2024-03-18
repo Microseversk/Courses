@@ -15,6 +15,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useCreateCourseMutation } from '../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../store/api/usersApi'
 import { CourseCreateType } from '../../../types/request.types'
@@ -29,7 +30,8 @@ interface ICreateCourseModalProps {
 
 export function CreateCourseModal(props: ICreateCourseModalProps) {
 	const groupId = useParams()
-	const [createCourse, { isLoading }] = useCreateCourseMutation()
+	const [createCourse, { isLoading, isSuccess, isError }] =
+		useCreateCourseMutation()
 	const { data: users } = useGetUsersQuery('')
 	const [reqsIsValid, setReqsIsValid] = useState(true)
 	const [ansIsValid, setAnsIsValid] = useState(true)
@@ -49,6 +51,8 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 			onModalHide()
 		}
 	}, [isLoading])
+
+	useToastMutate(isSuccess, isError, 'Курс создан')
 
 	const onModalHide = () => {
 		props.onHide()

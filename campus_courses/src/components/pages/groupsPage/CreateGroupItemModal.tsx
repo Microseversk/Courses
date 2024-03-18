@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useCreateGroupMutation } from '../../../store/api/groupsApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
@@ -15,13 +16,16 @@ interface CreateGroupItemModalProps {
 }
 
 export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
-	const [createGroup, { isLoading }] = useCreateGroupMutation()
+	const [createGroup, { isLoading, isSuccess, isError }] =
+		useCreateGroupMutation()
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
 	} = useForm<ICreateGroup>()
+
+	useToastMutate(isSuccess, isError, 'Группа создана')
 
 	const onCreateGroup: SubmitHandler<ICreateGroup> = data => {
 		createGroup(data)
