@@ -43,7 +43,7 @@ export const accountApi = api.injectEndpoints({
 			invalidatesTags: ['userProfile'],
 		}),
 		getUserProfile: builder.query<IProfileResponse, any>({
-			query: (token: string) => ({
+			query: () => ({
 				url: '/profile',
 				method: 'GET',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -51,7 +51,7 @@ export const accountApi = api.injectEndpoints({
 			providesTags: ['userProfile'],
 		}),
 		getUserRoles: builder.query<IRolesResponse, any>({
-			query: (token: string) => ({
+			query: () => ({
 				url: '/roles',
 				method: 'GET',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
