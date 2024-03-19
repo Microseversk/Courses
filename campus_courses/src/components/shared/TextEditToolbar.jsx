@@ -1,3 +1,4 @@
+import { Controller } from 'react-hook-form'
 import * as ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
@@ -11,15 +12,27 @@ TextEditToolbar.modules = {
 	],
 }
 
-export function TextEditToolbar({ handleChange, value, ...other }) {
+export function TextEditToolbar({ ...other }) {
 	return (
 		<div className={other.className}>
-			<ReactQuill
-				value={value}
-				onChange={(editorState, delta, source, editor) => {
-					handleChange(editorState, delta, source, editor, other.name)
+			<Controller
+				name={other.name}
+				control={other.control}
+				render={({ field: { value, onChange } }) => {
+					return (
+						<ReactQuill
+							value={value}
+							onChange={(editorState, delta, source, editor) => {
+								if (editor.getText().length === 1) {
+									editorState = ''
+								}
+								onChange(editorState)
+								console.log(editorState, value)
+							}}
+							modules={TextEditToolbar.modules}
+						/>
+					)
 				}}
-				modules={TextEditToolbar.modules}
 			/>
 		</div>
 	)

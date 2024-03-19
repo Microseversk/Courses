@@ -35,12 +35,17 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 	const {
 		register,
 		reset,
+		control,
 		setValue,
 		watch,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<CourseCreateType>({
 		mode: 'onChange',
+		defaultValues: {
+			annotations: '',
+			requirements: '',
+		},
 	})
 
 	useEffect(() => {
@@ -55,14 +60,6 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 		register('annotations', { required: 'Обязательное поле' })
 		register('requirements', { required: 'Обязательное поле' })
 	}, [props.isShow])
-
-	const onEditorStateChange = (editorState: string, delta: any, source: any, editor: any, name: any) => {
-		if (editor.getText().length === 1) {
-			setValue(name, '')
-			return
-		}
-		setValue(name, editor.getHTML())
-	}
 
 	const onModalHide = () => {
 		props.onHide()
@@ -128,10 +125,10 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Spring'} label={'Весенний'} />
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
-					<TextEditToolbar name='requirements' handleChange={onEditorStateChange} value={watch('requirements')} />
+					<TextEditToolbar name='requirements' control={control} />
 					{errors.requirements && <ErrorMessage text={errors.requirements.message} />}
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
-					<TextEditToolbar name='annotations' handleChange={onEditorStateChange} value={watch('annotations')} />
+					<TextEditToolbar name='annotations' control={control} />
 
 					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
