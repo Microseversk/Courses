@@ -14,8 +14,18 @@ export interface ILayoutProps {
 export function PrivateLayout({ children }: ILayoutProps) {
 	const navigation = useNavigate()
 	const dispatch = useDispatch<AppDispatch>()
-	const { data: profile, isLoading: isLoadingProfile, error: profileError } = useGetUserProfileQuery('')
-	const { data: roles, isLoading: isLoadingRoles, error: rolesError } = useGetUserRolesQuery('')
+	const {
+		data: profile,
+		isLoading: isLoadingProfile,
+		error: profileError,
+		refetch: refetchProfile,
+	} = useGetUserProfileQuery('')
+	const { data: roles, isLoading: isLoadingRoles, error: rolesError, refetch: refetchRoles } = useGetUserRolesQuery('')
+
+	useEffect(() => {
+		refetchProfile()
+		refetchRoles()
+	}, [children])
 
 	useEffect(() => {
 		if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
@@ -27,12 +37,16 @@ export function PrivateLayout({ children }: ILayoutProps) {
 				})
 			)
 		}
+	}, [profile, roles])
 
+	useEffect(() => {
 		if (profileError || rolesError) {
 			localStorage.removeItem('token')
+			dispatch(setAuth(false))
+			dispatch(setUser(null))
 			navigation('/login')
 		}
-	}, [profile, roles, profileError, rolesError])
+	}, [profileError, rolesError])
 
 	return (
 		<>

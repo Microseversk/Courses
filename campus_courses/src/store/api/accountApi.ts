@@ -21,8 +21,8 @@ export const accountApi = api.injectEndpoints({
 			}),
 			invalidatesTags: ['userProfile', 'userRoles', 'groupCourses'],
 		}),
-		logoutUser: builder.mutation<any, any>({
-			query: (token: string) => ({
+		logoutUser: builder.mutation({
+			query: () => ({
 				url: '/logout',
 				method: 'POST',
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },

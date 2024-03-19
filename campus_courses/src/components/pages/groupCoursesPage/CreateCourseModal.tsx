@@ -36,8 +36,6 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 		register,
 		reset,
 		control,
-		setValue,
-		watch,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<CourseCreateType>({
