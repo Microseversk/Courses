@@ -27,7 +27,6 @@ export function TextEditToolbar({ ...other }) {
 									editorState = ''
 								}
 								onChange(editorState)
-								console.log(editorState, value)
 							}}
 							modules={TextEditToolbar.modules}
 						/>
