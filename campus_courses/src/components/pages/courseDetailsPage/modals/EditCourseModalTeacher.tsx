@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, FormLabel, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseTeacherMutation } from '../../../../store/api/coursesApi'
 import { EditCourseTeacher } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
+import { ErrorMessage } from '../../../shared/ErrorMessage'
 import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
 interface IEditCourseModalProps {
@@ -17,9 +18,33 @@ export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseTeacherMutation()
 
-	const { setValue, getValues, handleSubmit } = useForm<EditCourseTeacher>()
+	const {
+		reset,
+		register,
+		control,
+		setValue,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<EditCourseTeacher>({
+		mode: 'onChange',
+	})
+
+	useEffect(() => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}, [isLoading])
 
 	useToastMutate(isSuccess, isError, 'Курс изменён')
+
+	useEffect(() => {
+		register('annotations', { required: 'Обязательное поле' })
+		register('requirements', { required: 'Обязательное поле' })
+		if (props.isShow) {
+			setValue('annotations', course?.annotations!)
+			setValue('requirements', course?.requirements!)
+		}
+	}, [props.isShow])
 
 	const onEditCourseByTeacher: SubmitHandler<EditCourseTeacher> = data => {
 		editCourse({
@@ -28,34 +53,19 @@ export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 		})
 	}
 
-	useEffect(() => {
-		if (course?.annotations && course.requirements) {
-			setValue('annotations', course?.annotations)
-			setValue('requirements', course?.requirements)
-		}
-	}, [props.onHide])
-
-	useEffect(() => {
-		if (!isLoading) {
-			props.onHide()
-		}
-	}, [isLoading])
-
 	return (
 		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
 			<Modal.Body>
 				<Form onSubmit={handleSubmit(onEditCourseByTeacher)} id='editCourseTeacherForm'>
-					<Form.Label>Требования</Form.Label>
-					<TextEditToolbar
-						value={getValues('requirements')}
-						handleChange={(value: string) => setValue('requirements', value)}
-					/>
-					<Form.Label className='mt-3'>Аннотации</Form.Label>
-					<TextEditToolbar
-						value={getValues('annotations')}
-						handleChange={(value: string) => setValue('annotations', value)}
-					/>
+					<FormLabel className={'mt-3'}>Требования</FormLabel>
+					<TextEditToolbar name='requirements' control={control} />
+					{errors.requirements && <ErrorMessage text={errors.requirements.message} />}
+					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
+					<TextEditToolbar name='annotations' control={control} />
+
+					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
+					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
