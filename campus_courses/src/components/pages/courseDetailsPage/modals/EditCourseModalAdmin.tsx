@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Button, Form, FormCheck, FormControl, FormLabel, FormSelect, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
@@ -20,30 +20,17 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
 	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseAdminMutation()
-	const [reqsIsValid, setReqsIsValid] = useState(true)
-	const [ansIsValid, setAnsIsValid] = useState(true)
 
 	const {
 		register,
-		reset,
-		getValues,
+		clearErrors,
+		control,
 		setValue,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<CourseCreateType>({
-		defaultValues: course!,
 		mode: 'onChange',
 	})
-
-	useToastMutate(isSuccess, isError, 'Курс изменён')
-
-	useEffect(() => {
-		reset(course!)
-		if (course?.annotations && course.requirements) {
-			setValue('annotations', course?.annotations)
-			setValue('requirements', course?.requirements)
-		}
-	}, [props.onHide])
 
 	useEffect(() => {
 		if (!isLoading) {
@@ -51,22 +38,27 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 		}
 	}, [isLoading])
 
+	useToastMutate(isSuccess, isError, 'Курс изменён')
+
+	useEffect(() => {
+		clearErrors()
+		register('annotations', { required: 'Обязательное поле' })
+		register('requirements', { required: 'Обязательное поле' })
+		if (props.isShow) {
+			setValue('name', course?.name!)
+			setValue('startYear', course?.startYear!)
+			setValue('maximumStudentsCount', course?.maximumStudentsCount!)
+			setValue('mainTeacherId', '')
+			setValue('semester', course?.semester!)
+			setValue('annotations', course?.annotations!)
+			setValue('requirements', course?.requirements!)
+		}
+	}, [props.isShow])
+
 	const onEditCourseByAdmin: SubmitHandler<CourseCreateType> = data => {
-		if (getValues('annotations').length) {
-			setAnsIsValid(false)
-		}
-		if (getValues('requirements').length) {
-			setReqsIsValid(false)
-		}
-
-		if (!ansIsValid || !reqsIsValid) {
-			return
-		}
-
-		setAnsIsValid(true)
-		setReqsIsValid(true)
 		editCourse({ courseId: course?.id!, body: data })
 	}
+
 	return (
 		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
@@ -113,17 +105,12 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Spring'} label={'Весенний'} />
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
-					<TextEditToolbar
-						value={getValues('requirements')}
-						handleChange={(value: string) => setValue('requirements', value)}
-					/>
-					{!reqsIsValid && <ErrorMessage text='Обязательное поле' />}
+					<TextEditToolbar name='requirements' control={control} />
+					{errors.requirements && <ErrorMessage text={errors.requirements.message} />}
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
-					<TextEditToolbar
-						value={getValues('annotations')}
-						handleChange={(value: string) => setValue('annotations', value)}
-					/>
-					{!ansIsValid && <ErrorMessage text='Обязательное поле' />}
+					<TextEditToolbar name='annotations' control={control} />
+
+					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
 						<option value=''>Не выбрано</option>
