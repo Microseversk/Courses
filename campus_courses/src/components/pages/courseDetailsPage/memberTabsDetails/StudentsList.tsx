@@ -1,12 +1,5 @@
 import { useState } from 'react'
-import {
-	Button,
-	Col,
-	ListGroup,
-	ListGroupItem,
-	NavLink,
-	Row,
-} from 'react-bootstrap'
+import { Button, Col, ListGroup, ListGroupItem, NavLink, Row } from 'react-bootstrap'
 import { useModal } from '../../../../hooks/useModal'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSetNewStudentStatusMutation } from '../../../../store/api/coursesApi'
@@ -21,19 +14,14 @@ interface IStudentsListProps {
 export function StudentsList(props: IStudentsListProps) {
 	const [setUserStatus] = useSetNewStudentStatusMutation()
 	const { isShow, onHide, onShow } = useModal()
-	const { course, userCourseRole } = useTypedSelector(
-		state => state.openedCourse
-	)
+	const { course, userCourseRole } = useTypedSelector(state => state.openedCourse)
 
 	const [checkedStudent, setCheckedUser] = useState<{
 		student: IStudent
 		markTime: MarkTime
 	} | null>(null)
 
-	const handleChangeStudentStatus = (
-		status: 'Accepted' | 'Declined',
-		userId: string
-	) => {
+	const handleChangeStudentStatus = (status: 'Accepted' | 'Declined', userId: string) => {
 		setUserStatus({ status, courseId: course?.id!, userId })
 	}
 
@@ -75,15 +63,12 @@ export function StudentsList(props: IStudentsListProps) {
 												onShow()
 											}}
 											className={
-												[
-													UserCourseRole.Admin,
-													UserCourseRole.Teacher,
-													UserCourseRole.MainTeacher,
-												].includes(userCourseRole!)
+												[UserCourseRole.Admin, UserCourseRole.Teacher, UserCourseRole.MainTeacher].includes(
+													userCourseRole!
+												)
 													? 'link-primary d-inline'
 													: 'disabled d-inline'
-											}
-										>
+											}>
 											Промежуточная аттестация -
 										</NavLink>
 										{student.midtermResult === 'Passed' ? (
@@ -91,9 +76,7 @@ export function StudentsList(props: IStudentsListProps) {
 										) : student.midtermResult === 'Failed' ? (
 											<span className={'ms-1 badge bg-danger'}>Провалена</span>
 										) : student.midtermResult === 'NotDefined' ? (
-											<span className={'ms-1 badge bg-secondary'}>
-												Нет отметки
-											</span>
+											<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
 										) : (
 											<></>
 										)}
@@ -108,15 +91,12 @@ export function StudentsList(props: IStudentsListProps) {
 												onShow()
 											}}
 											className={
-												[
-													UserCourseRole.Admin,
-													UserCourseRole.Teacher,
-													UserCourseRole.MainTeacher,
-												].includes(userCourseRole!)
+												[UserCourseRole.Admin, UserCourseRole.Teacher, UserCourseRole.MainTeacher].includes(
+													userCourseRole!
+												)
 													? 'link-primary d-inline'
 													: 'disabled d-inline'
-											}
-										>
+											}>
 											Финальная аттестация -
 										</NavLink>
 										{student.finalResult === 'Passed' ? (
@@ -124,9 +104,7 @@ export function StudentsList(props: IStudentsListProps) {
 										) : student.finalResult === 'Failed' ? (
 											<span className={'ms-1 badge bg-danger'}>Провалена</span>
 										) : student.finalResult === 'NotDefined' ? (
-											<span className={'ms-1 badge bg-secondary'}>
-												Нет отметки
-											</span>
+											<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
 										) : (
 											<></>
 										)}
@@ -137,23 +115,18 @@ export function StudentsList(props: IStudentsListProps) {
 								<Col
 									sm={12}
 									md={8}
-									className={
-										'd-flex align-content-stretch justify-content-start justify-content-md-end'
-									}
-								>
+									className={'d-flex align-content-stretch justify-content-start justify-content-md-end'}>
 									<Button
 										onClick={() => {
 											handleChangeStudentStatus('Accepted', student.id)
-										}}
-									>
+										}}>
 										Принять
 									</Button>
 									<Button
 										className={'ms-3 btn-danger'}
 										onClick={() => {
 											handleChangeStudentStatus('Declined', student.id)
-										}}
-									>
+										}}>
 										Отклонить заявку
 									</Button>
 								</Col>

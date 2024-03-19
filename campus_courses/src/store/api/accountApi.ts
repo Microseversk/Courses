@@ -1,10 +1,6 @@
 import { IUserLogin } from '../../components/pages/loginPage/LoginForm'
 import { IEditUserProfile, IUserRegistration } from '../../types/request.types'
-import {
-	IProfileResponse,
-	IRolesResponse,
-	ITokenResponse,
-} from '../../types/response.types'
+import { IProfileResponse, IRolesResponse, ITokenResponse } from '../../types/response.types'
 import { api } from './api'
 
 export const accountApi = api.injectEndpoints({

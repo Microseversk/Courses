@@ -1,12 +1,4 @@
-import {
-	Button,
-	Form,
-	FormCheck,
-	Modal,
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-} from 'react-bootstrap'
+import { Button, Form, FormCheck, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
@@ -44,11 +36,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 		<Modal show={props.isShow} onHide={onModalHide} size={'lg'}>
 			<ModalHeader closeButton>Изменение статуса курса</ModalHeader>
 			<ModalBody>
-				<Form
-					onSubmit={handleSubmit(onChangeCourseStatus)}
-					className={'d-flex gap-3'}
-					id={'formChangeStatus'}
-				>
+				<Form onSubmit={handleSubmit(onChangeCourseStatus)} className={'d-flex gap-3'} id={'formChangeStatus'}>
 					<FormCheck
 						{...register('status')}
 						name={'status'}

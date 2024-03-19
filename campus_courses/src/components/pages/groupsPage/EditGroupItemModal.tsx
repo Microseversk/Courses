@@ -60,9 +60,7 @@ export function EditGroupItemModal(props: EditGroupItemModalProps) {
 			<Modal.Body>
 				<Form onSubmit={handleSubmit(onEditGroup)} id='editGroupForm'>
 					<Form.Label>Название группы</Form.Label>
-					<Form.Control
-						{...register('name', { required: 'Введите новое имя группы' })}
-					/>
+					<Form.Control {...register('name', { required: 'Введите новое имя группы' })} />
 					{errors.name && <ErrorMessage text={errors.name.message} />}
 				</Form>
 			</Modal.Body>
@@ -70,12 +68,7 @@ export function EditGroupItemModal(props: EditGroupItemModalProps) {
 				<Button className={'btn-secondary'} onClick={onHideModal}>
 					Отмена
 				</Button>
-				<ButtonCustom
-					type='submit'
-					isLoading={isLoading}
-					text='Сохранить'
-					form='editGroupForm'
-				>
+				<ButtonCustom type='submit' isLoading={isLoading} text='Сохранить' form='editGroupForm'>
 					Сохранить
 				</ButtonCustom>
 			</Modal.Footer>

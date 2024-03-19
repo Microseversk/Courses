@@ -15,8 +15,7 @@ export interface IUserLogin {
 
 export function LoginForm() {
 	const nav = useNavigate()
-	const [loginUser, { isLoading, error, data: response, isSuccess }] =
-		useLoginUserMutation()
+	const [loginUser, { isLoading, error, data: response, isSuccess }] = useLoginUserMutation()
 	const {
 		register,
 		handleSubmit,
@@ -35,11 +34,7 @@ export function LoginForm() {
 		}
 	}, [response])
 
-	useToastMutate(
-		isSuccess,
-		error && 'status' in error && error.status !== 400,
-		'Успешный вход'
-	)
+	useToastMutate(isSuccess, error && 'status' in error && error.status !== 400, 'Успешный вход')
 
 	const onSubmit: SubmitHandler<IUserLogin> = data => {
 		loginUser(data)
@@ -56,17 +51,9 @@ export function LoginForm() {
 			/>
 			{errors.email && <ErrorMessage text='Некорректный email' />}
 			<Form.Label className='mt-3'>Пароль</Form.Label>
-			<Form.Control
-				{...register('password', { required: true })}
-				type='password'
-			/>
+			<Form.Control {...register('password', { required: true })} type='password' />
 			{error && <ErrorMessage text='Неверный email или пароль' />}
-			<ButtonCustom
-				className='mt-3'
-				isLoading={isLoading || !!response}
-				text='Войти'
-				type='submit'
-			/>
+			<ButtonCustom className='mt-3' isLoading={isLoading || !!response} text='Войти' type='submit' />
 		</Form>
 	)
 }

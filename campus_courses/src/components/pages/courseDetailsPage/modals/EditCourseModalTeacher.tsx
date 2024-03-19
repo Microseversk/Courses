@@ -15,8 +15,7 @@ interface IEditCourseModalProps {
 
 export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
-	const [editCourse, { isLoading, isSuccess, isError }] =
-		useEditCourseTeacherMutation()
+	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseTeacherMutation()
 
 	const { setValue, getValues, handleSubmit } = useForm<EditCourseTeacher>()
 
@@ -46,10 +45,7 @@ export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
 			<Modal.Body>
-				<Form
-					onSubmit={handleSubmit(onEditCourseByTeacher)}
-					id='editCourseTeacherForm'
-				>
+				<Form onSubmit={handleSubmit(onEditCourseByTeacher)} id='editCourseTeacherForm'>
 					<Form.Label>Требования</Form.Label>
 					<TextEditToolbar
 						value={getValues('requirements')}
@@ -66,12 +62,7 @@ export function EditCourseModalTeacher(props: IEditCourseModalProps) {
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<ButtonCustom
-					type='submit'
-					form='editCourseTeacherForm'
-					isLoading={isLoading}
-					text='Сохранить'
-				/>
+				<ButtonCustom type='submit' form='editCourseTeacherForm' isLoading={isLoading} text='Сохранить' />
 			</Modal.Footer>
 		</Modal>
 	)

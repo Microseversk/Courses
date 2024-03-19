@@ -16,8 +16,7 @@ interface CreateGroupItemModalProps {
 }
 
 export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
-	const [createGroup, { isLoading, isSuccess, isError }] =
-		useCreateGroupMutation()
+	const [createGroup, { isLoading, isSuccess, isError }] = useCreateGroupMutation()
 	const {
 		register,
 		handleSubmit,
@@ -52,9 +51,7 @@ export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
 			<Modal.Body>
 				<Form onSubmit={handleSubmit(onCreateGroup)} id='createGroupForm'>
 					<Form.Label>Название новой группы</Form.Label>
-					<Form.Control
-						{...register('name', { required: 'Введите название группы' })}
-					/>
+					<Form.Control {...register('name', { required: 'Введите название группы' })} />
 					{errors.name && <ErrorMessage text={errors.name.message} />}
 				</Form>
 			</Modal.Body>
@@ -62,12 +59,7 @@ export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
 				<Button className={'btn-secondary'} onClick={onHideModal}>
 					Отмена
 				</Button>
-				<ButtonCustom
-					text='Создать'
-					type='submit'
-					isLoading={isLoading}
-					form='createGroupForm'
-				/>
+				<ButtonCustom text='Создать' type='submit' isLoading={isLoading} form='createGroupForm' />
 			</Modal.Footer>
 		</Modal>
 	)

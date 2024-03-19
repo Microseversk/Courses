@@ -7,11 +7,7 @@ interface IButtonCustomProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	text: string | undefined
 }
 
-export function ButtonCustom({
-	isLoading,
-	text,
-	...other
-}: IButtonCustomProps) {
+export function ButtonCustom({ isLoading, text, ...other }: IButtonCustomProps) {
 	return (
 		<Button {...other} style={{ position: 'relative' }} disabled={isLoading}>
 			{isLoading ? (
@@ -21,8 +17,7 @@ export function ButtonCustom({
 						top: '50%',
 						left: '50%',
 						transform: 'translate(-50%, -50%)',
-					}}
-				>
+					}}>
 					<Loading width={'25px'} height={'25px'} type='spin' />
 				</div>
 			) : null}

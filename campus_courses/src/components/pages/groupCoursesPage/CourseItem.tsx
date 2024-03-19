@@ -7,10 +7,7 @@ export function CourseItem(props: IGroupCoursesResponse) {
 		<ListGroupItem>
 			<Row>
 				<Col>
-					<Link
-						to={`/courses/${props.id}`}
-						className={'nav-link fw-bolder fs-5'}
-					>
+					<Link to={`/courses/${props.id}`} className={'nav-link fw-bolder fs-5'}>
 						{props.name}
 					</Link>
 				</Col>
@@ -31,20 +28,9 @@ export function CourseItem(props: IGroupCoursesResponse) {
 			<div className={'mt-1'}>
 				Учебный год - <span>{props.startYear}</span>
 			</div>
-			<div>
-				Семестр -{' '}
-				{props.semester === 'Autumn' ? (
-					<span> Осенний </span>
-				) : (
-					<span> Весенний </span>
-				)}
-			</div>
-			<div className={'text-muted mt-1'}>
-				Мест всего - {props.maximumStudentsCount}
-			</div>
-			<div className={'text-muted'}>
-				Мест свободно - {props.remainingSlotsCount}
-			</div>
+			<div>Семестр - {props.semester === 'Autumn' ? <span> Осенний </span> : <span> Весенний </span>}</div>
+			<div className={'text-muted mt-1'}>Мест всего - {props.maximumStudentsCount}</div>
+			<div className={'text-muted'}>Мест свободно - {props.remainingSlotsCount}</div>
 		</ListGroupItem>
 	)
 }

@@ -32,8 +32,7 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 					<FormSelect
 						onChange={e => {
 							setTeacher(e.target.value)
-						}}
-					>
+						}}>
 						<option value=''>Не выбрано</option>
 						{users?.map(user => (
 							<option key={user.id} value={user.id}>

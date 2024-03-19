@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-	Button,
-	Form,
-	FormCheck,
-	FormControl,
-	FormLabel,
-	FormSelect,
-	Modal,
-} from 'react-bootstrap'
+import { Button, Form, FormCheck, FormControl, FormLabel, FormSelect, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
@@ -27,8 +19,7 @@ interface IEditCourseModalProps {
 export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
-	const [editCourse, { isLoading, isSuccess, isError }] =
-		useEditCourseAdminMutation()
+	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseAdminMutation()
 	const [reqsIsValid, setReqsIsValid] = useState(true)
 	const [ansIsValid, setAnsIsValid] = useState(true)
 
@@ -80,14 +71,9 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
 			<Modal.Body>
-				<Form
-					onSubmit={handleSubmit(onEditCourseByAdmin)}
-					id='editCourseTeacherForm'
-				>
+				<Form onSubmit={handleSubmit(onEditCourseByAdmin)} id='editCourseTeacherForm'>
 					<FormLabel>Название курса</FormLabel>
-					<FormControl
-						{...register('name', { validate: ValidateHelper.courseName })}
-					/>
+					<FormControl {...register('name', { validate: ValidateHelper.courseName })} />
 					{errors.name && <ErrorMessage text={errors.name.message} />}
 					<FormLabel className={'mt-3'}>Год начала курса</FormLabel>
 					<FormControl
@@ -120,25 +106,11 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 						})}
 						type={'number'}
 					/>
-					{errors.maximumStudentsCount && (
-						<ErrorMessage text={errors.maximumStudentsCount.message} />
-					)}
+					{errors.maximumStudentsCount && <ErrorMessage text={errors.maximumStudentsCount.message} />}
 					<FormLabel className={'mt-3'}>Семестр</FormLabel>
 					<div className={'d-flex gap-3'}>
-						<FormCheck
-							{...register('semester')}
-							name={'semester'}
-							type={'radio'}
-							value={'Autumn'}
-							label={'Осенний'}
-						/>
-						<FormCheck
-							{...register('semester')}
-							name={'semester'}
-							type={'radio'}
-							value={'Spring'}
-							label={'Весенний'}
-						/>
+						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Autumn'} label={'Осенний'} />
+						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Spring'} label={'Весенний'} />
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
 					<TextEditToolbar
@@ -153,9 +125,7 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 					/>
 					{!ansIsValid && <ErrorMessage text='Обязательное поле' />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
-					<FormSelect
-						{...register('mainTeacherId', { required: 'Обязательное поле' })}
-					>
+					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
 						<option value=''>Не выбрано</option>
 						{users?.map(user => (
 							<option key={user.id} value={user.id}>
@@ -163,21 +133,14 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 							</option>
 						))}
 					</FormSelect>
-					{errors.mainTeacherId && (
-						<ErrorMessage text={errors.mainTeacherId.message} />
-					)}
+					{errors.mainTeacherId && <ErrorMessage text={errors.mainTeacherId.message} />}
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<ButtonCustom
-					type='submit'
-					text='Сохранить'
-					form='editCourseTeacherForm'
-					isLoading={isLoading}
-				/>
+				<ButtonCustom type='submit' text='Сохранить' form='editCourseTeacherForm' isLoading={isLoading} />
 			</Modal.Footer>
 		</Modal>
 	)

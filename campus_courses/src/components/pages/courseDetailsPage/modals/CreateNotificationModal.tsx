@@ -28,12 +28,7 @@ export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 			<Modal.Header closeButton>Создание уведомления</Modal.Header>
 			<Modal.Body>
 				<Form id='createNotifyForm' onSubmit={onCreateNotification}>
-					<Form.Control
-						as='textarea'
-						rows={4}
-						value={text}
-						onChange={e => setText(e.target.value)}
-					/>
+					<Form.Control as='textarea' rows={4} value={text} onChange={e => setText(e.target.value)} />
 					<Form.Check
 						checked={isImportant}
 						onChange={() => {
@@ -41,8 +36,7 @@ export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 						}}
 						className='mt-2'
 						type='checkbox'
-						label='Важное'
-					></Form.Check>
+						label='Важное'></Form.Check>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>

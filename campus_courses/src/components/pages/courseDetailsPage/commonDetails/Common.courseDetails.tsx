@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../../hooks/useModal'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
-import {
-	useDeleteCourseMutation,
-	useSignUpToCourseMutation,
-} from '../../../../store/api/coursesApi'
+import { useDeleteCourseMutation, useSignUpToCourseMutation } from '../../../../store/api/coursesApi'
 import { UserCourseRole } from '../../../../store/slices/course.slice'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
@@ -16,33 +13,16 @@ import { EditCourseModalTeacher } from '../modals/EditCourseModalTeacher'
 
 export function CommonCourseDetails() {
 	const navigation = useNavigate()
-	const { course, userCourseRole } = useTypedSelector(
-		state => state?.openedCourse
-	)
-	const [signUp, { isSuccess: isSuccessSignUp, isError: isErrorSignUp }] =
-		useSignUpToCourseMutation()
-	const [
-		deleteCourse,
-		{
-			isLoading: isLoadingDelete,
-			isSuccess: isSuccessDeleteCourse,
-			isError: isErrorDeleteCourse,
-		},
-	] = useDeleteCourseMutation()
+	const { course, userCourseRole } = useTypedSelector(state => state?.openedCourse)
+	const [signUp, { isSuccess: isSuccessSignUp, isError: isErrorSignUp }] = useSignUpToCourseMutation()
+	const [deleteCourse, { isLoading: isLoadingDelete, isSuccess: isSuccessDeleteCourse, isError: isErrorDeleteCourse }] =
+		useDeleteCourseMutation()
 
 	useToastMutate(isSuccessSignUp, isErrorSignUp, 'Заявка подана')
 	useToastMutate(isSuccessDeleteCourse, isErrorDeleteCourse, 'Курс удалён')
 
-	const {
-		isShow: isShowEditStatus,
-		onHide: onHideEditStatus,
-		onShow: onShowEditStatus,
-	} = useModal()
-	const {
-		isShow: isShowEditCourse,
-		onHide: onHideEditCourse,
-		onShow: onShowEditCourse,
-	} = useModal()
+	const { isShow: isShowEditStatus, onHide: onHideEditStatus, onShow: onShowEditStatus } = useModal()
+	const { isShow: isShowEditCourse, onHide: onHideEditCourse, onShow: onShowEditCourse } = useModal()
 	useEffect(() => {
 		if (isSuccessDeleteCourse) {
 			navigation(-1)
@@ -60,30 +40,17 @@ export function CommonCourseDetails() {
 	return (
 		<>
 			{userCourseRole === UserCourseRole.Admin ? (
-				<EditCourseModalAdmin
-					isShow={isShowEditCourse}
-					onHide={onHideEditCourse}
-				/>
+				<EditCourseModalAdmin isShow={isShowEditCourse} onHide={onHideEditCourse} />
 			) : (
-				<EditCourseModalTeacher
-					isShow={isShowEditCourse}
-					onHide={onHideEditCourse}
-				/>
+				<EditCourseModalTeacher isShow={isShowEditCourse} onHide={onHideEditCourse} />
 			)}
 
 			<ChangeStatusModal isShow={isShowEditStatus} onHide={onHideEditStatus} />
 			<div className={'fs-2 fw-bold'}>{course.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
 				<div className={'fw-bold mt-1'}>Основные данные курса</div>
-				{[
-					UserCourseRole.Admin,
-					UserCourseRole.MainTeacher,
-					UserCourseRole.Teacher,
-				].includes(userCourseRole) && (
-					<Button
-						className={'btn-warning ms-auto me-3'}
-						onClick={onShowEditCourse}
-					>
+				{[UserCourseRole.Admin, UserCourseRole.MainTeacher, UserCourseRole.Teacher].includes(userCourseRole) && (
+					<Button className={'btn-warning ms-auto me-3'} onClick={onShowEditCourse}>
 						РЕДАКТИРОВАТЬ
 					</Button>
 				)}
@@ -116,37 +83,26 @@ export function CommonCourseDetails() {
 							</div>
 						</Col>
 						<Col className={'text-end'}>
-							{[
-								UserCourseRole.Admin,
-								UserCourseRole.MainTeacher,
-								UserCourseRole.Teacher,
-							].includes(userCourseRole) && (
-								<Button
-									className={'btn-warning h-100'}
-									onClick={onShowEditStatus}
-								>
+							{[UserCourseRole.Admin, UserCourseRole.MainTeacher, UserCourseRole.Teacher].includes(userCourseRole) && (
+								<Button className={'btn-warning h-100'} onClick={onShowEditStatus}>
 									ИЗМЕНИТЬ
 								</Button>
 							)}
-							{course.status === 'OpenForAssigning' &&
-								userCourseRole === UserCourseRole.Student && (
-									<Button
-										className='btn-success h-100'
-										onClick={() => {
-											signUp({ courseId: course.id })
-										}}
-									>
-										ЗАПИСАТЬСЯ НА КУРС
-									</Button>
-								)}
-							{course.status === 'OpenForAssigning' &&
-								userCourseRole === UserCourseRole.InQueue && (
-									<Button className='btn-primary h-100'>В ОЧЕРЕДИ</Button>
-								)}
-							{course.status === 'OpenForAssigning' &&
-								userCourseRole === UserCourseRole.Declined && (
-									<Button className='btn-danger h-100'>ОТКАЗАНО</Button>
-								)}
+							{course.status === 'OpenForAssigning' && userCourseRole === UserCourseRole.Student && (
+								<Button
+									className='btn-success h-100'
+									onClick={() => {
+										signUp({ courseId: course.id })
+									}}>
+									ЗАПИСАТЬСЯ НА КУРС
+								</Button>
+							)}
+							{course.status === 'OpenForAssigning' && userCourseRole === UserCourseRole.InQueue && (
+								<Button className='btn-primary h-100'>В ОЧЕРЕДИ</Button>
+							)}
+							{course.status === 'OpenForAssigning' && userCourseRole === UserCourseRole.Declined && (
+								<Button className='btn-danger h-100'>ОТКАЗАНО</Button>
+							)}
 						</Col>
 					</Row>
 				</ListGroupItem>
@@ -158,9 +114,7 @@ export function CommonCourseDetails() {
 						</Col>
 						<Col>
 							<div className={'fw-bold'}>Семестр</div>
-							<div>
-								{course?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}
-							</div>
+							<div>{course?.semester === 'Autumn' ? 'Осенний' : 'Весенний'}</div>
 						</Col>
 					</Row>
 				</ListGroupItem>

@@ -12,8 +12,7 @@ import { ErrorMessage } from '../../shared/ErrorMessage'
 
 export function RegistrationForm() {
 	const navigate = useNavigate()
-	const [registerUser, { data: response, isLoading, error, isSuccess }] =
-		useRegisterUserMutation()
+	const [registerUser, { data: response, isLoading, error, isSuccess }] = useRegisterUserMutation()
 
 	const {
 		register,
@@ -32,11 +31,7 @@ export function RegistrationForm() {
 		}
 	}, [response, error])
 
-	useToastMutate(
-		isSuccess,
-		error && 'status' in error && error.status !== 409,
-		'Успешная регистрация'
-	)
+	useToastMutate(isSuccess, error && 'status' in error && error.status !== 409, 'Успешная регистрация')
 
 	const onSubmit: SubmitHandler<IUserRegistration> = data => {
 		registerUser({
@@ -69,9 +64,7 @@ export function RegistrationForm() {
 				})}
 			/>
 			{errors.email && <ErrorMessage text={errors.email.message} />}
-			{error && 'status' in error && error.status === 409 && (
-				<ErrorMessage text='Такой email уже зарегистрирован' />
-			)}
+			{error && 'status' in error && error.status === 409 && <ErrorMessage text='Такой email уже зарегистрирован' />}
 
 			<Form.Label className='mt-3'>Пароль</Form.Label>
 			<Form.Control
@@ -94,16 +87,9 @@ export function RegistrationForm() {
 					},
 				})}
 			/>
-			{errors.confirmPassword && (
-				<ErrorMessage text={errors.confirmPassword.message} />
-			)}
+			{errors.confirmPassword && <ErrorMessage text={errors.confirmPassword.message} />}
 
-			<ButtonCustom
-				className='mt-3'
-				text='Зарегистрироваться'
-				isLoading={isLoading || !!response}
-				type='submit'
-			/>
+			<ButtonCustom className='mt-3' text='Зарегистрироваться' isLoading={isLoading || !!response} type='submit' />
 		</Form>
 	)
 }

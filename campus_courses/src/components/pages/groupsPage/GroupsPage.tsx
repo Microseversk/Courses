@@ -25,10 +25,7 @@ export default function GroupsPage() {
 				</Button>
 			)}
 			<ListGroup className={'mt-3'}>
-				{groups &&
-					groups.map(group => (
-						<GroupsItem key={group.id} id={group.id} name={group.name} />
-					))}
+				{groups && groups.map(group => <GroupsItem key={group.id} id={group.id} name={group.name} />)}
 			</ListGroup>
 		</Container>
 	)

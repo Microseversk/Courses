@@ -15,8 +15,7 @@ interface IEditProfile {
 }
 
 export function ProfileForm() {
-	const [editUserProfile, { isLoading, isSuccess, isError }] =
-		useEditUserProfileMutation()
+	const [editUserProfile, { isLoading, isSuccess, isError }] = useEditUserProfileMutation()
 	const profile = useTypedSelector(state => state.auth.user)
 	const {
 		register,
@@ -32,10 +31,7 @@ export function ProfileForm() {
 	useEffect(() => {
 		if (profile) {
 			setValue('fullName', profile?.fullName)
-			setValue(
-				'birthDate',
-				DateHelper.to_DD_MM_YYYY(profile?.birthDate).yyyy_mm_dd
-			)
+			setValue('birthDate', DateHelper.to_DD_MM_YYYY(profile?.birthDate).yyyy_mm_dd)
 		}
 	}, [profile])
 
@@ -91,12 +87,7 @@ export function ProfileForm() {
 				</Col>
 			</Row>
 			<div className={'w-100 d-flex justify-content-end'}>
-				<ButtonCustom
-					className='mt-3'
-					text='Изменить'
-					isLoading={isLoading}
-					type='submit'
-				/>
+				<ButtonCustom className='mt-3' text='Изменить' isLoading={isLoading} type='submit' />
 			</div>
 		</Form>
 	)

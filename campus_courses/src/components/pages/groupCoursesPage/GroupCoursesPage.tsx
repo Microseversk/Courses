@@ -11,8 +11,7 @@ import { CreateCourseModal } from './CreateCourseModal'
 export default function GroupCoursesPage() {
 	const groupId = useParams()
 	const isAdmin = useTypedSelector(state => state.auth.user?.roles?.isAdmin)
-	const { data: courses, isLoading: isLoadingCourses } =
-		useGetGroupCoursesQuery({ id: groupId?.id })
+	const { data: courses, isLoading: isLoadingCourses } = useGetGroupCoursesQuery({ id: groupId?.id })
 
 	const { isShow, onHide, onShow } = useModal()
 
@@ -27,18 +26,14 @@ export default function GroupCoursesPage() {
 	return (
 		<Container>
 			<CreateCourseModal isShow={isShow} onHide={onHide} />
-			<div className={'fw-bold fs-2'}>
-				Группа - {filteredGroups && filteredGroups.pop()?.name}
-			</div>
+			<div className={'fw-bold fs-2'}>Группа - {filteredGroups && filteredGroups.pop()?.name}</div>
 			{isAdmin && (
 				<Button onClick={onShow} className={'mt-1'}>
 					Создать курс
 				</Button>
 			)}
 			<ListGroup className={'mt-3'}>
-				{!courses?.length && (
-					<span className={'fs-2 text-danger'}>Курсы пока что не созданы</span>
-				)}
+				{!courses?.length && <span className={'fs-2 text-danger'}>Курсы пока что не созданы</span>}
 				{courses?.map(course => (
 					<CourseItem
 						key={course.id}

@@ -46,20 +46,13 @@ export function Header() {
 							</Link>
 						)}
 					</div>
-					<div
-						className={
-							'd-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'
-						}
-					>
+					<div className={'d-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'}>
 						{isAuth ? (
 							<>
 								<Link className={'nav-link'} to={'/profile'}>
 									Профиль
 								</Link>
-								<button
-									className={'nav-link text-start'}
-									onClick={handleLogout}
-								>
+								<button className={'nav-link text-start'} onClick={handleLogout}>
 									Выйти
 								</button>
 							</>

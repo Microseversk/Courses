@@ -35,11 +35,7 @@ export function SetMarkModal(props: SetMarkModalProps) {
 	return (
 		<Modal show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>
-				Изменение оценки для "
-				{props.markTime === 'Final'
-					? 'Финальная аттестация'
-					: 'Промежуточная аттестация'}
-				"
+				Изменение оценки для "{props.markTime === 'Final' ? 'Финальная аттестация' : 'Промежуточная аттестация'}"
 			</Modal.Header>
 			<Modal.Body>
 				<Form id='setMarkForm' onSubmit={onSetMark}>

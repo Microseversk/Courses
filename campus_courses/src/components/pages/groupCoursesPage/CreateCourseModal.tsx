@@ -31,8 +31,7 @@ interface ICreateCourseModalProps {
 export function CreateCourseModal(props: ICreateCourseModalProps) {
 	const groupId = useParams()
 	const { data: users } = useGetUsersQuery('')
-	const [createCourse, { isLoading, isSuccess, isError }] =
-		useCreateCourseMutation()
+	const [createCourse, { isLoading, isSuccess, isError }] = useCreateCourseMutation()
 	const {
 		register,
 		reset,
@@ -57,13 +56,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 		register('requirements', { required: 'Обязательное поле' })
 	}, [props.isShow])
 
-	const onEditorStateChange = (
-		editorState: string,
-		delta: any,
-		source: any,
-		editor: any,
-		name: any
-	) => {
+	const onEditorStateChange = (editorState: string, delta: any, source: any, editor: any, name: any) => {
 		if (editor.getText().length === 1) {
 			setValue(name, '')
 			return
@@ -88,9 +81,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 			<ModalBody>
 				<Form onSubmit={handleSubmit(onCreateCourse)} id={'createCourseForm'}>
 					<FormLabel>Название курса</FormLabel>
-					<FormControl
-						{...register('name', { validate: ValidateHelper.courseName })}
-					/>
+					<FormControl {...register('name', { validate: ValidateHelper.courseName })} />
 					{errors.name && <ErrorMessage text={errors.name.message} />}
 					<FormLabel className={'mt-3'}>Год начала курса</FormLabel>
 					<FormControl
@@ -123,9 +114,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 						})}
 						type={'number'}
 					/>
-					{errors.maximumStudentsCount && (
-						<ErrorMessage text={errors.maximumStudentsCount.message} />
-					)}
+					{errors.maximumStudentsCount && <ErrorMessage text={errors.maximumStudentsCount.message} />}
 					<FormLabel className={'mt-3'}>Семестр</FormLabel>
 					<div className={'d-flex gap-3'}>
 						<FormCheck
@@ -136,37 +125,17 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 							value={'Autumn'}
 							label={'Осенний'}
 						/>
-						<FormCheck
-							{...register('semester')}
-							name={'semester'}
-							type={'radio'}
-							value={'Spring'}
-							label={'Весенний'}
-						/>
+						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Spring'} label={'Весенний'} />
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
-					<TextEditToolbar
-						name='requirements'
-						handleChange={onEditorStateChange}
-						value={watch('requirements')}
-					/>
-					{errors.requirements && (
-						<ErrorMessage text={errors.requirements.message} />
-					)}
+					<TextEditToolbar name='requirements' handleChange={onEditorStateChange} value={watch('requirements')} />
+					{errors.requirements && <ErrorMessage text={errors.requirements.message} />}
 					<FormLabel className={'mt-3'}>Аннотации</FormLabel>
-					<TextEditToolbar
-						name='annotations'
-						handleChange={onEditorStateChange}
-						value={watch('annotations')}
-					/>
+					<TextEditToolbar name='annotations' handleChange={onEditorStateChange} value={watch('annotations')} />
 
-					{errors.annotations && (
-						<ErrorMessage text={errors.annotations.message} />
-					)}
+					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
-					<FormSelect
-						{...register('mainTeacherId', { required: 'Обязательное поле' })}
-					>
+					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
 						<option value=''>Не выбрано</option>
 						{users?.map(user => (
 							<option key={user.id} value={user.id}>
@@ -174,21 +143,14 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 							</option>
 						))}
 					</FormSelect>
-					{errors.mainTeacherId && (
-						<ErrorMessage text={errors.mainTeacherId.message} />
-					)}
+					{errors.mainTeacherId && <ErrorMessage text={errors.mainTeacherId.message} />}
 				</Form>
 			</ModalBody>
 			<ModalFooter>
 				<Button className={'btn-secondary'} onClick={onModalHide}>
 					Отмена
 				</Button>
-				<ButtonCustom
-					form={'createCourseForm'}
-					type={'submit'}
-					text='Создать'
-					isLoading={isLoading}
-				/>
+				<ButtonCustom form={'createCourseForm'} type={'submit'} text='Создать' isLoading={isLoading} />
 			</ModalFooter>
 		</Modal>
 	)

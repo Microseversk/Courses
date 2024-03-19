@@ -5,10 +5,8 @@ type ValidateFunction = (data: string) => boolean | string
 const ValidateMessages = {
 	required: 'Обязательное поле',
 	requiredDigit: 'Должна присутствовать 1 цифра',
-	maxLength: (maxLength: number): string =>
-		`Длина не должна превышать ${maxLength} символов`,
-	minLength: (minLength: number): string =>
-		`Длина должна быть не менее ${minLength} символов`,
+	maxLength: (maxLength: number): string => `Длина не должна превышать ${maxLength} символов`,
+	minLength: (minLength: number): string => `Длина должна быть не менее ${minLength} символов`,
 	incorrectEmail: 'Некорректный email',
 	minYear: (minYear: number): string => `Год не меньше ${minYear}`,
 	maxYear: (maxYear: number): string => `Год не больше ${maxYear}`,

@@ -7,11 +7,5 @@ export const api = createApi({
 	}),
 	endpoints: () => ({}),
 	//keepUnusedDataFor: 0,
-	tagTypes: [
-		'userProfile',
-		'userRoles',
-		'groupCourses',
-		'groups',
-		'courseDetails',
-	],
+	tagTypes: ['userProfile', 'userRoles', 'groupCourses', 'groups', 'courseDetails'],
 })
