@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useGetUserProfileQuery, useGetUserRolesQuery } from '../../store/api/accountApi'
 import { setAuth, setUser } from '../../store/slices/auth.slice'
 import { AppDispatch } from '../../store/store'
@@ -12,7 +12,6 @@ export interface ILayoutProps {
 }
 
 export function PrivateLayout({ children }: ILayoutProps) {
-	const navigation = useNavigate()
 	const dispatch = useDispatch<AppDispatch>()
 	const {
 		data: profile,
@@ -44,9 +43,12 @@ export function PrivateLayout({ children }: ILayoutProps) {
 			localStorage.removeItem('token')
 			dispatch(setAuth(false))
 			dispatch(setUser(null))
-			navigation('/login')
 		}
 	}, [profileError, rolesError])
+
+	if (profileError || rolesError) {
+		return <Navigate to={'/login'} replace />
+	}
 
 	return (
 		<>
