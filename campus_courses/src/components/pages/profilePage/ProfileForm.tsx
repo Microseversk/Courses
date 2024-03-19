@@ -51,14 +51,7 @@ export function ProfileForm() {
 				<Col>
 					<Form.Control
 						{...register('fullName', {
-							required: {
-								value: true,
-								message: 'Обязательное поле',
-							},
-							maxLength: {
-								value: 50,
-								message: `Длина ФИО не должна превышать 50 символов`,
-							},
+							validate: ValidateHelper.fullName,
 						})}
 					/>
 					{errors.fullName && <ErrorMessage text={errors.fullName.message} />}
@@ -80,7 +73,7 @@ export function ProfileForm() {
 					<Form.Control
 						type='date'
 						{...register('birthDate', {
-							validate: ValidateHelper.validateBirthDate,
+							validate: ValidateHelper.birthDate,
 						})}
 					/>
 					{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
