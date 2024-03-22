@@ -4,10 +4,10 @@ import { ErrorMessage } from './ErrorMessage'
 
 interface IInputCustom extends FormControlProps {
 	label: ReactNode
+	name: string
 	labelClassName?: string
 	messageError?: string
 	register?: any
-	name: string
 	validateFn?: (value: string) => boolean | string
 }
 
@@ -33,7 +33,7 @@ export function InputCustom(props: IInputCustom) {
 					id={`custom_input_${props.label}_${id}`}
 					type={props.type}
 					name={props.name}
-					value={props.value}
+					defaultValue={props.value}
 					disabled={props.disabled}
 				/>
 			)}
