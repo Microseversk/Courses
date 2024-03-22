@@ -3,27 +3,43 @@ import { FormControl, FormControlProps, FormGroup, FormLabel } from 'react-boots
 import { ErrorMessage } from './ErrorMessage'
 
 interface IInputCustom extends FormControlProps {
-	label: ReactNode
+	name: string
 	labelClassName?: string
+	label?: ReactNode
 	messageError?: string
 	register?: any
-	name: string
+	rows?: number
 	validateFn?: (value: string) => boolean | string
 }
 
 export function InputCustom(props: IInputCustom) {
 	const id = useId()
+	if (props.register) {
+	}
 	return (
 		<FormGroup>
 			<FormLabel className={props.labelClassName} htmlFor={`custom_input_${props.label}_${id}`}>
 				{props.label}
 			</FormLabel>
-			<FormControl
-				id={`custom_input_${props.label}_${id}`}
-				type={props.type}
-				name={props.name}
-				{...props.register(props.name, { validate: props.validateFn })}
-			/>
+			{props.register ? (
+				<FormControl
+					id={`custom_input_${props.label}_${id}`}
+					type={props.type}
+					name={props.name}
+					as={props.as}
+					rows={props.rows}
+					{...props.register(props.name, { validate: props.validateFn })}
+				/>
+			) : (
+				<FormControl
+					id={`custom_input_${props.label}_${id}`}
+					type={props.type}
+					name={props.name}
+					defaultValue={props.value}
+					disabled={props.disabled}
+				/>
+			)}
+
 			<ErrorMessage text={props.messageError}></ErrorMessage>
 		</FormGroup>
 	)

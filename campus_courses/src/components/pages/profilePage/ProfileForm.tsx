@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Card, Col, Form, Row } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
@@ -7,7 +7,7 @@ import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useEditUserProfileMutation } from '../../../store/api/accountApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
-import { ErrorMessage } from '../../shared/ErrorMessage'
+import { InputCustom } from '../../shared/InputCustom'
 
 interface IEditProfile {
 	fullName: string
@@ -43,42 +43,32 @@ export function ProfileForm() {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
-			<Row className={'d-flex align-items-center'}>
-				<Col md={2} xs={12}>
-					ФИО:
-				</Col>
-				<Col>
-					<Form.Control
-						{...register('fullName', {
-							validate: ValidateHelper.fullName,
-						})}
-					/>
-					{errors.fullName && <ErrorMessage text={errors.fullName.message} />}
-				</Col>
-			</Row>
-			<Row className={'d-flex mt-3 align-items-center'}>
-				<Col md={2} xs={12}>
-					Email:
-				</Col>
-				<Col>
-					<Card.Text className={'mt-1 mt-md-0'}>{profile?.email}</Card.Text>
-				</Col>
-			</Row>
-			<Row className={'d-flex mt-3 align-items-center'}>
-				<Col md={2} xs={12}>
-					День рождения:
-				</Col>
-				<Col className={'mt-1 mt-md-0'}>
-					<Form.Control
-						type='date'
-						{...register('birthDate', {
-							validate: ValidateHelper.birthDate,
-						})}
-					/>
-					{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
-				</Col>
-			</Row>
+		<Form onSubmit={handleSubmit(onSubmit)} noValidate>
+			<InputCustom
+				label={'ФИО'}
+				name={'fullName'}
+				register={register}
+				validateFn={ValidateHelper.fullName}
+				messageError={errors?.fullName?.message}
+			/>
+			<InputCustom
+				label={'Email'}
+				labelClassName='mt-3'
+				value={profile?.email}
+				disabled={true}
+				name={'email'}
+			/>
+
+			<InputCustom
+				label={'Дата рождения'}
+				labelClassName='mt-3'
+				name={'birthDate'}
+				register={register}
+				validateFn={ValidateHelper.birthDate}
+				messageError={errors?.birthDate?.message}
+				type='date'
+			/>
+
 			<div className={'w-100 d-flex justify-content-end'}>
 				<ButtonCustom className='mt-3' text='Изменить' isLoading={isLoading} type='submit' />
 			</div>

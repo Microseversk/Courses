@@ -41,6 +41,7 @@ export function SetMarkModal(props: SetMarkModalProps) {
 				<Form id='setMarkForm' onSubmit={onSetMark}>
 					<FormLabel>Студент - {props.student && props.student.name}</FormLabel>
 					<FormCheck
+						id='mark_1'
 						name='mark'
 						type='radio'
 						label='Пройдено'
@@ -50,6 +51,7 @@ export function SetMarkModal(props: SetMarkModalProps) {
 						}}
 					/>
 					<FormCheck
+						id='mark_2'
 						name='mark'
 						type='radio'
 						label='Зафейлено'

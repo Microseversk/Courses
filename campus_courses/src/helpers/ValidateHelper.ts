@@ -10,6 +10,9 @@ const ValidateMessages = {
 	incorrectEmail: 'Некорректный email',
 	minYear: (minYear: number): string => `Год не меньше ${minYear}`,
 	maxYear: (maxYear: number): string => `Год не больше ${maxYear}`,
+
+	minSudentsCount: (min: number): string => `Не менее ${min} студента`,
+	maxSudentsCount: (max: number): string => `Не более ${max} студентов`,
 }
 
 export const ValidateHelper: { [key: string]: ValidateFunction } = {
@@ -79,11 +82,11 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 	},
 
 	courseStartYear: year => {
+		const strYear = year.toString()
 		const intYear = parseInt(year)
 		const currYear = new Date().getFullYear()
-		const strCurrYear = currYear.toString()
 
-		if (!year.length) {
+		if (!strYear.length) {
 			return ValidateMessages.required
 		}
 
@@ -93,6 +96,24 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 		if (intYear > currYear + 5) {
 			return ValidateMessages.maxYear(currYear + 5)
 		}
+		return true
+	},
+
+	courseMaximumStudentsCount: number => {
+		const strNumber = number.toString()
+		const intNumber = parseInt(number)
+
+		if (!strNumber.length) {
+			return ValidateMessages.required
+		}
+
+		if (intNumber < 1) {
+			return ValidateMessages.minSudentsCount(1)
+		}
+		if (intNumber > 200) {
+			return ValidateMessages.maxSudentsCount(200)
+		}
+
 		return true
 	},
 }

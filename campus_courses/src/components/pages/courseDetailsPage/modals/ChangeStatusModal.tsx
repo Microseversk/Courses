@@ -44,6 +44,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						type={'radio'}
 						label={'Создан'}
 						disabled={status !== 'Created'}
+						id={'status_1'}
 					/>
 					<FormCheck
 						{...register('status')}
@@ -52,6 +53,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						type={'radio'}
 						label={'Открыт для записи'}
 						disabled={status === 'Started' || status === 'Finished'}
+						id={'status_2'}
 					/>
 					<FormCheck
 						{...register('status')}
@@ -60,6 +62,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						type={'radio'}
 						label={'В процессе'}
 						disabled={status === 'Finished'}
+						id={'status_3'}
 					/>
 					<FormCheck
 						{...register('status')}
@@ -68,6 +71,7 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 						type={'radio'}
 						label={'Завершен'}
 						disabled={status === 'Finished'}
+						id={'status_4'}
 					/>
 				</Form>
 			</ModalBody>

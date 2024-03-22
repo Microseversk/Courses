@@ -1,8 +1,11 @@
-import { FormEvent, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { ValidateHelper } from '../../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useCreateNotificationMutation } from '../../../../store/api/coursesApi'
+import { ICourseNotificationCreate } from '../../../../types/request.types'
+import { InputCustom } from '../../../shared/InputCustom'
 
 type ICreateNotificationModalProps = {
 	isShow: boolean
@@ -12,31 +15,43 @@ type ICreateNotificationModalProps = {
 export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id!)
 	const [createNotify, { isSuccess, isError }] = useCreateNotificationMutation()
-	const [text, setText] = useState('')
-	const [isImportant, setIsImportant] = useState(false)
 	useToastMutate(isSuccess, isError, 'Уведомление создано')
 
-	const onCreateNotification = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		createNotify({ courseId, body: { text, isImportant } })
+	const {
+		register,
+		reset,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<ICourseNotificationCreate>({
+		mode: 'onChange',
+	})
+
+	const onCreateNotification: SubmitHandler<ICourseNotificationCreate> = data => {
+		createNotify({ courseId: courseId, body: data })
 		props.onHide()
-		setText('')
-		setIsImportant(false)
+		reset()
 	}
 	return (
 		<Modal show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Создание уведомления</Modal.Header>
 			<Modal.Body>
-				<Form id='createNotifyForm' onSubmit={onCreateNotification}>
-					<Form.Control as='textarea' rows={4} value={text} onChange={e => setText(e.target.value)} />
+				<Form id='createNotifyForm' onSubmit={handleSubmit(onCreateNotification)}>
+					<InputCustom
+						name='text'
+						label={'Текст'}
+						register={register}
+						validateFn={ValidateHelper.required}
+						messageError={errors.text?.message}
+						as='textarea'
+						rows={3}
+					/>
 					<Form.Check
-						checked={isImportant}
-						onChange={() => {
-							setIsImportant(!isImportant)
-						}}
+						{...register('isImportant')}
 						className='mt-2'
 						type='checkbox'
-						label='Важное'></Form.Check>
+						label='Важное'
+						id={'is_important'}
+					/>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
