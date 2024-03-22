@@ -3,11 +3,12 @@ import { FormControl, FormControlProps, FormGroup, FormLabel } from 'react-boots
 import { ErrorMessage } from './ErrorMessage'
 
 interface IInputCustom extends FormControlProps {
-	label: ReactNode
 	name: string
 	labelClassName?: string
+	label?: ReactNode
 	messageError?: string
 	register?: any
+	rows?: number
 	validateFn?: (value: string) => boolean | string
 }
 
@@ -25,8 +26,9 @@ export function InputCustom(props: IInputCustom) {
 					id={`custom_input_${props.label}_${id}`}
 					type={props.type}
 					name={props.name}
+					as={props.as}
+					rows={props.rows}
 					{...props.register(props.name, { validate: props.validateFn })}
-					disabled={props.disabled}
 				/>
 			) : (
 				<FormControl
