@@ -13,17 +13,31 @@ interface IInputCustom extends FormControlProps {
 
 export function InputCustom(props: IInputCustom) {
 	const id = useId()
+	if (props.register) {
+	}
 	return (
 		<FormGroup>
 			<FormLabel className={props.labelClassName} htmlFor={`custom_input_${props.label}_${id}`}>
 				{props.label}
 			</FormLabel>
-			<FormControl
-				id={`custom_input_${props.label}_${id}`}
-				type={props.type}
-				name={props.name}
-				{...props.register(props.name, { validate: props.validateFn })}
-			/>
+			{props.register ? (
+				<FormControl
+					id={`custom_input_${props.label}_${id}`}
+					type={props.type}
+					name={props.name}
+					{...props.register(props.name, { validate: props.validateFn })}
+					disabled={props.disabled}
+				/>
+			) : (
+				<FormControl
+					id={`custom_input_${props.label}_${id}`}
+					type={props.type}
+					name={props.name}
+					value={props.value}
+					disabled={props.disabled}
+				/>
+			)}
+
 			<ErrorMessage text={props.messageError}></ErrorMessage>
 		</FormGroup>
 	)
