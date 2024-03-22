@@ -9,6 +9,7 @@ import { useRegisterUserMutation } from '../../../store/api/accountApi'
 import { IUserRegistration } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
+import { InputCustom } from '../../shared/InputCustom'
 
 export function RegistrationForm() {
 	const navigate = useNavigate()
@@ -41,53 +42,52 @@ export function RegistrationForm() {
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)} noValidate>
-			<Form.Label>ФИО</Form.Label>
-			<Form.Control
-				{...register('fullName', {
-					validate: ValidateHelper.fullName,
-				})}
+			<InputCustom
+				label={'ФИО'}
+				name={'fullName'}
+				register={register}
+				validateFn={ValidateHelper.fullName}
+				messageError={errors.fullName?.message}
 			/>
-			{errors.fullName && <ErrorMessage text={errors.fullName.message} />}
-			<Form.Label className='mt-3'>День рождения</Form.Label>
-			<Form.Control
+			<InputCustom
+				label={'Дата рождения'}
+				name={'birthDate'}
+				register={register}
+				validateFn={ValidateHelper.birthDate}
+				messageError={errors.birthDate?.message}
 				type='date'
-				{...register('birthDate', {
-					validate: ValidateHelper.birthDate,
-				})}
 			/>
-			{errors.birthDate && <ErrorMessage text={errors.birthDate.message} />}
-			<Form.Label className='mt-3'>Email</Form.Label>
-			<Form.Control
-				{...register('email', {
-					validate: ValidateHelper.email,
-				})}
+			<InputCustom
+				label={'Email'}
+				name={'email'}
+				register={register}
+				validateFn={ValidateHelper.email}
+				messageError={errors.email?.message}
 			/>
-			{errors.email && <ErrorMessage text={errors.email.message} />}
 			{error && 'status' in error && error.status === 409 && <ErrorMessage text='Такой email уже зарегистрирован' />}
 
-			<Form.Label className='mt-3'>Пароль</Form.Label>
-			<Form.Control
+			<InputCustom
+				label={'Пароль'}
+				name={'password'}
+				register={register}
+				validateFn={ValidateHelper.password}
+				messageError={errors.password?.message}
 				type='password'
-				{...register('password', {
-					validate: ValidateHelper.password,
-				})}
 			/>
-			{errors.password && <ErrorMessage text={errors.password.message} />}
 
-			<Form.Label className='mt-3'>Повторите пароль</Form.Label>
-			<Form.Control
+			<InputCustom
+				label={'Подтвердите пароль'}
+				name={'confirmPassword'}
+				register={register}
+				validateFn={value => {
+					if (value !== getValues('password')) {
+						return 'Пароли не совпадают'
+					}
+					return true
+				}}
+				messageError={errors.confirmPassword?.message}
 				type='password'
-				{...register('confirmPassword', {
-					validate: value => {
-						if (!(value === getValues('password'))) {
-							return 'Пароли не совпадают'
-						}
-						return true
-					},
-				})}
 			/>
-			{errors.confirmPassword && <ErrorMessage text={errors.confirmPassword.message} />}
-
 			<ButtonCustom className='mt-3' text='Зарегистрироваться' isLoading={isLoading || !!response} type='submit' />
 		</Form>
 	)
