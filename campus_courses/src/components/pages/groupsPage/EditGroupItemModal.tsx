@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useEditGroupMutation } from '../../../store/api/groupsApi'
 import { ButtonCustom } from '../../shared/ButtonCustom'
-import { ErrorMessage } from '../../shared/ErrorMessage'
+import { InputCustom } from '../../shared/InputCustom'
 
 interface EditGroupItemModalProps {
 	isShow: boolean
@@ -59,9 +60,13 @@ export function EditGroupItemModal(props: EditGroupItemModalProps) {
 			</Modal.Header>
 			<Modal.Body>
 				<Form onSubmit={handleSubmit(onEditGroup)} id='editGroupForm'>
-					<Form.Label>Название группы</Form.Label>
-					<Form.Control {...register('name', { required: 'Введите новое имя группы' })} />
-					{errors.name && <ErrorMessage text={errors.name.message} />}
+					<InputCustom
+						name='name'
+						label={'Название группы'}
+						register={register}
+						validateFn={ValidateHelper.required}
+						messageError={errors?.name?.message}
+					/>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
