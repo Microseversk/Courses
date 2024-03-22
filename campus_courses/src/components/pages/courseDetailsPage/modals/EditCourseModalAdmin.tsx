@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Button, Form, FormCheck, FormControl, FormLabel, FormSelect, Modal } from 'react-bootstrap'
+import { Button, Form, FormCheck, FormLabel, FormSelect, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
@@ -9,6 +9,7 @@ import { useGetUsersQuery } from '../../../../store/api/usersApi'
 import { CourseCreateType } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ErrorMessage } from '../../../shared/ErrorMessage'
+import { InputCustom } from '../../../shared/InputCustom'
 import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
 interface IEditCourseModalProps {
@@ -64,45 +65,49 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 			<Modal.Header closeButton>Редактировать курс</Modal.Header>
 			<Modal.Body>
 				<Form onSubmit={handleSubmit(onEditCourseByAdmin)} id='editCourseTeacherForm'>
-					<FormLabel>Название курса</FormLabel>
-					<FormControl {...register('name', { validate: ValidateHelper.courseName })} />
-					{errors.name && <ErrorMessage text={errors.name.message} />}
-					<FormLabel className={'mt-3'}>Год начала курса</FormLabel>
-					<FormControl
-						{...register('startYear', {
-							required: 'Обязательное поле',
-							min: {
-								value: new Date().getFullYear(),
-								message: `Год не меньше ${new Date().getFullYear()}`,
-							},
-							max: {
-								value: new Date().getFullYear() + 5,
-								message: `Год не больше ${new Date().getFullYear() + 5}`,
-							},
-						})}
+					<InputCustom
+						name='name'
+						label={'Название курса'}
+						register={register}
+						validateFn={ValidateHelper.courseName}
+						messageError={errors?.name?.message}
+					/>
+					<InputCustom
+						name='startYear'
+						label={'Год начала курса'}
+						labelClassName='mt-3'
+						register={register}
+						validateFn={ValidateHelper.courseStartYear}
+						messageError={errors?.startYear?.message}
 						type='number'
 					/>
-					{errors.startYear && <ErrorMessage text={errors.startYear.message} />}
-					<FormLabel className={'mt-3'}>Общее количество мест</FormLabel>
-					<FormControl
-						{...register('maximumStudentsCount', {
-							required: 'Обязательное поле',
-							min: {
-								value: 1,
-								message: 'Не меньше 1',
-							},
-							max: {
-								value: 200,
-								message: 'Не больше 200',
-							},
-						})}
-						type={'number'}
+					<InputCustom
+						name='maximumStudentsCount'
+						label={'Общее количество мест'}
+						labelClassName='mt-3'
+						register={register}
+						validateFn={ValidateHelper.courseMaximumStudentsCount}
+						messageError={errors?.maximumStudentsCount?.message}
+						type='number'
 					/>
-					{errors.maximumStudentsCount && <ErrorMessage text={errors.maximumStudentsCount.message} />}
 					<FormLabel className={'mt-3'}>Семестр</FormLabel>
 					<div className={'d-flex gap-3'}>
-						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Autumn'} label={'Осенний'} />
-						<FormCheck {...register('semester')} name={'semester'} type={'radio'} value={'Spring'} label={'Весенний'} />
+						<FormCheck
+							{...register('semester')}
+							name={'semester'}
+							type={'radio'}
+							value={'Autumn'}
+							label={'Осенний'}
+							id='semester_1'
+						/>
+						<FormCheck
+							{...register('semester')}
+							name={'semester'}
+							type={'radio'}
+							value={'Spring'}
+							label={'Весенний'}
+							id='semester_2'
+						/>
 					</div>
 					<FormLabel className={'mt-3'}>Требования</FormLabel>
 					<TextEditToolbar name='requirements' control={control} />

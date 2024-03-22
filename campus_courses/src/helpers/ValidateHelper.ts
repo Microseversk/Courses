@@ -82,11 +82,11 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 	},
 
 	courseStartYear: year => {
+		const strYear = year.toString()
 		const intYear = parseInt(year)
 		const currYear = new Date().getFullYear()
-		const strCurrYear = currYear.toString()
 
-		if (!year.length) {
+		if (!strYear.length) {
 			return ValidateMessages.required
 		}
 
@@ -100,9 +100,10 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 	},
 
 	courseMaximumStudentsCount: number => {
+		const strNumber = number.toString()
 		const intNumber = parseInt(number)
 
-		if (!number.length) {
+		if (!strNumber.length) {
 			return ValidateMessages.required
 		}
 
