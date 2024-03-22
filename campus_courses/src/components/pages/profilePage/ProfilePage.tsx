@@ -3,8 +3,8 @@ import { ProfileForm } from './ProfileForm'
 
 export default function ProfilePage() {
 	return (
-		<Container>
-			<Card>
+		<Container className='d-flex justify-content-center'>
+			<Card className='w-75'>
 				<Card.Header>
 					<Card.Title>Профиль</Card.Title>
 				</Card.Header>
