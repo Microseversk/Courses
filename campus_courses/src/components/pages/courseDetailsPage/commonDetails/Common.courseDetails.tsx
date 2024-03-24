@@ -87,7 +87,7 @@ export function CommonCourseDetails() {
 						</Col>
 						<Col className={'text-end'}>
 							{[UserCourseRole.Admin, UserCourseRole.MainTeacher, UserCourseRole.Teacher].includes(userCourseRole) && (
-								<>
+								<div>
 									<Button className={'btn-warning h-100'} onClick={onShowEditStatus}>
 										ИЗМЕНИТЬ
 									</Button>
@@ -96,7 +96,7 @@ export function CommonCourseDetails() {
 											СТАТИСТИКА
 										</Button>
 									)}
-								</>
+								</div>
 							)}
 							{course.status === 'OpenForAssigning' && userCourseRole === UserCourseRole.Student && (
 								<Button
