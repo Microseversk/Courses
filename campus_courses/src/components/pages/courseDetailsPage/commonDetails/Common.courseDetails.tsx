@@ -10,6 +10,7 @@ import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ChangeStatusModal } from '../modals/ChangeStatusModal'
 import { EditCourseModalAdmin } from '../modals/EditCourseModalAdmin'
 import { EditCourseModalTeacher } from '../modals/EditCourseModalTeacher'
+import { StatisticModal } from '../modals/StatisticModal'
 
 export function CommonCourseDetails() {
 	const navigation = useNavigate()
@@ -23,6 +24,7 @@ export function CommonCourseDetails() {
 
 	const { isShow: isShowEditStatus, onHide: onHideEditStatus, onShow: onShowEditStatus } = useModal()
 	const { isShow: isShowEditCourse, onHide: onHideEditCourse, onShow: onShowEditCourse } = useModal()
+	const { isShow: isShowStatistics, onHide: onHideStatistics, onShow: onShowStatistics } = useModal()
 	useEffect(() => {
 		if (isSuccessDeleteCourse) {
 			navigation(-1)
@@ -45,6 +47,7 @@ export function CommonCourseDetails() {
 				<EditCourseModalTeacher isShow={isShowEditCourse} onHide={onHideEditCourse} />
 			)}
 
+			<StatisticModal isShow={isShowStatistics} onHide={onHideStatistics} />
 			<ChangeStatusModal isShow={isShowEditStatus} onHide={onHideEditStatus} />
 			<div className={'fs-2 fw-bold'}>{course.name}</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
@@ -84,9 +87,16 @@ export function CommonCourseDetails() {
 						</Col>
 						<Col className={'text-end'}>
 							{[UserCourseRole.Admin, UserCourseRole.MainTeacher, UserCourseRole.Teacher].includes(userCourseRole) && (
-								<Button className={'btn-warning h-100'} onClick={onShowEditStatus}>
-									ИЗМЕНИТЬ
-								</Button>
+								<>
+									<Button className={'btn-warning h-100'} onClick={onShowEditStatus}>
+										ИЗМЕНИТЬ
+									</Button>
+									{course.students.some(s => s.status === 'Accepted') && (
+										<Button className={'btn-secondary h-100 ms-3'} onClick={onShowStatistics}>
+											СТАТИСТИКА
+										</Button>
+									)}
+								</>
 							)}
 							{course.status === 'OpenForAssigning' && userCourseRole === UserCourseRole.Student && (
 								<Button
