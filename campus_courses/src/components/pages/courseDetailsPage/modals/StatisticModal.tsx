@@ -62,7 +62,7 @@ export function StatisticModal(props: IStatisticsModalProps) {
 				</a>
 			</ModalHeader>
 			<ModalBody>
-				<Chart chartType='Bar' width={'90%'} height={'90%'} data={data} options={options} />
+				<Chart chartType='Bar' width={'100%'} height={'90%'} data={data} options={options} />
 			</ModalBody>
 		</Modal>
 	)

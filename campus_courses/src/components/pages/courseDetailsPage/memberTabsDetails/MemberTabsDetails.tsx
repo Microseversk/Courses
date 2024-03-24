@@ -21,7 +21,7 @@ export function MemberTabsDetails(props: IMemberTabsDetailsProps) {
 	return (
 		<>
 			<AddTeacherModal isShow={isShow} onHide={onHide} />
-			<Tabs className={props.className} defaultActiveKey={'Students'}>
+			<Tabs fill className={props.className} defaultActiveKey={'Students'}>
 				<Tab className={'border mb-3'} title={'Студенты'} eventKey={'Students'}>
 					<StudentsList students={course.students} />
 				</Tab>

@@ -14,7 +14,7 @@ export function InfoTabsCourseDetails(props: IInfoTabsCourseDetailsProps) {
 	return (
 		<>
 			<CreateNotificationModal isShow={isShow} onHide={onHide} />
-			<Tabs className={props.className} defaultActiveKey={'requirements'}>
+			<Tabs fill className={props.className} defaultActiveKey={'requirements'}>
 				<Tab className={'border'} title={'Требования к курсу'} eventKey={'requirements'}>
 					{course?.requirements && (
 						<div className={'mt-3 mb-3 ms-3'}>
