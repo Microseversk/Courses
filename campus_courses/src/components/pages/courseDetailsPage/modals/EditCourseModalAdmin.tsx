@@ -119,11 +119,14 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
 						<option value=''>Не выбрано</option>
-						{users?.map(user => (
-							<option key={user.id} value={user.id}>
-								{user.fullName}
-							</option>
-						))}
+						{users
+							?.slice()
+							.filter(u => !course?.students.some(s => s.id === u.id))
+							.map(user => (
+								<option key={user.id} value={user.id}>
+									{user.fullName}
+								</option>
+							))}
 					</FormSelect>
 					{errors.mainTeacherId && <ErrorMessage text={errors.mainTeacherId.message} />}
 				</Form>

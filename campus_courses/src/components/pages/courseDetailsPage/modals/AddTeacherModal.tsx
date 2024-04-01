@@ -12,6 +12,7 @@ type AddTeacherModalProps = {
 
 export function AddTeacherModal(props: AddTeacherModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse?.course?.id)
+	const students = useTypedSelector(state => state.openedCourse?.course?.students)
 	const { data: users } = useGetUsersQuery('')
 	const [addTeacher, { isSuccess, isError }] = useAddTeacherMutation()
 	const [teacher, setTeacher] = useState('')
@@ -34,11 +35,14 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 							setTeacher(e.target.value)
 						}}>
 						<option value=''>Не выбрано</option>
-						{users?.map(user => (
-							<option key={user.id} value={user.id}>
-								{user.fullName}
-							</option>
-						))}
+						{users
+							?.slice()
+							.filter(u => !students?.some(s => s.id === u.id))
+							.map(user => (
+								<option key={user.id} value={user.id}>
+									{user.fullName}
+								</option>
+							))}
 					</FormSelect>
 				</Form>
 			</Modal.Body>
