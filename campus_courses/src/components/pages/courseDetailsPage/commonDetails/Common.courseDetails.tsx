@@ -61,8 +61,9 @@ export function CommonCourseDetails() {
 					<ButtonCustom
 						text='УДАЛИТЬ'
 						className={'btn-danger me-3'}
-						onClick={onDeleteCourse}
 						isLoading={isLoadingDelete}
+						popup
+						action={onDeleteCourse}
 					/>
 				)}
 			</div>

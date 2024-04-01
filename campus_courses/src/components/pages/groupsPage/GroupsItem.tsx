@@ -35,7 +35,7 @@ export function GroupsItem(props: IGroupResponse) {
 							<Button className={'btn-warning'} onClick={onShow}>
 								РЕДАКТИРОВАТЬ
 							</Button>
-							<ButtonCustom className={'btn-danger'} onClick={onDelete} text='УДАЛИТЬ' isLoading={isLoading} />
+							<ButtonCustom className={'btn-danger'} text='УДАЛИТЬ' popup action={onDelete} isLoading={isLoading} />
 						</Col>
 					)}
 				</Row>
