@@ -33,7 +33,7 @@ export const ValidateHelper: { [key: string]: ValidateFunction } = {
 		const minDate = new Date('1900-01-01')
 
 		if (checkedDate < minDate || checkedDate > currentDate) {
-			return `Корректная дата от 01.01.1900 до ${currentDate.getDate()}.${
+			return `Корректная дата от 1.1.1900 до ${currentDate.getDate()}.${
 				currentDate.getMonth() + 1
 			}.${currentDate.getFullYear()}`
 		}
