@@ -58,7 +58,7 @@ export function LoginForm() {
 				messageError={errors.password?.message}
 				type='password'
 			/>
-			{error && <ErrorMessage text='Неверный email или пароль' />}
+			{error && 'status' in error && error.status === 400 && <ErrorMessage text='Неверный email или пароль' />}
 			<ButtonCustom className='mt-3' isLoading={isLoading || !!response} text='Войти' type='submit' />
 		</Form>
 	)
