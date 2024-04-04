@@ -25,7 +25,7 @@ export function Header() {
 		<Navbar expand={'lg'} className={'bg-body-tertiary mb-4'}>
 			<Container fluid className={'ms-4 me-4'}>
 				<Link to={'/'} className={'navbar-brand'}>
-					Кампусные курсы
+					<img src={'./logo.svg'} width='30' height='30' alt='' /> Кампусные курсы
 				</Link>
 				<Navbar.Toggle />
 				<Navbar.Collapse className={''}>
