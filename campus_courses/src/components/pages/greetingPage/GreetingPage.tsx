@@ -1,7 +1,9 @@
 import { Container } from 'react-bootstrap'
+import { useTitle } from '../../../hooks/useTitle'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 
 export default function GreetingPage() {
+	useTitle('Добро пожаловать')
 	const user = useTypedSelector(state => state.auth.user)
 
 	return (

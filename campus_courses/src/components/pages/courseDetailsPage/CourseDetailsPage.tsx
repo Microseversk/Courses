@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useTitle } from '../../../hooks/useTitle'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useGetCourseDetailsQuery } from '../../../store/api/coursesApi'
 import { UserCourseRole, setCourse } from '../../../store/slices/course.slice'
@@ -16,7 +17,7 @@ export default function CourseDetailsPage() {
 	const user = useTypedSelector(state => state.auth.user)
 	const { id: courseId } = useParams<{ id: string }>()
 	const { data: courseDetails, isLoading, error } = useGetCourseDetailsQuery({ id: courseId })
-
+	useTitle(courseDetails?.name)
 	useEffect(() => {
 		if (courseDetails) {
 			const isTeacher = courseDetails.teachers.find(t => t.email === user?.email)

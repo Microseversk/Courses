@@ -55,10 +55,11 @@ export function InfoTabsCourseDetails(props: IInfoTabsCourseDetailsProps) {
 							.reverse()
 							.map((notify, index) => (
 								<ListGroupItem
+									style={{ textWrap: 'wrap', overflow: 'auto' }}
 									key={index}
 									className={
 										notify.isImportant
-											? 'bg-danger-subtle text-danger rounded-0 border-0 border-bottom border-secondary'
+											? 'bg-danger-subtle text-danger text rounded-0 border-0 border-bottom border-secondary'
 											: 'border-bottom-2 rounded-0'
 									}>
 									{notify.text}

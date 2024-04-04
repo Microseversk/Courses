@@ -1,6 +1,7 @@
 import { Button, Container, ListGroup } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { useModal } from '../../../hooks/useModal'
+import { useTitle } from '../../../hooks/useTitle'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useGetGroupCoursesQuery } from '../../../store/api/coursesApi'
 import { useGetGroupsQuery } from '../../../store/api/groupsApi'
@@ -14,10 +15,9 @@ export default function GroupCoursesPage() {
 	const { data: courses, isLoading: isLoadingCourses } = useGetGroupCoursesQuery({ id: groupId?.id })
 
 	const { isShow, onHide, onShow } = useModal()
-
 	const { data: groups, isLoading: isLoadingGroups } = useGetGroupsQuery('')
-
 	const filteredGroups = groups?.filter(group => group.id === groupId?.id)
+	useTitle(`Курсы ${filteredGroups?.pop()?.name}`)
 
 	if (isLoadingCourses || isLoadingGroups) {
 		return <Loader />

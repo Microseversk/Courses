@@ -1,5 +1,6 @@
 import { Button, Container, ListGroup } from 'react-bootstrap'
 import { useModal } from '../../../hooks/useModal'
+import { useTitle } from '../../../hooks/useTitle'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useGetGroupsQuery } from '../../../store/api/groupsApi'
 import { Loader } from '../../layouts/loader/Loader'
@@ -7,6 +8,7 @@ import { CreateGroupItemModal } from './CreateGroupItemModal'
 import { GroupsItem } from './GroupsItem'
 
 export default function GroupsPage() {
+	useTitle('Группы курсов')
 	const { data: groups, isLoading } = useGetGroupsQuery('')
 	const userRoles = useTypedSelector(state => state.auth.user?.roles)
 

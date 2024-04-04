@@ -1,9 +1,11 @@
 import { Container, ListGroup } from 'react-bootstrap'
+import { useTitle } from '../../../hooks/useTitle'
 import { useGetCoursesMyQuery } from '../../../store/api/coursesApi'
 import { Loader } from '../../layouts/loader/Loader'
 import { CourseItem } from '../groupCoursesPage/CourseItem'
 
 export default function MyCoursesPage() {
+	useTitle('Мои курсы')
 	const { data: courses, isLoading } = useGetCoursesMyQuery('')
 
 	if (isLoading) {

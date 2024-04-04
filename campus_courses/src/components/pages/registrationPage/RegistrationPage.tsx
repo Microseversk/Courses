@@ -1,7 +1,9 @@
 import { Card, Container } from 'react-bootstrap'
+import { useTitle } from '../../../hooks/useTitle'
 import { RegistrationForm } from './RegistrationForm'
 
 export default function RegistrationPage() {
+	useTitle('Регистрация')
 	return (
 		<Container className={'d-flex justify-content-center'}>
 			<Card className={'w-75'}>
