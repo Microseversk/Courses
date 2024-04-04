@@ -8,8 +8,7 @@ import { AppDispatch } from '../../../store/store'
 
 export function Header() {
 	const [logoutUser] = useLogoutUserMutation()
-	const isAuth = useTypedSelector(state => state.auth?.isAuth)
-	const user = useTypedSelector(state => state.auth?.user)
+	const { user, isAuth } = useTypedSelector(state => state.auth)
 	const dispatch = useDispatch<AppDispatch>()
 	const navigate = useNavigate()
 
@@ -25,7 +24,7 @@ export function Header() {
 		<Navbar expand={'lg'} className={'bg-body-tertiary mb-4'}>
 			<Container fluid className={'ms-4 me-4'}>
 				<Link to={'/'} className={'navbar-brand'}>
-					<img src={'./logo.svg'} width='30' height='30' alt='' /> Кампусные курсы
+					<img src={'/images/logo.svg'} width='40' height='40' alt='logo' /> Кампусные курсы
 				</Link>
 				<Navbar.Toggle />
 				<Navbar.Collapse className={''}>
