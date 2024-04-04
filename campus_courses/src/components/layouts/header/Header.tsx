@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Container, Navbar } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,6 +8,7 @@ import { setAuth, setUser } from '../../../store/slices/auth.slice'
 import { AppDispatch } from '../../../store/store'
 
 export function Header() {
+	const [isOpen, setIsOpen] = useState(false)
 	const [logoutUser] = useLogoutUserMutation()
 	const { user, isAuth } = useTypedSelector(state => state.auth)
 	const dispatch = useDispatch<AppDispatch>()
@@ -26,21 +28,21 @@ export function Header() {
 				<Link to={'/'} className={'navbar-brand'}>
 					<img src={'/images/logo.svg'} width='40' height='40' alt='logo' /> Кампусные курсы
 				</Link>
-				<Navbar.Toggle />
-				<Navbar.Collapse className={''}>
+				<Navbar.Toggle onClick={() => setIsOpen(!isOpen)} />
+				<Navbar.Collapse in={isOpen}>
 					<div className={'ms-lg-4 d-flex flex-column flex-lg-row gap-lg-3'}>
 						{isAuth && (
-							<Link to={'/groups'} className={'nav-link'}>
+							<Link to={'/groups'} onClick={() => setIsOpen(false)} className={'nav-link'}>
 								Группы курсов
 							</Link>
 						)}
 						{isAuth && user?.roles.isStudent && (
-							<Link to={'/courses/my'} className={'nav-link'}>
+							<Link to={'/courses/my'} onClick={() => setIsOpen(false)} className={'nav-link'}>
 								Мои курсы
 							</Link>
 						)}
 						{isAuth && user?.roles.isTeacher && (
-							<Link to={'/courses/teaching'} className={'nav-link'}>
+							<Link to={'/courses/teaching'} onClick={() => setIsOpen(false)} className={'nav-link'}>
 								Преподаваемые курсы
 							</Link>
 						)}
@@ -48,7 +50,7 @@ export function Header() {
 					<div className={'d-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'}>
 						{isAuth ? (
 							<>
-								<Link className={'nav-link'} to={'/profile'}>
+								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/profile'}>
 									Профиль
 								</Link>
 								<button className={'nav-link text-start'} onClick={handleLogout}>
@@ -57,10 +59,10 @@ export function Header() {
 							</>
 						) : (
 							<>
-								<Link className={'nav-link'} to={'/registration'}>
+								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/registration'}>
 									Зарегистрироваться
 								</Link>
-								<Link className={'nav-link'} to={'/login'}>
+								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/login'}>
 									Войти
 								</Link>
 							</>
