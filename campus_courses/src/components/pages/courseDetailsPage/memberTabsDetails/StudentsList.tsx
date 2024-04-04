@@ -76,16 +76,16 @@ export function StudentsList(props: IStudentsListProps) {
 														: 'disabled d-inline'
 												}>
 												Промежуточная аттестация -
+												{student.midtermResult === 'Passed' ? (
+													<span className={'ms-1 badge bg-success'}>Пройдена</span>
+												) : student.midtermResult === 'Failed' ? (
+													<span className={'ms-1 badge bg-danger'}>Провалена</span>
+												) : student.midtermResult === 'NotDefined' ? (
+													<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
+												) : (
+													<></>
+												)}
 											</NavLink>
-											{student.midtermResult === 'Passed' ? (
-												<span className={'ms-1 badge bg-success'}>Пройдена</span>
-											) : student.midtermResult === 'Failed' ? (
-												<span className={'ms-1 badge bg-danger'}>Провалена</span>
-											) : student.midtermResult === 'NotDefined' ? (
-												<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
-											) : (
-												<></>
-											)}
 										</Col>
 										<Col sm={12} md={4}>
 											<NavLink
@@ -100,20 +100,20 @@ export function StudentsList(props: IStudentsListProps) {
 													[UserCourseRole.Admin, UserCourseRole.Teacher, UserCourseRole.MainTeacher].includes(
 														userCourseRole!
 													)
-														? 'link-primary d-inline'
+														? 'link-primary'
 														: 'disabled d-inline'
 												}>
 												Финальная аттестация -
+												{student.finalResult === 'Passed' ? (
+													<span className={'ms-1 badge bg-success'}>Пройдена</span>
+												) : student.finalResult === 'Failed' ? (
+													<span className={'ms-1 badge bg-danger '}>Провалена</span>
+												) : student.finalResult === 'NotDefined' ? (
+													<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
+												) : (
+													<></>
+												)}
 											</NavLink>
-											{student.finalResult === 'Passed' ? (
-												<span className={'ms-1 badge bg-success'}>Пройдена</span>
-											) : student.finalResult === 'Failed' ? (
-												<span className={'ms-1 badge bg-danger'}>Провалена</span>
-											) : student.finalResult === 'NotDefined' ? (
-												<span className={'ms-1 badge bg-secondary'}>Нет отметки</span>
-											) : (
-												<></>
-											)}
 										</Col>
 									</>
 								)}
