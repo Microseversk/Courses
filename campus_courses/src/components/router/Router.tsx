@@ -10,6 +10,7 @@ import GroupCoursesPage from '../pages/groupCoursesPage/GroupCoursesPage'
 import GroupsPage from '../pages/groupsPage/GroupsPage'
 import LoginPage from '../pages/loginPage/LoginPage'
 import MyCoursesPage from '../pages/myCoursesPage/MyCoursesPage'
+import NotFoundPage from '../pages/notFoundPage/NotFoundPage'
 import ProfilePage from '../pages/profilePage/ProfilePage'
 import RegistrationPage from '../pages/registrationPage/RegistrationPage'
 import TeachingCoursesPage from '../pages/teachingCoursesPage/TeachingCoursesPage'
@@ -43,7 +44,7 @@ export function Router() {
 				<Route path='/profile' element={<PrivateLayout children={<ProfilePage />} />} />
 				<Route path='/login' element={<PublicLayout children={<LoginPage />} />} />
 				<Route path='/registration' element={<PublicLayout children={<RegistrationPage />} />} />
-				<Route path='*' element={<PublicLayout children={<>Not found</>} />} />
+				<Route path='*' element={<PrivateLayout children={<NotFoundPage />} />} />
 			</Routes>
 		</Suspense>
 	)

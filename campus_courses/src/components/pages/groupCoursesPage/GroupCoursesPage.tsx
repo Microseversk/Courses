@@ -6,6 +6,7 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector'
 import { useGetGroupCoursesQuery } from '../../../store/api/coursesApi'
 import { useGetGroupsQuery } from '../../../store/api/groupsApi'
 import { Loader } from '../../layouts/loader/Loader'
+import NotFoundPage from '../notFoundPage/NotFoundPage'
 import { CourseItem } from './CourseItem'
 import { CreateCourseModal } from './CreateCourseModal'
 
@@ -17,10 +18,14 @@ export default function GroupCoursesPage() {
 	const { isShow, onHide, onShow } = useModal()
 	const { data: groups, isLoading: isLoadingGroups } = useGetGroupsQuery('')
 	const groupName = groups?.filter(group => group.id === groupId?.id).pop()?.name
-	useTitle(`Курсы ${groupName}`)
+	useTitle(`Курсы ${groupName || ''}`)
 
 	if (isLoadingCourses || isLoadingGroups) {
 		return <Loader />
+	}
+
+	if (!groupName) {
+		return <NotFoundPage />
 	}
 
 	return (

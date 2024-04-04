@@ -8,6 +8,7 @@ import { useGetCourseDetailsQuery } from '../../../store/api/coursesApi'
 import { UserCourseRole, setCourse } from '../../../store/slices/course.slice'
 import { AppDispatch } from '../../../store/store'
 import { Loader } from '../../layouts/loader/Loader'
+import NotFoundPage from '../notFoundPage/NotFoundPage'
 import { CommonCourseDetails } from './commonDetails/Common.courseDetails'
 import { InfoTabsCourseDetails } from './infoTabsDetails/InfoTabs.courseDetails'
 import { MemberTabsDetails } from './memberTabsDetails/MemberTabsDetails'
@@ -61,7 +62,7 @@ export default function CourseDetailsPage() {
 		return <Loader />
 	}
 	if (error) {
-		return <Container className={'text-center text-danger'}>Такого курса не существует</Container>
+		return <NotFoundPage />
 	}
 
 	if (courseDetails) {
