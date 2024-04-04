@@ -6,12 +6,12 @@ export function CourseItem(props: IGroupCoursesResponse) {
 	return (
 		<ListGroupItem>
 			<Row>
-				<Col>
-					<Link to={`/courses/${props.id}`} className={'nav-link fw-bolder fs-5'}>
+				<Col lg={10}>
+					<Link to={`/courses/${props.id}`} className={'nav-link fw-bolder fs-5 overflow-auto '}>
 						{props.name}
 					</Link>
 				</Col>
-				<Col className={'text-success fw-bold text-end'}>
+				<Col lg={2} className={'text-success fw-bold text-end'}>
 					{props.status === 'Started' ? (
 						<span className={'text-primary'}>В процессе обучения</span>
 					) : props.status === 'OpenForAssigning' ? (
