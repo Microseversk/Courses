@@ -16,8 +16,8 @@ export default function GroupCoursesPage() {
 
 	const { isShow, onHide, onShow } = useModal()
 	const { data: groups, isLoading: isLoadingGroups } = useGetGroupsQuery('')
-	const filteredGroups = groups?.filter(group => group.id === groupId?.id)
-	useTitle(`Курсы ${filteredGroups?.pop()?.name}`)
+	const groupName = groups?.filter(group => group.id === groupId?.id).pop()?.name
+	useTitle(`Курсы ${groupName}`)
 
 	if (isLoadingCourses || isLoadingGroups) {
 		return <Loader />
@@ -26,7 +26,9 @@ export default function GroupCoursesPage() {
 	return (
 		<Container>
 			<CreateCourseModal isShow={isShow} onHide={onHide} />
-			<div className={'fw-bold fs-2'}>Группа - {filteredGroups && filteredGroups.pop()?.name}</div>
+			<div className={'fw-bold fs-2'} style={{ textWrap: 'nowrap', overflow: 'auto' }}>
+				Группа - {groupName}
+			</div>
 			{isAdmin && (
 				<Button onClick={onShow} className={'mt-1'}>
 					Создать курс

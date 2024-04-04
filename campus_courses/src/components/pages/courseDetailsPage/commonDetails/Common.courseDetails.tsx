@@ -49,7 +49,9 @@ export function CommonCourseDetails() {
 
 			<StatisticModal isShow={isShowStatistics} onHide={onHideStatistics} />
 			<ChangeStatusModal isShow={isShowEditStatus} onHide={onHideEditStatus} />
-			<div className={'fs-2 fw-bold'}>{course.name}</div>
+			<div className={'fs-2 fw-bold'} style={{ textWrap: 'nowrap', overflow: 'auto' }}>
+				{course.name}
+			</div>
 			<div className={'d-flex align-items-end justify-content-between'}>
 				<div className={'fw-bold mt-1'}>Основные данные курса</div>
 				{[UserCourseRole.Admin, UserCourseRole.MainTeacher, UserCourseRole.Teacher].includes(userCourseRole) && (

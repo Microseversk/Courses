@@ -15,14 +15,22 @@ export function InfoTabsCourseDetails(props: IInfoTabsCourseDetailsProps) {
 		<>
 			<CreateNotificationModal isShow={isShow} onHide={onHide} />
 			<Tabs fill className={props.className} defaultActiveKey={'requirements'}>
-				<Tab className={'border'} title={'Требования к курсу'} eventKey={'requirements'}>
+				<Tab
+					className={'border'}
+					title={'Требования к курсу'}
+					eventKey={'requirements'}
+					style={{ textWrap: 'nowrap', overflow: 'auto' }}>
 					{course?.requirements && (
 						<div className={'mt-3 mb-3 ms-3'}>
 							<div dangerouslySetInnerHTML={{ __html: course.requirements }} />
 						</div>
 					)}
 				</Tab>
-				<Tab className={'border'} title={'Аннотация'} eventKey={'annotation'}>
+				<Tab
+					className={'border'}
+					title={'Аннотация'}
+					eventKey={'annotation'}
+					style={{ textWrap: 'nowrap', overflow: 'auto' }}>
 					{course?.annotations && (
 						<div className={'mt-3 mb-3 ms-3'}>
 							<div dangerouslySetInnerHTML={{ __html: course.annotations }} />

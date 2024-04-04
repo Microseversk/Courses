@@ -25,7 +25,11 @@ export function GroupsItem(props: IGroupResponse) {
 			<EditGroupItemModal name={props.name} id={props.id} isShow={isShow} onHide={onHide} />
 			<ListGroup.Item className={'d-flex pe-0'}>
 				<Row className={'w-100'}>
-					<Col sm={12} md={6} className={'d-flex justify-content-center justify-content-md-start align-items-center '}>
+					<Col
+						sm={12}
+						md={6}
+						className={'d-flex justify-content-center justify-content-md-start align-items-center '}
+						style={{ textWrap: 'nowrap', overflow: 'auto' }}>
 						<Link to={`/groups/${props.id}`} className={'nav-link'}>
 							{props.name}
 						</Link>
