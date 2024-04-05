@@ -1,6 +1,8 @@
+import { useMemo } from 'react'
 import { Modal, ModalBody, ModalHeader } from 'react-bootstrap'
 import Chart from 'react-google-charts'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { IStudent } from '../../../../types/response.types'
 
 interface IStatisticsModalProps {
 	isShow: boolean
@@ -28,9 +30,9 @@ const acs: StatsResults = {
 	FNotDefined: 0,
 }
 
-export function StatisticModal(props: IStatisticsModalProps) {
-	const { students, name } = useTypedSelector(state => state.openedCourse.course!)
-	const results = students
+const getStudentsStats = (students: IStudent[]): StatsResults => {
+	console.log('get stats')
+	return students
 		?.filter(s => s.status === 'Accepted')
 		.reduce((acs, item) => {
 			return {
@@ -42,6 +44,12 @@ export function StatisticModal(props: IStatisticsModalProps) {
 				FNotDefined: item.finalResult === 'NotDefined' ? acs.FNotDefined + 1 : acs.FNotDefined,
 			}
 		}, acs)
+}
+
+export function StatisticModal(props: IStatisticsModalProps) {
+	const { students, name } = useTypedSelector(state => state.openedCourse.course!)
+
+	const results = useMemo(() => getStudentsStats(students), [students])
 
 	const data = [
 		['', 'Успешно', 'Провал', 'Нет результата'],
