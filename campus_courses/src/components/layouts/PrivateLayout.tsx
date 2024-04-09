@@ -1,6 +1,5 @@
 import { ReactNode, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Navigate } from 'react-router-dom'
 import { useGetUserProfileQuery, useGetUserRolesQuery } from '../../store/api/accountApi'
 import { setAuth, setUser } from '../../store/slices/auth.slice'
 import { AppDispatch } from '../../store/store'
@@ -13,13 +12,8 @@ export interface ILayoutProps {
 
 export function PrivateLayout({ children }: ILayoutProps) {
 	const dispatch = useDispatch<AppDispatch>()
-	const {
-		data: profile,
-		isLoading: isLoadingProfile,
-		error: profileError,
-		refetch: refetchProfile,
-	} = useGetUserProfileQuery('')
-	const { data: roles, isLoading: isLoadingRoles, error: rolesError, refetch: refetchRoles } = useGetUserRolesQuery('')
+	const { data: profile, isLoading: isLoadingProfile, refetch: refetchProfile } = useGetUserProfileQuery('')
+	const { data: roles, isLoading: isLoadingRoles, refetch: refetchRoles } = useGetUserRolesQuery('')
 
 	useEffect(() => {
 		refetchProfile()
@@ -37,18 +31,6 @@ export function PrivateLayout({ children }: ILayoutProps) {
 			)
 		}
 	}, [profile, roles])
-
-	useEffect(() => {
-		if (profileError || rolesError) {
-			localStorage.removeItem('token')
-			dispatch(setAuth(false))
-			dispatch(setUser(null))
-		}
-	}, [profileError, rolesError])
-
-	if (profileError || rolesError) {
-		return <Navigate to={'/login'} replace />
-	}
 
 	return (
 		<>
