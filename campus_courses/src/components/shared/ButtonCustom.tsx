@@ -17,7 +17,7 @@ export function ButtonCustom({ popup, action, isLoading, text, ...other }: IButt
 	return (
 		<>
 			{popup === true && <DeletePopup isShow={isShow} onHide={onHide} action={action} />}
-			<Button onClick={onShow} {...other} style={{ position: 'relative' }} disabled={isLoading}>
+			<Button onClick={onShow} {...other} style={{ position: 'relative' }} disabled={isLoading || other.disabled}>
 				{isLoading ? (
 					<div
 						style={{

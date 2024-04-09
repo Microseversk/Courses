@@ -5,6 +5,7 @@ import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useAddTeacherMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
+import { ButtonCustom } from '../../../shared/ButtonCustom'
 
 type AddTeacherModalProps = {
 	isShow: boolean
@@ -15,7 +16,7 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse?.course?.id)
 	const students = useTypedSelector(state => state.openedCourse?.course?.students)
 	const { data: users } = useGetUsersQuery('')
-	const [addTeacher, { isSuccess, isError }] = useAddTeacherMutation()
+	const [addTeacher, { isSuccess, isError, isLoading }] = useAddTeacherMutation()
 	const [teacher, setTeacher] = useState('')
 	useToastMutate(isSuccess, isError, 'Учитель добавлен')
 
@@ -53,9 +54,13 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<Button type={'submit'} form='addTeacherModal' disabled={teacher === ''}>
-					Сохранить
-				</Button>
+				<ButtonCustom
+					type={'submit'}
+					form='addTeacherModal'
+					disabled={teacher === ''}
+					text={'Сохранить'}
+					isLoading={isLoading}
+				/>
 			</Modal.Footer>
 		</Modal>
 	)
