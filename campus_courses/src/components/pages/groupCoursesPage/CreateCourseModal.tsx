@@ -133,6 +133,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 
 					<ReactSelect
+						defaultValue={{ label: 'Не выбрано', value: '' }}
 						options={users?.map(u => ({ label: u.fullName, value: u.id }))}
 						onChange={e => setValue('mainTeacherId', e?.value || '')}
 					/>
