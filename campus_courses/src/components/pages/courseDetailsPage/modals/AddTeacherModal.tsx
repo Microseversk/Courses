@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
-import { Button, Form, FormLabel, FormSelect, Modal } from 'react-bootstrap'
+import { Button, Form, FormLabel, Modal } from 'react-bootstrap'
+import ReactSelect from 'react-select'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useAddTeacherMutation } from '../../../../store/api/coursesApi'
@@ -25,32 +26,34 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 	}
 
 	return (
-		<Modal size='lg' show={props.isShow} onHide={props.onHide}>
+		<Modal
+			size='lg'
+			show={props.isShow}
+			onHide={() => {
+				props.onHide()
+				setTeacher('')
+			}}>
 			<Modal.Header closeButton></Modal.Header>
 			<Modal.Body>
 				<Form id='addTeacherModal' onSubmit={onAddTeacher}>
 					<FormLabel>Выберите преподавателя</FormLabel>
-					<FormSelect
-						onChange={e => {
-							setTeacher(e.target.value)
-						}}>
-						<option value=''>Не выбрано</option>
-						{users
+					<ReactSelect
+						defaultValue={{ label: 'Не выбрано', value: teacher }}
+						options={users
 							?.slice()
 							.filter(u => !students?.some(s => s.id === u.id))
-							.map(user => (
-								<option key={user.id} value={user.id}>
-									{user.fullName}
-								</option>
-							))}
-					</FormSelect>
+							.map(user => ({ label: user.fullName, value: user.id }))}
+						onChange={e => {
+							e && setTeacher(e.value)
+						}}
+					/>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<Button type={'submit'} form='addTeacherModal'>
+				<Button type={'submit'} form='addTeacherModal' disabled={teacher === ''}>
 					Сохранить
 				</Button>
 			</Modal.Footer>
