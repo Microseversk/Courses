@@ -37,27 +37,25 @@ export function Router() {
 				</>
 			}>
 			<Routes>
-				{window.localStorage.getItem('token') || isAuth ? (
-					<>
-						<Route path='/' element={<PrivateLayout children={<GreetingPage />} />} />
-						<Route path='/groups' element={<PrivateLayout children={<GroupsPage />} />} />
-						<Route path='/groups/:id' element={<PrivateLayout children={<GroupCoursesPage />} />} />
-						<Route path='/courses/my' element={<PrivateLayout children={<MyCoursesPage />} />} />
-						<Route path='/courses/teaching' element={<PrivateLayout children={<TeachingCoursesPage />} />} />
-						<Route path='/courses/:id' element={<PrivateLayout children={<CourseDetailsPage />} />} />
-						<Route path='/profile' element={<PrivateLayout children={<ProfilePage />} />} />
-						<Route path='/login' element={<PublicLayout children={<LoginPage />} />} />
-						<Route path='/registration' element={<PublicLayout children={<RegistrationPage />} />} />
-						<Route path='*' element={<PrivateLayout children={<NotFoundPage />} />} />
-					</>
-				) : (
-					<>
-						<Route path='/' element={<PublicLayout children={<GreetingPage />} />} />
-						<Route path='/login' element={<PublicLayout children={<LoginPage />} />} />
-						<Route path='/registration' element={<PublicLayout children={<RegistrationPage />} />} />
-						<Route path='*' element={<PublicLayout children={<NotFoundPage />} />} />
-					</>
-				)}
+				<Route
+					path='/'
+					element={
+						window.localStorage.getItem('token') ? (
+							<PrivateLayout children={<GreetingPage />} />
+						) : (
+							<PublicLayout children={<GreetingPage />} />
+						)
+					}
+				/>
+				<Route path='/login' element={<PublicLayout children={<LoginPage />} />} />
+				<Route path='/registration' element={<PublicLayout children={<RegistrationPage />} />} />
+				<Route path='/groups' element={<PrivateLayout children={<GroupsPage />} />} />
+				<Route path='/groups/:id' element={<PrivateLayout children={<GroupCoursesPage />} />} />
+				<Route path='/courses/my' element={<PrivateLayout children={<MyCoursesPage />} />} />
+				<Route path='/courses/teaching' element={<PrivateLayout children={<TeachingCoursesPage />} />} />
+				<Route path='/courses/:id' element={<PrivateLayout children={<CourseDetailsPage />} />} />
+				<Route path='/profile' element={<PrivateLayout children={<ProfilePage />} />} />
+				<Route path='*' element={<PrivateLayout children={<NotFoundPage />} />} />)
 			</Routes>
 		</Suspense>
 	)
