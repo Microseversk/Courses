@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import { Button, Form, FormCheck, FormLabel, FormSelect, Modal } from 'react-bootstrap'
+import { Button, Form, FormCheck, FormLabel, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import ReactSelect from 'react-select'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
@@ -45,6 +46,7 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 		clearErrors()
 		register('annotations', { required: 'Обязательное поле' })
 		register('requirements', { required: 'Обязательное поле' })
+		register('mainTeacherId', { required: 'Обязательное поле' })
 		if (props.isShow) {
 			setValue('name', course?.name!)
 			setValue('startYear', course?.startYear!)
@@ -117,17 +119,11 @@ export function EditCourseModalAdmin(props: IEditCourseModalProps) {
 
 					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
-					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
-						<option value=''>Не выбрано</option>
-						{users
-							?.slice()
-							.filter(u => !course?.students.some(s => s.id === u.id))
-							.map(user => (
-								<option key={user.id} value={user.id}>
-									{user.fullName}
-								</option>
-							))}
-					</FormSelect>
+					<ReactSelect
+						defaultValue={{ label: 'Не выбрано', value: '' }}
+						options={users?.map(u => ({ label: u.fullName, value: u.id }))}
+						onChange={e => setValue('mainTeacherId', e?.value || '')}
+					/>
 					{errors.mainTeacherId && <ErrorMessage text={errors.mainTeacherId.message} />}
 				</Form>
 			</Modal.Body>
