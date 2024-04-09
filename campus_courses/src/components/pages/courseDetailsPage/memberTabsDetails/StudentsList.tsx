@@ -9,7 +9,6 @@ import { IStudent } from '../../../../types/response.types'
 import { SetMarkModal } from '../modals/SetMarkModal'
 
 const sortStudentsByStatus = (students: IStudent[]): IStudent[] => {
-	console.log('sorting students')
 	const sortOrder = { Accepted: 1, InQueue: 2, Declined: 3 }
 	return students.slice().sort((a, b) => sortOrder[a.status] - sortOrder[b.status])
 }

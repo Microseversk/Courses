@@ -31,7 +31,6 @@ const acs: StatsResults = {
 }
 
 const getStudentsStats = (students: IStudent[]): StatsResults => {
-	console.log('get stats')
 	return students
 		?.filter(s => s.status === 'Accepted')
 		.reduce((acs, item) => {
