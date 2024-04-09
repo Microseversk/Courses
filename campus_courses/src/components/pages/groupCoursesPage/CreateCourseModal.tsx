@@ -4,7 +4,6 @@ import {
 	Form,
 	FormCheck,
 	FormLabel,
-	FormSelect,
 	Modal,
 	ModalBody,
 	ModalFooter,
@@ -13,6 +12,7 @@ import {
 } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
+import ReactSelect from 'react-select'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useCreateCourseMutation } from '../../../store/api/coursesApi'
@@ -36,6 +36,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 		register,
 		reset,
 		control,
+		setValue,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<CourseCreateType>({
@@ -56,6 +57,7 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 
 	useEffect(() => {
 		register('annotations', { required: 'Обязательное поле' })
+		register('mainTeacherId', { required: 'Обязательное поле' })
 		register('requirements', { required: 'Обязательное поле' })
 	}, [props.isShow])
 
@@ -129,14 +131,11 @@ export function CreateCourseModal(props: ICreateCourseModalProps) {
 					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
 
 					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
-					<FormSelect {...register('mainTeacherId', { required: 'Обязательное поле' })}>
-						<option value=''>Не выбрано</option>
-						{users?.map(user => (
-							<option key={user.id} value={user.id}>
-								{user.fullName}
-							</option>
-						))}
-					</FormSelect>
+
+					<ReactSelect
+						options={users?.map(u => ({ label: u.fullName, value: u.id }))}
+						onChange={e => setValue('mainTeacherId', e?.value || '')}
+					/>
 					{errors.mainTeacherId && <ErrorMessage text={errors.mainTeacherId.message} />}
 				</Form>
 			</ModalBody>
