@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { DateHelper } from '../../../helpers/DateHelper'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useRegisterUserMutation } from '../../../store/api/accountApi'
+import { setAuth } from '../../../store/slices/auth.slice'
 import { IUserRegistration } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
@@ -13,6 +15,7 @@ import { InputCustom } from '../../shared/InputCustom'
 
 export function RegistrationForm() {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const [registerUser, { data: response, isLoading, error, isSuccess }] = useRegisterUserMutation()
 
 	const {
@@ -27,6 +30,7 @@ export function RegistrationForm() {
 	useEffect(() => {
 		if (response) {
 			localStorage.setItem('token', response.token)
+			dispatch(setAuth(true))
 			navigate('/')
 		}
 	}, [response, error])

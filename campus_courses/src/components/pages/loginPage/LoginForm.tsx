@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useLoginUserMutation } from '../../../store/api/accountApi'
+import { setAuth } from '../../../store/slices/auth.slice'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
 import { InputCustom } from '../../shared/InputCustom'
@@ -16,6 +18,7 @@ export interface IUserLogin {
 
 export function LoginForm() {
 	const nav = useNavigate()
+	const dispatch = useDispatch()
 	const [loginUser, { isLoading, error, data: response, isSuccess }] = useLoginUserMutation()
 	const {
 		register,
@@ -32,6 +35,7 @@ export function LoginForm() {
 		if (response) {
 			nav('/')
 			localStorage.setItem('token', response.token)
+			dispatch(setAuth(true))
 		}
 	}, [response])
 
