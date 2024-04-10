@@ -8,7 +8,7 @@ const baseQueryWithInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBa
 	extraOptions
 ) => {
 	let result = await baseQuery(args, api, extraOptions)
-	if ((result.error && result.error?.status === 401) || result.error?.status === 403) {
+	if (result.error && result.error?.status === 401) {
 		console.log('auth error')
 		localStorage.clear()
 		api.dispatch(setAuth(false))
