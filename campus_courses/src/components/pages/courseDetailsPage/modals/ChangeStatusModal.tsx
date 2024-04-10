@@ -36,7 +36,10 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 		<Modal show={props.isShow} onHide={onModalHide} size={'lg'}>
 			<ModalHeader closeButton>Изменение статуса курса</ModalHeader>
 			<ModalBody>
-				<Form onSubmit={handleSubmit(onChangeCourseStatus)} className={'d-flex gap-3'} id={'formChangeStatus'}>
+				<Form
+					onSubmit={handleSubmit(onChangeCourseStatus)}
+					className={'d-flex gap-3 flex-column  flex-md-row'}
+					id={'formChangeStatus'}>
 					<FormCheck
 						{...register('status')}
 						name={'status'}
