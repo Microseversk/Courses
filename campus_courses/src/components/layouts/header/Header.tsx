@@ -1,5 +1,6 @@
+import { MDBContainer, MDBIcon, MDBNavbar, MDBNavbarLink, MDBNavbarToggler } from 'mdb-react-ui-kit'
 import { useState } from 'react'
-import { Container, Navbar } from 'react-bootstrap'
+import { Navbar } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
@@ -23,12 +24,15 @@ export function Header() {
 	}
 
 	return (
-		<Navbar expand={'lg'} className={'bg-body-tertiary mb-4'}>
-			<Container fluid className={'ms-4 me-4'}>
+		<MDBNavbar expand={'lg'} className={'mb-4'}>
+			<MDBContainer fluid className={'ms-4 me-4'}>
 				<Link to={'/'} className={'navbar-brand'}>
-					<img src={'/images/logo.svg'} width='40' height='40' alt='logo' /> Кампусные курсы
+					<img src={'/images/logo.svg'} width='35' height='35' alt='logo' /> Кампусные курсы
 				</Link>
-				<Navbar.Toggle onClick={() => setIsOpen(!isOpen)} />
+				<MDBNavbarToggler onClick={() => setIsOpen(!isOpen)}>
+					<MDBIcon icon='bars' fas />
+				</MDBNavbarToggler>
+
 				<Navbar.Collapse in={isOpen}>
 					<div className={'ms-lg-4 d-flex flex-column flex-lg-row gap-lg-3'}>
 						{isAuth && (
@@ -53,9 +57,9 @@ export function Header() {
 								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/profile'}>
 									Профиль
 								</Link>
-								<button className={'nav-link text-start'} onClick={handleLogout}>
+								<MDBNavbarLink className={'nav-link text-start'} onClick={handleLogout}>
 									Выйти
-								</button>
+								</MDBNavbarLink>
 							</>
 						) : (
 							<>
@@ -69,7 +73,7 @@ export function Header() {
 						)}
 					</div>
 				</Navbar.Collapse>
-			</Container>
-		</Navbar>
+			</MDBContainer>
+		</MDBNavbar>
 	)
 }
