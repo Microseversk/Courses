@@ -13,7 +13,12 @@ export function DeletePopup(props: DeletePopupProps) {
 				<ModalTitle>Подтвердите действие</ModalTitle>
 			</ModalHeader>
 			<ModalBody>
-				<Button onClick={props.action} className='btn-danger w-100'>
+				<Button
+					onClick={() => {
+						props.action()
+						props.onHide()
+					}}
+					className='btn-danger w-100'>
 					Подтвердить
 				</Button>
 			</ModalBody>
