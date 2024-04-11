@@ -1,17 +1,17 @@
-import { Col, ListGroupItem, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { MDBListGroupItem } from 'mdb-react-ui-kit'
+import { Col, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { IGroupCoursesResponse } from '../../../types/response.types'
 
 export function CourseItem(props: IGroupCoursesResponse) {
+	const nav = useNavigate()
 	return (
-		<ListGroupItem>
+		<MDBListGroupItem action onClick={() => nav(`/courses/${props.id}`)}>
 			<Row>
 				<Col lg={10}>
-					<Link to={`/courses/${props.id}`} className={'nav-link fw-bolder fs-5 overflow-auto '}>
-						{props.name}
-					</Link>
+					<div className={' fw-bold fs-5 overflow-auto '}>{props.name}</div>
 				</Col>
-				<Col lg={2} className={'text-success fw-bold text-end'}>
+				<Col lg={2} className={'text-success text-end'}>
 					{props.status === 'Started' ? (
 						<span className={'text-primary'}>В процессе обучения</span>
 					) : props.status === 'OpenForAssigning' ? (
@@ -31,6 +31,6 @@ export function CourseItem(props: IGroupCoursesResponse) {
 			<div>Семестр - {props.semester === 'Autumn' ? <span> Осенний </span> : <span> Весенний </span>}</div>
 			<div className={'text-muted mt-1'}>Мест всего - {props.maximumStudentsCount}</div>
 			<div className={'text-muted'}>Мест свободно - {props.remainingSlotsCount}</div>
-		</ListGroupItem>
+		</MDBListGroupItem>
 	)
 }
