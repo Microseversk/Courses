@@ -8,7 +8,6 @@ import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useLoginUserMutation } from '../../../store/api/accountApi'
 import { setAuth } from '../../../store/slices/auth.slice'
 import { ButtonCustom } from '../../shared/ButtonCustom'
-import { ErrorMessage } from '../../shared/ErrorMessage'
 import { InputCustom } from '../../shared/InputCustom'
 
 export interface IUserLogin {
@@ -23,6 +22,8 @@ export function LoginForm() {
 	const {
 		register,
 		handleSubmit,
+		setError,
+		clearErrors,
 		formState: { errors },
 	} = useForm<IUserLogin>({
 		mode: 'onChange',
@@ -38,6 +39,12 @@ export function LoginForm() {
 			dispatch(setAuth(true))
 		}
 	}, [response])
+	useEffect(() => {
+		if (!error || !(error && 'status' in error)) return
+		if (error.status === 400) {
+			setError('password', { message: 'Неверный email или пароль' })
+		}
+	}, [error])
 
 	useToastMutate(isSuccess, error && 'status' in error && error.status !== 400, 'Успешный вход')
 
@@ -62,7 +69,7 @@ export function LoginForm() {
 				messageError={errors.password?.message}
 				type='password'
 			/>
-			{error && 'status' in error && error.status === 400 && <ErrorMessage text='Неверный email или пароль' />}
+
 			<ButtonCustom className='mt-3' isLoading={isLoading || !!response} text='Войти' type='submit' />
 		</Form>
 	)

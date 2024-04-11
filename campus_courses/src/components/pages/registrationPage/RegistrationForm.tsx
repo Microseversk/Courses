@@ -10,7 +10,6 @@ import { useRegisterUserMutation } from '../../../store/api/accountApi'
 import { setAuth } from '../../../store/slices/auth.slice'
 import { IUserRegistration } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
-import { ErrorMessage } from '../../shared/ErrorMessage'
 import { InputCustom } from '../../shared/InputCustom'
 
 export function RegistrationForm() {
@@ -23,6 +22,7 @@ export function RegistrationForm() {
 		handleSubmit,
 		getValues,
 		formState: { errors },
+		setError,
 	} = useForm<IUserRegistration>({
 		mode: 'onChange',
 	})
@@ -33,7 +33,14 @@ export function RegistrationForm() {
 			dispatch(setAuth(true))
 			navigate('/')
 		}
-	}, [response, error])
+	}, [response])
+
+	useEffect(() => {
+		if (!error || !(error && 'status' in error)) return
+		if (error.status === 409) {
+			setError('email', { message: 'Такой email уже зарегистрирован' })
+		}
+	}, [error])
 
 	useToastMutate(isSuccess, error && 'status' in error && error.status !== 409, 'Успешная регистрация')
 
@@ -68,7 +75,6 @@ export function RegistrationForm() {
 				validateFn={ValidateHelper.email}
 				messageError={errors.email?.message}
 			/>
-			{error && 'status' in error && error.status === 409 && <ErrorMessage text='Такой email уже зарегистрирован' />}
 
 			<InputCustom
 				label={'Пароль'}
