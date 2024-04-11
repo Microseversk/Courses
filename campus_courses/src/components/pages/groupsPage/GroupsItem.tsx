@@ -25,10 +25,9 @@ export function GroupsItem(props: IGroupResponse) {
 	return (
 		<>
 			<EditGroupItemModal name={props.name} id={props.id} isShow={isShow} onHide={onHide} />
-			<MDBListGroupItem action className={'d-flex pe-0'}>
+			<MDBListGroupItem action className={'d-flex pe-0'} onClick={e => nav(`/groups/${props.id}`)}>
 				<Row className={'w-100'}>
 					<Col
-						onClick={e => nav(`/groups/${props.id}`)}
 						sm={12}
 						md={6}
 						className={'d-flex justify-content-center justify-content-md-start align-items-center '}
