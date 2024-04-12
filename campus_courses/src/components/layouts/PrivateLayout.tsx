@@ -15,10 +15,10 @@ export function PrivateLayout({ children }: ILayoutProps) {
 	const { data: profile, isLoading: isLoadingProfile, refetch: refetchProfile } = useGetUserProfileQuery('')
 	const { data: roles, isLoading: isLoadingRoles, refetch: refetchRoles } = useGetUserRolesQuery('')
 
-	useEffect(() => {
-		refetchProfile()
-		refetchRoles()
-	}, [children])
+	// useEffect(() => {
+	// 	refetchProfile()
+	// 	refetchRoles()
+	// }, [children])
 
 	useEffect(() => {
 		if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
