@@ -5,14 +5,10 @@ import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useAddTeacherMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
+import { IModalProps } from '../../../../types/common.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 
-type AddTeacherModalProps = {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function AddTeacherModal(props: AddTeacherModalProps) {
+export function AddTeacherModal(props: IModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse?.course?.id)
 	const students = useTypedSelector(state => state.openedCourse?.course?.students)
 	const { data: users } = useGetUsersQuery('')

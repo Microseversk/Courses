@@ -3,12 +3,11 @@ import { Button, Form, FormCheck, FormLabel, Modal } from 'react-bootstrap'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSetMarkMutation } from '../../../../store/api/coursesApi'
+import { IModalProps } from '../../../../types/common.types'
 import { MarkTime, MarkType } from '../../../../types/request.types'
 import { IStudent } from '../../../../types/response.types'
 
-type SetMarkModalProps = {
-	isShow: boolean
-	onHide: () => void
+interface SetMarkModalProps extends IModalProps {
 	markTime: MarkTime
 	student: IStudent
 }

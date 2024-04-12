@@ -5,16 +5,12 @@ import { ValidateHelper } from '../../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useCreateNotificationMutation } from '../../../../store/api/coursesApi'
+import { IModalProps } from '../../../../types/common.types'
 import { ICourseNotificationCreate } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { InputCustom } from '../../../shared/InputCustom'
 
-type ICreateNotificationModalProps = {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function CreateNotificationModal(props: ICreateNotificationModalProps) {
+export function CreateNotificationModal(props: IModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id!)
 	const [createNotify, { isSuccess, isError, isLoading }] = useCreateNotificationMutation()
 	useToastMutate(isSuccess, isError, 'Уведомление создано')

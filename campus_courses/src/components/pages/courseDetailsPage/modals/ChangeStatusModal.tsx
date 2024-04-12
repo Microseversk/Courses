@@ -4,15 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseStatusMutation } from '../../../../store/api/coursesApi'
+import { IModalProps } from '../../../../types/common.types'
 import { ICourseEditStatus } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 
-interface IChangeStatusModalProps {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function ChangeStatusModal(props: IChangeStatusModalProps) {
+export function ChangeStatusModal(props: IModalProps) {
 	const [editStatus, { isSuccess, isError, isLoading }] = useEditCourseStatusMutation()
 	const { status, id } = useTypedSelector(state => state.openedCourse.course!)
 

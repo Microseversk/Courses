@@ -7,18 +7,14 @@ import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseAdminMutation } from '../../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../../store/api/usersApi'
+import { IModalProps } from '../../../../types/common.types'
 import { CourseCreateType } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ErrorMessage } from '../../../shared/ErrorMessage'
 import { InputCustom } from '../../../shared/InputCustom'
 import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
-interface IEditCourseModalProps {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function EditCourseModalAdmin(props: IEditCourseModalProps) {
+export function EditCourseModalAdmin(props: IModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const { data: users } = useGetUsersQuery('')
 	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseAdminMutation()

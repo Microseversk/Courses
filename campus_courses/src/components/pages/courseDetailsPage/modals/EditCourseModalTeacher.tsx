@@ -4,17 +4,13 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useEditCourseTeacherMutation } from '../../../../store/api/coursesApi'
+import { IModalProps } from '../../../../types/common.types'
 import { EditCourseTeacher } from '../../../../types/request.types'
 import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { ErrorMessage } from '../../../shared/ErrorMessage'
 import { TextEditToolbar } from '../../../shared/TextEditToolbar'
 
-interface IEditCourseModalProps {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function EditCourseModalTeacher(props: IEditCourseModalProps) {
+export function EditCourseModalTeacher(props: IModalProps) {
 	const course = useTypedSelector(state => state.openedCourse.course)
 	const [editCourse, { isLoading, isSuccess, isError }] = useEditCourseTeacherMutation()
 
