@@ -7,12 +7,12 @@ import { IModalProps } from '../../../../types/common.types'
 import { MarkTime, MarkType } from '../../../../types/request.types'
 import { IStudent } from '../../../../types/response.types'
 
-interface SetMarkModalProps extends IModalProps {
+interface ISetMarkModalProps extends IModalProps {
 	markTime: MarkTime
 	student: IStudent
 }
 
-export function SetMarkModal(props: SetMarkModalProps) {
+export function SetMarkModal(props: ISetMarkModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id)
 	const [setStudentMark, { isSuccess, isError }] = useSetMarkMutation()
 	const [mark, setMark] = useState<MarkType | null>()
