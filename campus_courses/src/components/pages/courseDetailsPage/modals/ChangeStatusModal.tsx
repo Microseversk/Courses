@@ -20,16 +20,20 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 		editStatus(data)
 	}
 
-	const { register, handleSubmit, setValue, reset } = useForm<ICourseEditStatus>({
+	const { register, handleSubmit, setValue } = useForm<ICourseEditStatus>({
 		defaultValues: {
 			courseId: id,
-			status: status,
 		},
 	})
 
+	useEffect(() => {
+		if (props.isShow) {
+			setValue('status', status)
+		}
+	}, [props.isShow])
+
 	useToastMutate(isSuccess, isError, 'Статус изменён')
 
-	setValue('status', status)
 	useEffect(() => {
 		if (!isLoading) {
 			props.onHide()
@@ -41,7 +45,6 @@ export function ChangeStatusModal(props: IChangeStatusModalProps) {
 			show={props.isShow}
 			onHide={() => {
 				props.onHide()
-				reset()
 			}}
 			size={'lg'}>
 			<ModalHeader closeButton>Изменение статуса курса</ModalHeader>
