@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Button, Form, FormLabel, Modal } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
@@ -23,8 +23,13 @@ export function AddTeacherModal(props: AddTeacherModalProps) {
 	const onAddTeacher = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		addTeacher({ courseId: courseId!, userId: teacher })
-		props.onHide()
 	}
+
+	useEffect(() => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}, [isLoading])
 
 	return (
 		<Modal

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../../helpers/ValidateHelper'
@@ -5,6 +6,7 @@ import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useCreateNotificationMutation } from '../../../../store/api/coursesApi'
 import { ICourseNotificationCreate } from '../../../../types/request.types'
+import { ButtonCustom } from '../../../shared/ButtonCustom'
 import { InputCustom } from '../../../shared/InputCustom'
 
 type ICreateNotificationModalProps = {
@@ -14,7 +16,7 @@ type ICreateNotificationModalProps = {
 
 export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id!)
-	const [createNotify, { isSuccess, isError }] = useCreateNotificationMutation()
+	const [createNotify, { isSuccess, isError, isLoading }] = useCreateNotificationMutation()
 	useToastMutate(isSuccess, isError, 'Уведомление создано')
 
 	const {
@@ -26,11 +28,17 @@ export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 		mode: 'onChange',
 	})
 
+	useEffect(() => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}, [isLoading])
+
 	const onCreateNotification: SubmitHandler<ICourseNotificationCreate> = data => {
 		createNotify({ courseId: courseId, body: data })
-		props.onHide()
 		reset()
 	}
+
 	return (
 		<Modal show={props.isShow} onHide={props.onHide}>
 			<Modal.Header closeButton>Создание уведомления</Modal.Header>
@@ -58,9 +66,7 @@ export function CreateNotificationModal(props: ICreateNotificationModalProps) {
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<Button form='createNotifyForm' type='submit'>
-					Сохранить
-				</Button>
+				<ButtonCustom text='Сохранить' form='createNotifyForm' type='submit' isLoading={isLoading} />
 			</Modal.Footer>
 		</Modal>
 	)
