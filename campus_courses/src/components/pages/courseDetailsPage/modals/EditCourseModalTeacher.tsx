@@ -61,7 +61,6 @@ export function EditCourseModalTeacher(props: IModalProps) {
 					<TextEditToolbar name='annotations' control={control} />
 
 					{errors.annotations && <ErrorMessage text={errors.annotations.message} />}
-					<FormLabel className={'mt-3'}>Основной преподаватель курса</FormLabel>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
