@@ -35,7 +35,9 @@ export function GroupsItem(props: IGroupResponse) {
 					<Col
 						sm={12}
 						md={9}
-						onClick={e => nav(`/groups/${props.id}`)}
+						onClick={e => {
+							if (user?.roles.isAdmin) nav(`/groups/${props.id}`)
+						}}
 						className={'d-flex justify-content-center justify-content-md-start align-items-center '}
 						style={{ textWrap: 'nowrap', overflow: 'auto' }}>
 						{props.name}
