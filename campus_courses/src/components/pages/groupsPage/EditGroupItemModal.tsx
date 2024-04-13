@@ -4,12 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useEditGroupMutation } from '../../../store/api/groupsApi'
+import { IModalProps } from '../../../types/common.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { InputCustom } from '../../shared/InputCustom'
 
-interface EditGroupItemModalProps {
-	isShow: boolean
-	onHide: () => void
+interface IEditGroupItemModalProps extends IModalProps {
 	name: string
 	id: string
 }
@@ -19,7 +18,7 @@ interface IGroupeEdit {
 	name: string
 }
 
-export function EditGroupItemModal(props: EditGroupItemModalProps) {
+export function EditGroupItemModal(props: IEditGroupItemModalProps) {
 	const [editGroup, { isLoading, isSuccess, isError }] = useEditGroupMutation()
 	const {
 		register,

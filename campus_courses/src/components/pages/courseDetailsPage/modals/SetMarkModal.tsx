@@ -1,24 +1,30 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Button, Form, FormCheck, FormLabel, Modal } from 'react-bootstrap'
 import { useToastMutate } from '../../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
 import { useSetMarkMutation } from '../../../../store/api/coursesApi'
+import { IModalProps } from '../../../../types/common.types'
 import { MarkTime, MarkType } from '../../../../types/request.types'
 import { IStudent } from '../../../../types/response.types'
+import { ButtonCustom } from '../../../shared/ButtonCustom'
 
-type SetMarkModalProps = {
-	isShow: boolean
-	onHide: () => void
+interface ISetMarkModalProps extends IModalProps {
 	markTime: MarkTime
 	student: IStudent
 }
 
-export function SetMarkModal(props: SetMarkModalProps) {
+export function SetMarkModal(props: ISetMarkModalProps) {
 	const courseId = useTypedSelector(state => state.openedCourse.course?.id)
-	const [setStudentMark, { isSuccess, isError }] = useSetMarkMutation()
-	const [mark, setMark] = useState<MarkType | null>()
+	const [setStudentMark, { isSuccess, isError, isLoading }] = useSetMarkMutation()
+	const [mark, setMark] = useState<MarkType>()
 
 	useToastMutate(isSuccess, isError, 'Оценка поставлена')
+
+	useEffect(() => {
+		if (!isLoading) {
+			props.onHide()
+		}
+	}, [isLoading])
 
 	const onSetMark = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -28,8 +34,6 @@ export function SetMarkModal(props: SetMarkModalProps) {
 			studentId: props.student.id,
 			body: { mark, markType: props.markTime },
 		})
-		setMark(null)
-		props.onHide()
 	}
 
 	return (
@@ -45,7 +49,6 @@ export function SetMarkModal(props: SetMarkModalProps) {
 						name='mark'
 						type='radio'
 						label='Пройдено'
-						checked={mark === 'Passed'}
 						onChange={() => {
 							setMark('Passed')
 						}}
@@ -65,9 +68,7 @@ export function SetMarkModal(props: SetMarkModalProps) {
 				<Button className='btn-secondary' onClick={props.onHide}>
 					Отмена
 				</Button>
-				<Button type='submit' form='setMarkForm'>
-					Сохранить
-				</Button>
+				<ButtonCustom type='submit' form='setMarkForm' text='Сохранить' isLoading={isLoading} />
 			</Modal.Footer>
 		</Modal>
 	)

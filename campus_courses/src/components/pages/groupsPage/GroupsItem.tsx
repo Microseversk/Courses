@@ -1,5 +1,6 @@
-import { Button, Col, ListGroup, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { MDBListGroupItem } from 'mdb-react-ui-kit'
+import { Button, Col, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../hooks/useModal'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useTypedSelector } from '../../../hooks/useTypedSelector'
@@ -10,6 +11,7 @@ import { EditGroupItemModal } from './EditGroupItemModal'
 
 export function GroupsItem(props: IGroupResponse) {
 	const user = useTypedSelector(state => state.auth.user)
+	const nav = useNavigate()
 	const [deleteGroup, { isLoading, isSuccess, isError }] = useDeleteGroupMutation()
 
 	const { isShow, onHide, onShow } = useModal()
@@ -23,19 +25,25 @@ export function GroupsItem(props: IGroupResponse) {
 	return (
 		<>
 			<EditGroupItemModal name={props.name} id={props.id} isShow={isShow} onHide={onHide} />
-			<ListGroup.Item className={'d-flex pe-0'}>
+			<MDBListGroupItem
+				action
+				className={'d-flex pe-0'}
+				onClick={e => {
+					if (!user?.roles.isAdmin) nav(`/groups/${props.id}`)
+				}}>
 				<Row className={'w-100'}>
 					<Col
 						sm={12}
-						md={6}
+						md={9}
+						onClick={e => {
+							if (user?.roles.isAdmin) nav(`/groups/${props.id}`)
+						}}
 						className={'d-flex justify-content-center justify-content-md-start align-items-center '}
 						style={{ textWrap: 'nowrap', overflow: 'auto' }}>
-						<Link to={`/groups/${props.id}`} className={'nav-link'}>
-							{props.name}
-						</Link>
+						{props.name}
 					</Col>
 					{user?.roles.isAdmin && (
-						<Col sm={12} md={6} className={'d-flex gap-2 mt-3 mt-md-0 justify-content-center justify-content-md-end'}>
+						<Col sm={12} md={3} className={'d-flex gap-2 mt-3 mt-md-0 justify-content-center justify-content-md-end'}>
 							<Button className={'btn-warning'} onClick={onShow}>
 								РЕДАКТИРОВАТЬ
 							</Button>
@@ -43,7 +51,7 @@ export function GroupsItem(props: IGroupResponse) {
 						</Col>
 					)}
 				</Row>
-			</ListGroup.Item>
+			</MDBListGroupItem>
 		</>
 	)
 }

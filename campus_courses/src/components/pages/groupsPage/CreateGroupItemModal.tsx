@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useCreateGroupMutation } from '../../../store/api/groupsApi'
+import { IModalProps } from '../../../types/common.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { InputCustom } from '../../shared/InputCustom'
 
@@ -11,12 +12,7 @@ interface ICreateGroup {
 	name: string
 }
 
-interface CreateGroupItemModalProps {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function CreateGroupItemModal(props: CreateGroupItemModalProps) {
+export function CreateGroupItemModal(props: IModalProps) {
 	const [createGroup, { isLoading, isSuccess, isError }] = useCreateGroupMutation()
 	const {
 		register,

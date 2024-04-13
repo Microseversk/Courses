@@ -17,18 +17,14 @@ import { ValidateHelper } from '../../../helpers/ValidateHelper'
 import { useToastMutate } from '../../../hooks/useToastMutate'
 import { useCreateCourseMutation } from '../../../store/api/coursesApi'
 import { useGetUsersQuery } from '../../../store/api/usersApi'
+import { IModalProps } from '../../../types/common.types'
 import { CourseCreateType } from '../../../types/request.types'
 import { ButtonCustom } from '../../shared/ButtonCustom'
 import { ErrorMessage } from '../../shared/ErrorMessage'
 import { InputCustom } from '../../shared/InputCustom'
 import { TextEditToolbar } from '../../shared/TextEditToolbar'
 
-interface ICreateCourseModalProps {
-	isShow: boolean
-	onHide: () => void
-}
-
-export function CreateCourseModal(props: ICreateCourseModalProps) {
+export function CreateCourseModal(props: IModalProps) {
 	const groupId = useParams()
 	const { data: users } = useGetUsersQuery('')
 	const [createCourse, { isLoading, isSuccess, isError }] = useCreateCourseMutation()

@@ -3,5 +3,5 @@ interface IErrorMessageProps {
 }
 
 export function ErrorMessage({ text }: IErrorMessageProps) {
-	return <div className='text-danger small'>{text}</div>
+	return <div className='text-danger'>{text}</div>
 }

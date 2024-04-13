@@ -2,12 +2,8 @@ import { useMemo } from 'react'
 import { Modal, ModalBody, ModalHeader } from 'react-bootstrap'
 import Chart from 'react-google-charts'
 import { useTypedSelector } from '../../../../hooks/useTypedSelector'
+import { IModalProps } from '../../../../types/common.types'
 import { IStudent } from '../../../../types/response.types'
-
-interface IStatisticsModalProps {
-	isShow: boolean
-	onHide: () => void
-}
 
 const options = {
 	colors: ['#34eb6e', '#eb3437', '#b0a9a9'],
@@ -45,7 +41,7 @@ const getStudentsStats = (students: IStudent[]): StatsResults => {
 		}, acs)
 }
 
-export function StatisticModal(props: IStatisticsModalProps) {
+export function StatisticModal(props: IModalProps) {
 	const { students, name } = useTypedSelector(state => state.openedCourse.course!)
 
 	const results = useMemo(() => getStudentsStats(students), [students])
