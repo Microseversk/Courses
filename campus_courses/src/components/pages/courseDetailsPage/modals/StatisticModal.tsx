@@ -6,6 +6,14 @@ import { IModalProps } from '../../../../types/common.types'
 import { IStudent } from '../../../../types/response.types'
 
 const options = {
+	animation: {
+		duration: 1000,
+		easing: 'out',
+		startup: true,
+	},
+	legend: {
+		position: 'none',
+	},
 	colors: ['#34eb6e', '#eb3437', '#b0a9a9'],
 }
 
@@ -24,6 +32,10 @@ const acs: StatsResults = {
 	FPassed: 0,
 	FFailed: 0,
 	FNotDefined: 0,
+}
+
+const onExportCsv = (data: (string | number)[][]) => {
+	return 'data:text/csv;charset=utf-8,' + data.map(row => row.join(',')).join('\n')
 }
 
 const getStudentsStats = (students: IStudent[]): StatsResults => {
@@ -52,10 +64,6 @@ export function StatisticModal(props: IModalProps) {
 		['Финальная аттестация', results?.FPassed, results?.FFailed, results?.FNotDefined],
 	]
 
-	const onExportCsv = (data: (string | number)[][]) => {
-		return 'data:text/csv;charset=utf-8,' + data.map(row => row.join(',')).join('\n')
-	}
-
 	return (
 		<Modal show={props.isShow} onHide={props.onHide} size='xl'>
 			<ModalHeader>
@@ -65,7 +73,7 @@ export function StatisticModal(props: IModalProps) {
 				</a>
 			</ModalHeader>
 			<ModalBody>
-				<Chart chartType='Bar' width={'100%'} height={'90%'} data={data} options={options} />
+				<Chart chartType='ColumnChart' width={'100%'} height={'90%'} data={data} options={options} />
 			</ModalBody>
 		</Modal>
 	)
