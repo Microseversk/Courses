@@ -95,7 +95,7 @@ export function CommonCourseDetails() {
 										ИЗМЕНИТЬ
 									</Button>
 									{course.students.some(s => s.status === 'Accepted') && (
-										<Button className={'btn-secondary h-100 ms-3'} onClick={onShowStatistics}>
+										<Button className={'btn-secondary h-100 ms-3 mt-2 mt-md-0'} onClick={onShowStatistics}>
 											СТАТИСТИКА
 										</Button>
 									)}

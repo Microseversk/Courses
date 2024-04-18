@@ -14,7 +14,7 @@ export default function GreetingPage() {
 				<span>Добро пожаловать в систему кампусных курсов</span>
 			)}
 			<div className=' w-100 mt-5'>
-				<img style={{ maxWidth: '100%' }} src={'/images/welcome_image.png'} title='welcome image' />
+				<img style={{ maxWidth: '100%' }} src={'/images/welcome_image.webp'} title='welcome image' />
 			</div>
 		</Container>
 	)
