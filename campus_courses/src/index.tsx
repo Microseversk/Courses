@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
 import { Provider } from 'react-redux'
@@ -9,10 +10,13 @@ import { store } from './store/store'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-	<Provider store={store}>
-		<Toaster position='top-center' toastOptions={{ duration: 1200 }} />
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>
+	<>
+		<SpeedInsights />
+		<Provider store={store}>
+			<Toaster position='top-center' toastOptions={{ duration: 1200 }} />
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Provider>
+	</>
 )
