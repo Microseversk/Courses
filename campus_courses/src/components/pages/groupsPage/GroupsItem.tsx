@@ -28,7 +28,6 @@ export function GroupsItem(props: IGroupResponse) {
 			<MDBListGroupItem
 				action
 				className={'d-flex pe-0'}
-				style={{ cursor: 'pointer' }}
 				onClick={e => {
 					if (!user?.roles.isAdmin) nav(`/groups/${props.id}`)
 				}}>
@@ -41,7 +40,7 @@ export function GroupsItem(props: IGroupResponse) {
 							if (user?.roles.isAdmin) nav(`/groups/${props.id}`)
 						}}
 						className={'d-flex justify-content-center justify-content-lg-start align-items-center '}
-						style={{ textWrap: 'nowrap', overflow: 'auto' }}>
+						style={{ textWrap: 'nowrap', cursor: 'pointer', overflow: 'auto' }}>
 						{props.name}
 					</Col>
 					{user?.roles.isAdmin && (
