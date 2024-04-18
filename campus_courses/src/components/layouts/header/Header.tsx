@@ -24,56 +24,58 @@ export function Header() {
 	}
 
 	return (
-		<MDBNavbar expand={'lg'} className={'mb-4'}>
-			<MDBContainer fluid className={'ms-4 me-4'}>
-				<Link to={'/'} className={'navbar-brand'}>
-					<img src={'/images/logo.svg'} width='35' height='35' alt='logo' /> Кампусные курсы
-				</Link>
-				<MDBNavbarToggler onClick={() => setIsOpen(!isOpen)}>
-					<MDBIcon icon='bars' fas />
-				</MDBNavbarToggler>
+		<header>
+			<MDBNavbar expand={'lg'} className={'mb-4'}>
+				<MDBContainer fluid className={'ms-4 me-4'}>
+					<Link to={'/'} className={'navbar-brand'}>
+						<img src={'/images/logo.svg'} width='35' height='35' alt='logo' /> Кампусные курсы
+					</Link>
+					<MDBNavbarToggler onClick={() => setIsOpen(!isOpen)}>
+						<MDBIcon icon='bars' fas />
+					</MDBNavbarToggler>
 
-				<Navbar.Collapse in={isOpen}>
-					<div className={'ms-lg-4 d-flex flex-column flex-lg-row gap-lg-3'}>
-						{isAuth && (
-							<Link to={'/groups'} onClick={() => setIsOpen(false)} className={'nav-link'}>
-								Группы курсов
-							</Link>
-						)}
-						{isAuth && user?.roles.isStudent && (
-							<Link to={'/courses/my'} onClick={() => setIsOpen(false)} className={'nav-link'}>
-								Мои курсы
-							</Link>
-						)}
-						{isAuth && user?.roles.isTeacher && (
-							<Link to={'/courses/teaching'} onClick={() => setIsOpen(false)} className={'nav-link'}>
-								Преподаваемые курсы
-							</Link>
-						)}
-					</div>
-					<div className={'d-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'}>
-						{isAuth ? (
-							<>
-								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/profile'}>
-									Профиль
+					<Navbar.Collapse in={isOpen}>
+						<div className={'ms-lg-4 d-flex flex-column flex-lg-row gap-lg-3'}>
+							{isAuth && (
+								<Link to={'/groups'} onClick={() => setIsOpen(false)} className={'nav-link'}>
+									Группы курсов
 								</Link>
-								<MDBNavbarLink className={'nav-link text-start'} onClick={handleLogout}>
-									Выйти
-								</MDBNavbarLink>
-							</>
-						) : (
-							<>
-								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/registration'}>
-									Зарегистрироваться
+							)}
+							{isAuth && user?.roles.isStudent && (
+								<Link to={'/courses/my'} onClick={() => setIsOpen(false)} className={'nav-link'}>
+									Мои курсы
 								</Link>
-								<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/login'}>
-									Войти
+							)}
+							{isAuth && user?.roles.isTeacher && (
+								<Link to={'/courses/teaching'} onClick={() => setIsOpen(false)} className={'nav-link'}>
+									Преподаваемые курсы
 								</Link>
-							</>
-						)}
-					</div>
-				</Navbar.Collapse>
-			</MDBContainer>
-		</MDBNavbar>
+							)}
+						</div>
+						<div className={'d-flex flex-column flex-lg-row gap-lg-3 ms-auto mt-3 mt-lg-0'}>
+							{isAuth ? (
+								<>
+									<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/profile'}>
+										Профиль
+									</Link>
+									<MDBNavbarLink className={'nav-link text-start'} onClick={handleLogout}>
+										Выйти
+									</MDBNavbarLink>
+								</>
+							) : (
+								<>
+									<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/registration'}>
+										Зарегистрироваться
+									</Link>
+									<Link className={'nav-link'} onClick={() => setIsOpen(false)} to={'/login'}>
+										Войти
+									</Link>
+								</>
+							)}
+						</div>
+					</Navbar.Collapse>
+				</MDBContainer>
+			</MDBNavbar>
+		</header>
 	)
 }

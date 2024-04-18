@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { Header } from '../layouts/header/Header'
@@ -16,18 +15,7 @@ import ProfilePage from '../pages/profilePage/ProfilePage'
 import RegistrationPage from '../pages/registrationPage/RegistrationPage'
 import TeachingCoursesPage from '../pages/teachingCoursesPage/TeachingCoursesPage'
 
-// const LoginPage = lazy(() => import('../pages/loginPage/LoginPage'))
-// const CourseDetailsPage = lazy(() => import('../pages/courseDetailsPage/CourseDetailsPage'))
-// const GreetingPage = lazy(() => import('../pages/greetingPage/GreetingPage'))
-// const GroupCoursesPage = lazy(() => import('../pages/groupCoursesPage/GroupCoursesPage'))
-// const GroupsPage = lazy(() => import('../pages/groupsPage/GroupsPage'))
-// const MyCoursesPage = lazy(() => import('../pages/myCoursesPage/MyCoursesPage'))
-// const ProfilePage = lazy(() => import('../pages/profilePage/ProfilePage'))
-// const RegistrationPage = lazy(() => import('../pages/registrationPage/RegistrationPage'))
-// const TeachingCoursesPage = lazy(() => import('../pages/teachingCoursesPage/TeachingCoursesPage'))
-
 export function Router() {
-	const isAuth = useTypedSelector(state => state.auth.isAuth)
 	return (
 		<Suspense
 			fallback={

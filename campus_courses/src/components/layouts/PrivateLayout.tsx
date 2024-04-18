@@ -12,13 +12,8 @@ export interface ILayoutProps {
 
 export function PrivateLayout({ children }: ILayoutProps) {
 	const dispatch = useDispatch<AppDispatch>()
-	const { data: profile, isLoading: isLoadingProfile, refetch: refetchProfile } = useGetUserProfileQuery('')
-	const { data: roles, isLoading: isLoadingRoles, refetch: refetchRoles } = useGetUserRolesQuery('')
-
-	// useEffect(() => {
-	// 	refetchProfile()
-	// 	refetchRoles()
-	// }, [children])
+	const { data: profile, isLoading: isLoadingProfile } = useGetUserProfileQuery('')
+	const { data: roles, isLoading: isLoadingRoles } = useGetUserRolesQuery('')
 
 	useEffect(() => {
 		if (!isLoadingProfile && !isLoadingRoles && profile && roles) {
@@ -35,7 +30,7 @@ export function PrivateLayout({ children }: ILayoutProps) {
 	return (
 		<>
 			<Header />
-			{isLoadingProfile || isLoadingRoles ? <Loader /> : <div className='mb-3'>{children}</div>}
+			{isLoadingProfile || isLoadingRoles ? <Loader /> : <main className='mb-3'>{children}</main>}
 		</>
 	)
 }

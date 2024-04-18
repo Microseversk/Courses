@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
 	<Provider store={store}>
-		<Toaster position='top-center' toastOptions={{ duration: 1000 }} />
+		<Toaster position='top-center' toastOptions={{ duration: 1200 }} />
 		<BrowserRouter>
 			<App />
 		</BrowserRouter>
