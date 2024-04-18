@@ -28,22 +28,28 @@ export function GroupsItem(props: IGroupResponse) {
 			<MDBListGroupItem
 				action
 				className={'d-flex pe-0'}
+				style={{ cursor: 'pointer' }}
 				onClick={e => {
 					if (!user?.roles.isAdmin) nav(`/groups/${props.id}`)
 				}}>
 				<Row className={'w-100'}>
 					<Col
 						sm={12}
-						md={9}
+						md={12}
+						lg={9}
 						onClick={e => {
 							if (user?.roles.isAdmin) nav(`/groups/${props.id}`)
 						}}
-						className={'d-flex justify-content-center justify-content-md-start align-items-center '}
+						className={'d-flex justify-content-center justify-content-lg-start align-items-center '}
 						style={{ textWrap: 'nowrap', overflow: 'auto' }}>
 						{props.name}
 					</Col>
 					{user?.roles.isAdmin && (
-						<Col sm={12} md={3} className={'d-flex gap-2 mt-3 mt-md-0 justify-content-center justify-content-md-end'}>
+						<Col
+							sm={12}
+							md={12}
+							lg={3}
+							className={'d-flex gap-2 mt-3 mt-lg-0 justify-content-center justify-content-lg-end'}>
 							<Button className={'btn-warning'} onClick={onShow}>
 								РЕДАКТИРОВАТЬ
 							</Button>
