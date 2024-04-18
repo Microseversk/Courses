@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { Header } from '../layouts/header/Header'
@@ -16,6 +17,7 @@ import RegistrationPage from '../pages/registrationPage/RegistrationPage'
 import TeachingCoursesPage from '../pages/teachingCoursesPage/TeachingCoursesPage'
 
 export function Router() {
+	const isAuth = useTypedSelector(state => state.auth.isAuth)
 	return (
 		<Suspense
 			fallback={
@@ -28,7 +30,7 @@ export function Router() {
 				<Route
 					path='/'
 					element={
-						window.localStorage.getItem('token') ? (
+						window.localStorage.getItem('token') || isAuth ? (
 							<PrivateLayout children={<GreetingPage />} />
 						) : (
 							<PublicLayout children={<GreetingPage />} />
