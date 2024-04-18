@@ -6,7 +6,7 @@ import { IGroupCoursesResponse } from '../../../types/response.types'
 export function CourseItem(props: IGroupCoursesResponse) {
 	const nav = useNavigate()
 	return (
-		<MDBListGroupItem action onClick={() => nav(`/courses/${props.id}`)}>
+		<MDBListGroupItem action style={{ cursor: 'pointer' }} onClick={() => nav(`/courses/${props.id}`)}>
 			<Row>
 				<Col lg={10}>
 					<div className={' fw-bold fs-5 overflow-auto '}>{props.name}</div>
